@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import RealmSwift
+import UserNotifications
+import IQKeyboardManagerSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,7 +18,46 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        
+        window = UIWindow(frame: UIScreen.main.bounds)
+        window?.makeKeyAndVisible()
+        
+        let color = UIColor.hex(hex: Key.primaryHexCode)
+        UINavigationBar.appearance().barTintColor = color
+        application.statusBarStyle = .lightContent
+        
+        UINavigationBar.appearance().tintColor = UIColor.white
+        UINavigationBar.appearance().isTranslucent = false
+        UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor : UIColor.white]
+        
+        UITabBar.appearance().barTintColor = UIColor.white
+        UITabBar.appearance().tintColor = color
+        
+        UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .any, barMetrics: .default)
+        UINavigationBar.appearance().shadowImage = UIImage()
+        
+        //realm migration
+        let config = Realm.Configuration(
+            schemaVersion: 1,
+            migrationBlock: { migration, oldSchemaVersion in
+                if (oldSchemaVersion < 1) {
+                    
+                }
+        })
+        
+        Realm.Configuration.defaultConfiguration = config
+        IQKeyboardManager.sharedManager().enable = true
+        
+        let user = User.getUser()
+        if (user == nil){
+            window?.rootViewController = WelcomeController()
+        } else if (user?.isVerified == false){
+            window?.rootViewController = WelcomeController()
+        } else {
+            window?.rootViewController = WelcomeController()
+        }
+        
         return true
     }
 

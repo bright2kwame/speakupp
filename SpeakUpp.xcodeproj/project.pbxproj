@@ -7,21 +7,64 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		61034065158F824F00FDD139 /* Pods_SpeakUpp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDC8A705F567908CBFC1B8E5 /* Pods_SpeakUpp.framework */; };
 		ED5679E12016119700F52B89 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5679E02016119700F52B89 /* AppDelegate.swift */; };
-		ED5679E32016119700F52B89 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5679E22016119700F52B89 /* ViewController.swift */; };
-		ED5679E62016119700F52B89 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED5679E42016119700F52B89 /* Main.storyboard */; };
+		ED5679E32016119700F52B89 /* OnboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5679E22016119700F52B89 /* OnboardViewController.swift */; };
 		ED5679E82016119700F52B89 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED5679E72016119700F52B89 /* Assets.xcassets */; };
 		ED5679EB2016119700F52B89 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED5679E92016119700F52B89 /* LaunchScreen.storyboard */; };
+		ED5679F42016451F00F52B89 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5679F32016451F00F52B89 /* User.swift */; };
+		ED5679F72016459100F52B89 /* Mics.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5679F62016459100F52B89 /* Mics.swift */; };
+		ED5679F9201645F300F52B89 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5679F8201645F300F52B89 /* Key.swift */; };
+		ED5679FB2016465300F52B89 /* ViewControllerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5679FA2016465300F52B89 /* ViewControllerHelper.swift */; };
+		ED5679FE20165E9900F52B89 /* Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5679FD20165E9900F52B89 /* Page.swift */; };
+		ED567A0020165EE300F52B89 /* WelcomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5679FF20165EE300F52B89 /* WelcomeController.swift */; };
+		ED567A02201665A700F52B89 /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED567A01201665A700F52B89 /* BaseCell.swift */; };
+		ED567A05201665D200F52B89 /* SwipingPageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED567A04201665D200F52B89 /* SwipingPageCell.swift */; };
+		ED567A07201666A400F52B89 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED567A06201666A400F52B89 /* Extension.swift */; };
+		ED7E17992017DB88006DF756 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7E17982017DB88006DF756 /* LoginController.swift */; };
+		ED7E179F20188EEE006DF756 /* RobotoBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ED7E179B20188C25006DF756 /* RobotoBold.ttf */; };
+		ED7E17A020188EEE006DF756 /* RobotoLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ED7E179C20188C25006DF756 /* RobotoLight.ttf */; };
+		ED7E17A120188EEE006DF756 /* RobotoMedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ED7E179D20188C25006DF756 /* RobotoMedium.ttf */; };
+		ED7E17A220188EEE006DF756 /* RobotoRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ED7E179E20188C26006DF756 /* RobotoRegular.ttf */; };
+		ED7E17A520192017006DF756 /* SCLAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7E17A420192017006DF756 /* SCLAlertView.swift */; };
+		ED7E17A7201921A1006DF756 /* SCLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7E17A6201921A1006DF756 /* SCLExtensions.swift */; };
+		ED7E17A920192C61006DF756 /* SpeakUppEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7E17A820192C61006DF756 /* SpeakUppEnums.swift */; };
+		ED7E17AB2019D4FB006DF756 /* BaseScrollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7E17AA2019D4FB006DF756 /* BaseScrollViewController.swift */; };
+		ED7E17AE2019DB1C006DF756 /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7E17AD2019DB1C006DF756 /* SignUpController.swift */; };
+		ED7E17B02019FECB006DF756 /* CheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7E17AF2019FECB006DF756 /* CheckBox.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		90354B2B583449A03445F929 /* Pods-SpeakUpp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpeakUpp.release.xcconfig"; path = "Pods/Target Support Files/Pods-SpeakUpp/Pods-SpeakUpp.release.xcconfig"; sourceTree = "<group>"; };
+		9728968BE78037722D55C171 /* Pods-SpeakUpp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpeakUpp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SpeakUpp/Pods-SpeakUpp.debug.xcconfig"; sourceTree = "<group>"; };
 		ED5679DD2016119700F52B89 /* SpeakUpp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpeakUpp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED5679E02016119700F52B89 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		ED5679E22016119700F52B89 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		ED5679E22016119700F52B89 /* OnboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardViewController.swift; sourceTree = "<group>"; };
 		ED5679E52016119700F52B89 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		ED5679E72016119700F52B89 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		ED5679EA2016119700F52B89 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ED5679EC2016119700F52B89 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ED5679F32016451F00F52B89 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		ED5679F62016459100F52B89 /* Mics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mics.swift; sourceTree = "<group>"; };
+		ED5679F8201645F300F52B89 /* Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
+		ED5679FA2016465300F52B89 /* ViewControllerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerHelper.swift; sourceTree = "<group>"; };
+		ED5679FD20165E9900F52B89 /* Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Page.swift; sourceTree = "<group>"; };
+		ED5679FF20165EE300F52B89 /* WelcomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeController.swift; sourceTree = "<group>"; };
+		ED567A01201665A700F52B89 /* BaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCell.swift; sourceTree = "<group>"; };
+		ED567A04201665D200F52B89 /* SwipingPageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipingPageCell.swift; sourceTree = "<group>"; };
+		ED567A06201666A400F52B89 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		ED7E17982017DB88006DF756 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
+		ED7E179B20188C25006DF756 /* RobotoBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = RobotoBold.ttf; sourceTree = "<group>"; };
+		ED7E179C20188C25006DF756 /* RobotoLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = RobotoLight.ttf; sourceTree = "<group>"; };
+		ED7E179D20188C25006DF756 /* RobotoMedium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = RobotoMedium.ttf; sourceTree = "<group>"; };
+		ED7E179E20188C26006DF756 /* RobotoRegular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = RobotoRegular.ttf; sourceTree = "<group>"; };
+		ED7E17A420192017006DF756 /* SCLAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCLAlertView.swift; sourceTree = "<group>"; };
+		ED7E17A6201921A1006DF756 /* SCLExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCLExtensions.swift; sourceTree = "<group>"; };
+		ED7E17A820192C61006DF756 /* SpeakUppEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakUppEnums.swift; sourceTree = "<group>"; };
+		ED7E17AA2019D4FB006DF756 /* BaseScrollViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseScrollViewController.swift; sourceTree = "<group>"; };
+		ED7E17AD2019DB1C006DF756 /* SignUpController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpController.swift; sourceTree = "<group>"; };
+		ED7E17AF2019FECB006DF756 /* CheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBox.swift; sourceTree = "<group>"; };
+		FDC8A705F567908CBFC1B8E5 /* Pods_SpeakUpp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SpeakUpp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,17 +72,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				61034065158F824F00FDD139 /* Pods_SpeakUpp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		877E572D4106D1A53A3AAA1B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				9728968BE78037722D55C171 /* Pods-SpeakUpp.debug.xcconfig */,
+				90354B2B583449A03445F929 /* Pods-SpeakUpp.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		D92D659581D38B2DF7E606AD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FDC8A705F567908CBFC1B8E5 /* Pods_SpeakUpp.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		ED5679D42016119700F52B89 = {
 			isa = PBXGroup;
 			children = (
 				ED5679DF2016119700F52B89 /* SpeakUpp */,
 				ED5679DE2016119700F52B89 /* Products */,
+				877E572D4106D1A53A3AAA1B /* Pods */,
+				D92D659581D38B2DF7E606AD /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -54,14 +117,82 @@
 		ED5679DF2016119700F52B89 /* SpeakUpp */ = {
 			isa = PBXGroup;
 			children = (
+				ED7E17AC2019D500006DF756 /* HelperController */,
+				ED7E179A20188BD9006DF756 /* Fonts */,
+				ED567A03201665AC00F52B89 /* Cell */,
+				ED5679FC2016477D00F52B89 /* SetUp */,
+				ED5679F52016456900F52B89 /* Utility */,
+				ED5679F22016450000F52B89 /* Model */,
 				ED5679E02016119700F52B89 /* AppDelegate.swift */,
-				ED5679E22016119700F52B89 /* ViewController.swift */,
 				ED5679E42016119700F52B89 /* Main.storyboard */,
 				ED5679E72016119700F52B89 /* Assets.xcassets */,
 				ED5679E92016119700F52B89 /* LaunchScreen.storyboard */,
 				ED5679EC2016119700F52B89 /* Info.plist */,
 			);
 			path = SpeakUpp;
+			sourceTree = "<group>";
+		};
+		ED5679F22016450000F52B89 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				ED5679F32016451F00F52B89 /* User.swift */,
+				ED5679FD20165E9900F52B89 /* Page.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		ED5679F52016456900F52B89 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				ED5679F62016459100F52B89 /* Mics.swift */,
+				ED5679F8201645F300F52B89 /* Key.swift */,
+				ED5679FA2016465300F52B89 /* ViewControllerHelper.swift */,
+				ED567A06201666A400F52B89 /* Extension.swift */,
+				ED7E17A420192017006DF756 /* SCLAlertView.swift */,
+				ED7E17A6201921A1006DF756 /* SCLExtensions.swift */,
+				ED7E17A820192C61006DF756 /* SpeakUppEnums.swift */,
+				ED7E17AF2019FECB006DF756 /* CheckBox.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
+		ED5679FC2016477D00F52B89 /* SetUp */ = {
+			isa = PBXGroup;
+			children = (
+				ED5679E22016119700F52B89 /* OnboardViewController.swift */,
+				ED5679FF20165EE300F52B89 /* WelcomeController.swift */,
+				ED7E17982017DB88006DF756 /* LoginController.swift */,
+				ED7E17AD2019DB1C006DF756 /* SignUpController.swift */,
+			);
+			path = SetUp;
+			sourceTree = "<group>";
+		};
+		ED567A03201665AC00F52B89 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				ED567A01201665A700F52B89 /* BaseCell.swift */,
+				ED567A04201665D200F52B89 /* SwipingPageCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		ED7E179A20188BD9006DF756 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				ED7E179B20188C25006DF756 /* RobotoBold.ttf */,
+				ED7E179C20188C25006DF756 /* RobotoLight.ttf */,
+				ED7E179D20188C25006DF756 /* RobotoMedium.ttf */,
+				ED7E179E20188C26006DF756 /* RobotoRegular.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		ED7E17AC2019D500006DF756 /* HelperController */ = {
+			isa = PBXGroup;
+			children = (
+				ED7E17AA2019D4FB006DF756 /* BaseScrollViewController.swift */,
+			);
+			path = HelperController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -71,9 +202,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = ED5679EF2016119700F52B89 /* Build configuration list for PBXNativeTarget "SpeakUpp" */;
 			buildPhases = (
+				26D9C0D62446309AFC85B6F3 /* [CP] Check Pods Manifest.lock */,
 				ED5679D92016119700F52B89 /* Sources */,
 				ED5679DA2016119700F52B89 /* Frameworks */,
 				ED5679DB2016119700F52B89 /* Resources */,
+				0B2F665411E18B86379F40F4 /* [CP] Embed Pods Frameworks */,
+				B40E2C9DB66723CEFFAB414F /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -123,21 +257,88 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED7E179F20188EEE006DF756 /* RobotoBold.ttf in Resources */,
+				ED7E17A020188EEE006DF756 /* RobotoLight.ttf in Resources */,
+				ED7E17A120188EEE006DF756 /* RobotoMedium.ttf in Resources */,
+				ED7E17A220188EEE006DF756 /* RobotoRegular.ttf in Resources */,
 				ED5679EB2016119700F52B89 /* LaunchScreen.storyboard in Resources */,
 				ED5679E82016119700F52B89 /* Assets.xcassets in Resources */,
-				ED5679E62016119700F52B89 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0B2F665411E18B86379F40F4 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SpeakUpp/Pods-SpeakUpp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		26D9C0D62446309AFC85B6F3 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		B40E2C9DB66723CEFFAB414F /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SpeakUpp/Pods-SpeakUpp-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		ED5679D92016119700F52B89 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ED5679E32016119700F52B89 /* ViewController.swift in Sources */,
+				ED567A05201665D200F52B89 /* SwipingPageCell.swift in Sources */,
+				ED7E17992017DB88006DF756 /* LoginController.swift in Sources */,
+				ED7E17B02019FECB006DF756 /* CheckBox.swift in Sources */,
+				ED7E17AB2019D4FB006DF756 /* BaseScrollViewController.swift in Sources */,
+				ED7E17A920192C61006DF756 /* SpeakUppEnums.swift in Sources */,
+				ED5679E32016119700F52B89 /* OnboardViewController.swift in Sources */,
+				ED5679F9201645F300F52B89 /* Key.swift in Sources */,
+				ED567A0020165EE300F52B89 /* WelcomeController.swift in Sources */,
+				ED567A07201666A400F52B89 /* Extension.swift in Sources */,
+				ED5679FB2016465300F52B89 /* ViewControllerHelper.swift in Sources */,
+				ED7E17AE2019DB1C006DF756 /* SignUpController.swift in Sources */,
+				ED567A02201665A700F52B89 /* BaseCell.swift in Sources */,
+				ED7E17A7201921A1006DF756 /* SCLExtensions.swift in Sources */,
+				ED5679F72016459100F52B89 /* Mics.swift in Sources */,
+				ED5679FE20165E9900F52B89 /* Page.swift in Sources */,
 				ED5679E12016119700F52B89 /* AppDelegate.swift in Sources */,
+				ED5679F42016451F00F52B89 /* User.swift in Sources */,
+				ED7E17A520192017006DF756 /* SCLAlertView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -272,6 +473,7 @@
 		};
 		ED5679F02016119700F52B89 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9728968BE78037722D55C171 /* Pods-SpeakUpp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -287,6 +489,7 @@
 		};
 		ED5679F12016119700F52B89 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 90354B2B583449A03445F929 /* Pods-SpeakUpp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;

@@ -1,0 +1,6 @@
+framework module Pods_SpeakUpp {
+  umbrella header "Pods-SpeakUpp-umbrella.h"
+
+  export *
+  module * { export * }
+}
