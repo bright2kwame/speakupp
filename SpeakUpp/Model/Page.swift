@@ -11,3 +11,8 @@ struct Page {
     let title:String
     let message:String
 }
+
+struct HomeMenuLabel {
+    let title:String
+    let image:String
+}

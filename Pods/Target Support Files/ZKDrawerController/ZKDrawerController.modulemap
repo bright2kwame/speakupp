@@ -1,0 +1,6 @@
+framework module ZKDrawerController {
+  umbrella header "ZKDrawerController-umbrella.h"
+
+  export *
+  module * { export * }
+}

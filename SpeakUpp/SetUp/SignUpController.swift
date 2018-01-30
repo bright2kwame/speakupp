@@ -12,24 +12,9 @@ import Dodo
 import DLRadioButton
 import ActionSheetPicker_3_0
 
-class SignUpController: UIViewController {
+class SignUpController: BaseScrollViewController {
+    
     let labelWidth = CGFloat(100)
-    
-    lazy var scrollView: UIScrollView = {
-        let scrollView = UIScrollView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
-        scrollView.alwaysBounceVertical = true
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        return scrollView
-    }()
-    
-    let imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "AppBg")
-        imageView.contentMode = .scaleAspectFill
-        imageView.layer.masksToBounds = true
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }()
     
     let closeImageView: UIImageView = {
         let imageView = UIImageView()
@@ -293,96 +278,80 @@ class SignUpController: UIViewController {
         return textView
     }()
     
-    override func viewDidLoad() {
-       super.viewDidLoad()
     
-       self.setUpViews()
-        
-        
+    override func setUpView() {
+        super.setUpView()
+        self.setUpLayouts()
     }
     
-    func setUpViews()  {
+    func setUpLayouts()  {
         
+        self.contentView.addSubview(closeImageView)
+        self.contentView.addSubview(profileImageView)
+        self.contentView.addSubview(welcomeTextView)
+        self.contentView.addSubview(nameLabel)
+        self.contentView.addSubview(nameUnderlineView)
+        self.contentView.addSubview(nameTextField)
+        self.contentView.addSubview(phoneNumberLabel)
+        self.contentView.addSubview(numberTextField)
+        self.contentView.addSubview(countryButton)
+        self.contentView.addSubview(uiView)
+        self.contentView.addSubview(numberDividerView)
+        self.contentView.addSubview(genderLabel)
+        self.contentView.addSubview(genderUnderlineView)
+        self.contentView.addSubview(maleButton)
+        self.contentView.addSubview(feMaleButton)
+        self.contentView.addSubview(dateOfBirthLabel)
+        self.contentView.addSubview(datePickerButton)
+        self.contentView.addSubview(dateUnderlineView)
         
-        self.view.addSubview(imageView)
-        self.view.addSubview(scrollView)
-        self.scrollView.addSubview(closeImageView)
-        self.scrollView.addSubview(profileImageView)
-        self.scrollView.addSubview(welcomeTextView)
-        self.scrollView.addSubview(nameLabel)
-        self.scrollView.addSubview(nameUnderlineView)
-        self.scrollView.addSubview(nameTextField)
-        self.scrollView.addSubview(phoneNumberLabel)
-        self.scrollView.addSubview(numberTextField)
-        self.scrollView.addSubview(countryButton)
-        self.scrollView.addSubview(uiView)
-        self.scrollView.addSubview(numberDividerView)
-        self.scrollView.addSubview(genderLabel)
-        self.scrollView.addSubview(genderUnderlineView)
-        self.scrollView.addSubview(maleButton)
-        self.scrollView.addSubview(feMaleButton)
-        self.scrollView.addSubview(dateOfBirthLabel)
-        self.scrollView.addSubview(datePickerButton)
-        self.scrollView.addSubview(dateUnderlineView)
+        self.contentView.addSubview(pinLabel)
+        self.contentView.addSubview(pinTextField)
+        self.contentView.addSubview(pinUnderlineView)
+        self.contentView.addSubview(confirmPinLabel)
+        self.contentView.addSubview(confirmPinTextField)
+        self.contentView.addSubview(confirmPinUnderlineView)
+        self.contentView.addSubview(signUpButton)
+        self.contentView.addSubview(privacyLabel)
         
-        self.scrollView.addSubview(pinLabel)
-        self.scrollView.addSubview(pinTextField)
-        self.scrollView.addSubview(pinUnderlineView)
-        self.scrollView.addSubview(confirmPinLabel)
-        self.scrollView.addSubview(confirmPinTextField)
-        self.scrollView.addSubview(confirmPinUnderlineView)
-        self.scrollView.addSubview(signUpButton)
-        self.scrollView.addSubview(privacyLabel)
-        
-       
-        
-        self.imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
-        self.imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
-        self.imageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
-        self.imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
-        
-        self.scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,constant: 0).isActive = true
-        self.scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0).isActive = true
-        self.scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0).isActive = true
-        self.scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,constant: 0).isActive = true
-        
+
         self.closeImageView.widthAnchor.constraint(equalToConstant: 20).isActive = true
-        self.closeImageView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16).isActive = true
-        self.closeImageView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 20).isActive = true
+        self.closeImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16).isActive = true
+        self.closeImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20).isActive = true
         self.closeImageView.heightAnchor.constraint(equalToConstant: 20).isActive = true
         let tappedAction = UITapGestureRecognizer(target: self, action: #selector(SignUpController.closeAction(gesture:)))
         self.closeImageView.addGestureRecognizer(tappedAction)
         
-        self.profileImageView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 50).isActive = true
-        self.profileImageView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -50).isActive = true
-        self.profileImageView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        self.profileImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 50).isActive = true
+        self.profileImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -50).isActive = true
+        self.profileImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
         self.profileImageView.topAnchor.constraint(equalTo: closeImageView.bottomAnchor, constant: 20).isActive = true
         self.profileImageView.heightAnchor.constraint(equalToConstant: 80).isActive = true
         
-        self.welcomeTextView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
-        self.welcomeTextView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -50).isActive = true
+        self.welcomeTextView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30).isActive = true
+        self.welcomeTextView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -50).isActive = true
         self.welcomeTextView.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 4).isActive = true
         self.welcomeTextView.heightAnchor.constraint(equalToConstant: 100).isActive = true
         
         //MARK -- name section
-        self.nameLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16).isActive = true
+        self.nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16).isActive = true
         self.nameLabel.widthAnchor.constraint(equalToConstant: labelWidth).isActive = true
         self.nameLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
         self.nameLabel.topAnchor.constraint(equalTo: welcomeTextView.bottomAnchor, constant: 40).isActive = true
         
         self.nameTextField.topAnchor.constraint(equalTo: welcomeTextView.bottomAnchor, constant: 40).isActive = true
         self.nameTextField.leadingAnchor.constraint(equalTo: nameLabel.trailingAnchor, constant: 4).isActive = true
-        self.nameTextField.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16).isActive = true
+        self.nameTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16).isActive = true
         self.nameTextField.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         self.nameUnderlineView.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 4).isActive = true
-        self.nameUnderlineView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16).isActive = true
-        self.nameUnderlineView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16).isActive = true
+        self.nameUnderlineView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16).isActive = true
+        self.nameUnderlineView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16).isActive = true
         self.nameUnderlineView.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
         
         //MARK - phone number section
-        self.phoneNumberLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16).isActive = true
+        self.phoneNumberLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16).isActive = true
         self.phoneNumberLabel.widthAnchor.constraint(equalToConstant: labelWidth).isActive = true
         self.phoneNumberLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
         self.phoneNumberLabel.topAnchor.constraint(equalTo: nameUnderlineView.bottomAnchor, constant: 16).isActive = true
@@ -399,16 +368,16 @@ class SignUpController: UIViewController {
         
         self.numberTextField.topAnchor.constraint(equalTo: nameUnderlineView.bottomAnchor, constant: 16).isActive = true
         self.numberTextField.leadingAnchor.constraint(equalTo: numberDividerView.trailingAnchor, constant: 4).isActive = true
-        self.numberTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
+        self.numberTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16).isActive = true
         self.numberTextField.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         self.uiView.topAnchor.constraint(equalTo: phoneNumberLabel.bottomAnchor, constant: 4).isActive = true
-        self.uiView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
-        self.uiView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
+        self.uiView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16).isActive = true
+        self.uiView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16).isActive = true
         self.uiView.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
         //MARK - gender section
-        self.genderLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16).isActive = true
+        self.genderLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16).isActive = true
         self.genderLabel.widthAnchor.constraint(equalToConstant: labelWidth).isActive = true
         self.genderLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
         self.genderLabel.topAnchor.constraint(equalTo: uiView.bottomAnchor, constant: 16).isActive = true
@@ -424,77 +393,78 @@ class SignUpController: UIViewController {
         self.feMaleButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
         self.genderUnderlineView.topAnchor.constraint(equalTo: genderLabel.bottomAnchor, constant: 4).isActive = true
-        self.genderUnderlineView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16).isActive = true
-        self.genderUnderlineView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16).isActive = true
+        self.genderUnderlineView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16).isActive = true
+        self.genderUnderlineView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16).isActive = true
         self.genderUnderlineView.heightAnchor.constraint(equalToConstant: 1).isActive = true
       
         //MARK - date of birth section
-        self.dateOfBirthLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16).isActive = true
+        self.dateOfBirthLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16).isActive = true
         self.dateOfBirthLabel.widthAnchor.constraint(equalToConstant: labelWidth).isActive = true
         self.dateOfBirthLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
         self.dateOfBirthLabel.topAnchor.constraint(equalTo: genderUnderlineView.bottomAnchor, constant: 16).isActive = true
         
         self.datePickerButton.topAnchor.constraint(equalTo: genderUnderlineView.bottomAnchor, constant: 16).isActive = true
         self.datePickerButton.leadingAnchor.constraint(equalTo: dateOfBirthLabel.trailingAnchor, constant: 4).isActive = true
-        self.datePickerButton.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16).isActive = true
+        self.datePickerButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16).isActive = true
         self.datePickerButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         self.dateUnderlineView.topAnchor.constraint(equalTo: dateOfBirthLabel.bottomAnchor, constant: 4).isActive = true
-        self.dateUnderlineView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16).isActive = true
-        self.dateUnderlineView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16).isActive = true
+        self.dateUnderlineView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16).isActive = true
+        self.dateUnderlineView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16).isActive = true
         self.dateUnderlineView.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
         
         //MARK - the pin section
-        self.pinLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16).isActive = true
+        self.pinLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16).isActive = true
         self.pinLabel.widthAnchor.constraint(equalToConstant: labelWidth).isActive = true
         self.pinLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
         self.pinLabel.topAnchor.constraint(equalTo: dateUnderlineView.bottomAnchor, constant: 16).isActive = true
         
         self.pinTextField.topAnchor.constraint(equalTo: dateUnderlineView.bottomAnchor, constant: 16).isActive = true
         self.pinTextField.leadingAnchor.constraint(equalTo: pinLabel.trailingAnchor, constant: 4).isActive = true
-        self.pinTextField.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16).isActive = true
+        self.pinTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16).isActive = true
         self.pinTextField.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         self.pinUnderlineView.topAnchor.constraint(equalTo: pinLabel.bottomAnchor, constant: 4).isActive = true
-        self.pinUnderlineView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16).isActive = true
-        self.pinUnderlineView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16).isActive = true
+        self.pinUnderlineView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16).isActive = true
+        self.pinUnderlineView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16).isActive = true
         self.pinUnderlineView.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
         //MARK - the confirm pin section
-        self.confirmPinLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16).isActive = true
+        self.confirmPinLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16).isActive = true
         self.confirmPinLabel.widthAnchor.constraint(equalToConstant: labelWidth).isActive = true
         self.confirmPinLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
         self.confirmPinLabel.topAnchor.constraint(equalTo: pinUnderlineView.bottomAnchor, constant: 16).isActive = true
         
         self.confirmPinTextField.topAnchor.constraint(equalTo: pinUnderlineView.bottomAnchor, constant: 16).isActive = true
         self.confirmPinTextField.leadingAnchor.constraint(equalTo: confirmPinLabel.trailingAnchor, constant: 4).isActive = true
-        self.confirmPinTextField.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16).isActive = true
+        self.confirmPinTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16).isActive = true
         self.confirmPinTextField.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         self.confirmPinUnderlineView.topAnchor.constraint(equalTo: confirmPinLabel.bottomAnchor, constant: 4).isActive = true
-        self.confirmPinUnderlineView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16).isActive = true
-        self.confirmPinUnderlineView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16).isActive = true
+        self.confirmPinUnderlineView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16).isActive = true
+        self.confirmPinUnderlineView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16).isActive = true
         self.confirmPinUnderlineView.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
         //MARK - button section
         self.signUpButton.topAnchor.constraint(equalTo: confirmPinUnderlineView.bottomAnchor, constant: 50).isActive = true
-        self.signUpButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        self.signUpButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
         self.signUpButton.widthAnchor.constraint(equalToConstant: 200).isActive = true
         self.signUpButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         //MARK - privacy section
-        self.privacyLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16).isActive = true
-        self.privacyLabel.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16).isActive = true
-        self.privacyLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        self.privacyLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16).isActive = true
+        self.privacyLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16).isActive = true
+        self.privacyLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
         self.privacyLabel.topAnchor.constraint(equalTo: signUpButton.bottomAnchor, constant: 100).isActive = true
+        self.privacyLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0).isActive = true
         
         
     }
     
     @objc private func signUp() {
-        let number =  numberTextField.text
-        let pin = pinTextField.text
+       // let number =  numberTextField.text
+      //let pin = pinTextField.text
         
     }
     
@@ -578,9 +548,5 @@ extension SignUpController : UITextFieldDelegate,ADCountryPickerDelegate {
         self.countryButton.setTitle(text, for: .normal)
         picker.dismiss(animated: true, completion: nil)
     }
-    
-    
-    
-    
 }
 

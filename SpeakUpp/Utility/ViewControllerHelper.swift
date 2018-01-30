@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class ViewControllerHelper {
     var container: UIView = UIView()
     var loadingView: UIView = UIView()
@@ -215,6 +216,6 @@ class ViewControllerHelper {
         }
         
     }
-
     
+
 }

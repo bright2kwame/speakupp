@@ -10,6 +10,8 @@ import UIKit
 import RealmSwift
 import UserNotifications
 import IQKeyboardManagerSwift
+import ZKDrawerController
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -23,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
         
-        let color = UIColor.hex(hex: Key.primaryHexCode)
+        let color = UIColor.hex(hex: Key.primaryHomeHexCode)
         UINavigationBar.appearance().barTintColor = color
         application.statusBarStyle = .lightContent
         
@@ -49,9 +51,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Realm.Configuration.defaultConfiguration = config
         IQKeyboardManager.sharedManager().enable = true
         
+        let home = HomeController()
+        let drawer = setUpDrawer(controller: home)
+        
         let user = User.getUser()
         if (user == nil){
-            window?.rootViewController = WelcomeController()
+            window?.rootViewController = drawer
+            home.homeDrawerController = drawer
         } else if (user?.isVerified == false){
             window?.rootViewController = WelcomeController()
         } else {
@@ -60,6 +66,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
+    
+    func setUpDrawer(controller: UIViewController) -> ZKDrawerController {
+        let drawer = ZKDrawerController(center: UINavigationController(rootViewController: controller), right: nil, left: nil)
+        drawer.defaultRightWidth = 280
+        drawer.defaultLeftWidth = 280
+        drawer.shadowWidth = 5
+        drawer.gestureRecognizerWidth = 40
+        drawer.mainScale = 0.7
+        //drawer.backgroundImageView.image = UIImage(named: "AppBg")
+        drawer.backgroundImageView.backgroundColor = UIColor.white
+        drawer.drawerStyle = .insert
+        return drawer
+    }
+    
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -82,7 +102,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
 
 }
 
