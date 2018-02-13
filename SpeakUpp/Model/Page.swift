@@ -16,3 +16,9 @@ struct HomeMenuLabel {
     let title:String
     let image:String
 }
+
+struct TrendingMenuLabel {
+    let title:String
+    let id:String
+}
+

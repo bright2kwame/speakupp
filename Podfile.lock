@@ -4,6 +4,11 @@ PODS:
   - Alamofire (4.5.1)
   - AlamofireImage (3.3.0):
     - Alamofire (~> 4.5)
+  - AWSCore (2.6.12)
+  - AWSS3 (2.6.12):
+    - AWSCore (= 2.6.12)
+  - Cache (4.1.2)
+  - Cosmos (14.0.0)
   - DKImagePickerController (3.8.0):
     - DKImagePickerController/Camera (= 3.8.0)
     - DKImagePickerController/ImageManager (= 3.8.0)
@@ -11,6 +16,7 @@ PODS:
   - DKImagePickerController/ImageManager (3.8.0)
   - DLRadioButton (1.4.11)
   - Dodo (11.0.2)
+  - EFAutoScrollLabel (4.0.2)
   - Firebase/Core (4.3.0):
     - FirebaseAnalytics (= 4.0.4)
     - FirebaseCore (= 4.0.8)
@@ -37,7 +43,13 @@ PODS:
     - GoogleToolboxForMac/Defines (= 2.1.1)
   - GoogleToolboxForMac/NSData+zlib (2.1.1):
     - GoogleToolboxForMac/Defines (= 2.1.1)
+  - Hue (3.0.1)
+  - Imaginary (3.0.3):
+    - Cache (~> 4.0)
   - IQKeyboardManagerSwift (5.0.3)
+  - Lightbox (2.1.2):
+    - Hue (~> 3.0)
+    - Imaginary (~> 3.0)
   - LinearProgressBarMaterial (1.2)
   - nanopb (0.3.8):
     - nanopb/decode (= 0.3.8)
@@ -45,7 +57,6 @@ PODS:
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
   - Protobuf (3.4.0)
-  - QTFloatingDrawer (0.0.1)
   - Realm (2.10.2):
     - Realm/Headers (= 2.10.2)
   - Realm/Headers (2.10.2)
@@ -61,14 +72,17 @@ DEPENDENCIES:
   - ADCountryPicker (~> 2.0.0)
   - Alamofire (~> 4.0)
   - AlamofireImage (~> 3.1)
+  - AWSS3
+  - Cosmos (~> 14.0)
   - DKImagePickerController
   - DLRadioButton (~> 1.4)
   - Dodo (~> 11.0)
+  - EFAutoScrollLabel
   - Firebase/Core
   - Firebase/Messaging
   - IQKeyboardManagerSwift
+  - Lightbox
   - LinearProgressBarMaterial
-  - QTFloatingDrawer (~> 0.0.1)
   - RealmSwift
   - SwiftyJSON
   - ZKDrawerController
@@ -78,26 +92,33 @@ SPEC CHECKSUMS:
   ADCountryPicker: afe39f43a1606e82d66fad809374602a6cc74088
   Alamofire: 2d95912bf4c34f164fdfc335872e8c312acaea4a
   AlamofireImage: 2e784dc5d00f04903a52c1d169181469c805c3df
+  AWSCore: d0d6e4f6831754aaf98058d2306a016ae71510fe
+  AWSS3: c35608e0cdd5172f9e1d943221fd5fde01c5f749
+  Cache: bd0233fc688b5e83a27bcd87807db7e6f23adcc5
+  Cosmos: 6dd44b65d587033e690ae1c350c875d262a23fda
   DKImagePickerController: 6eea9f1ba2e2ca0ba0317b81d68152d07d9e877f
   DLRadioButton: 0d04b8259e7bfd886571a1e9173c73fee7118f50
   Dodo: d7e393c79aaaf3c51ed1311933493b6f1ccdde62
+  EFAutoScrollLabel: 0534a0535b5ab9131c939dcf45aaa9f398156e97
   Firebase: 83283761a1ef6dc9846e03d08059f51421afbd65
   FirebaseAnalytics: 722b53c7b32bfc7806b06e0093a2f5180d4f2c5a
   FirebaseCore: 69b1a5ac5f857ba6d5fd9d5fe794f4786dd5e579
   FirebaseInstanceID: 70c2b877e9338971b2429ea5a4293df6961aa44e
   FirebaseMessaging: 3dd86bfda2acb680b05c97f3f8ac566e9bb87b2a
   GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
+  Hue: 93e852fa6211ab35922ad8c293f51c43d6c79eb2
+  Imaginary: 9b45836a5af881f452a86e0a1215772ae4712d00
   IQKeyboardManagerSwift: e257e513744cf32123eca7061272acea0246fc83
+  Lightbox: 2dc267df8be2285bc7724cb11cbbf4aaaf59dced
   LinearProgressBarMaterial: f025b1ec6ecd08bcd4dfc6fecba4fb263d8a545b
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   Protobuf: 03eef2ee0b674770735cf79d9c4d3659cf6908e8
-  QTFloatingDrawer: 7d07668b848fbe128c9392c9619190ddbe1e01d6
   Realm: 0ef72b837fb67e9f4b098bac771ddd72c7fdbb69
   RealmSwift: 07a9ae0505091eda6b2ee7c190c3786d6e90a7b0
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
   ZKDrawerController: d407465173b79b0fa7002fdf9e85685a6c667a39
 
-PODFILE CHECKSUM: 7fcd9d8b45248fbc4f9ce4e77ab35eed2aa1693a
+PODFILE CHECKSUM: bd7ff683d12e8a9167a8af6f537b607a5d24f9aa
 
 COCOAPODS: 1.2.0.beta.3

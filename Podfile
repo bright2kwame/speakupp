@@ -20,6 +20,11 @@ target 'SpeakUpp' do
   pod 'DLRadioButton', '~> 1.4'
   pod 'ActionSheetPicker-3.0', '~> 2.3.0'
   pod 'ZKDrawerController'
+  pod 'Lightbox'
+  pod 'Cosmos', '~> 14.0'
+  pod 'AWSS3'
+  pod 'EFAutoScrollLabel'
+ 
  
 
 end

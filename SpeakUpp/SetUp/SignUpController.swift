@@ -14,7 +14,11 @@ import ActionSheetPicker_3_0
 
 class SignUpController: BaseScrollViewController {
     
-    let labelWidth = CGFloat(100)
+    let apiService = ApiService()
+    var parsableDate = ""
+    let utilController = ViewControllerHelper()
+    let labelWidth = CGFloat(50)
+    
     
     let closeImageView: UIImageView = {
         let imageView = UIImageView()
@@ -196,6 +200,7 @@ class SignUpController: BaseScrollViewController {
         let color = UIColor.rgb(red: 230, green: 230, blue: 230, alpha: 0.2)
         let textField = ViewControllerHelper.baseField()
         textField.delegate = self
+        textField.isSecureTextEntry = true
         textField.keyboardType = UIKeyboardType.numberPad
         textField.attributedPlaceholder =  NSAttributedString(string: "4 Digit Pin",
                                                               attributes: [NSAttributedStringKey.foregroundColor: color])
@@ -222,6 +227,7 @@ class SignUpController: BaseScrollViewController {
         let color = UIColor.rgb(red: 230, green: 230, blue: 230, alpha: 0.2)
         let textField = ViewControllerHelper.baseField()
         textField.delegate = self
+        textField.isSecureTextEntry = true
         textField.keyboardType = UIKeyboardType.numberPad
         textField.attributedPlaceholder =  NSAttributedString(string: "Confirm 4 Digit Pin",
                                                               attributes: [NSAttributedStringKey.foregroundColor: color])
@@ -243,15 +249,11 @@ class SignUpController: BaseScrollViewController {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18)
         button.backgroundColor = UIColor.clear
         button.layer.cornerRadius = 20
-        button.layer.borderWidth = 1
-        button.layer.borderColor = color.cgColor
         button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
         button.setTitleColor(UIColor.white, for: .normal)
         button.addTarget(self, action: #selector(signUp), for: .touchUpInside)
         return button
     }()
-    
-    
     
     
     let privacyLabel: UILabel = {
@@ -459,22 +461,75 @@ class SignUpController: BaseScrollViewController {
         self.privacyLabel.topAnchor.constraint(equalTo: signUpButton.bottomAnchor, constant: 100).isActive = true
         self.privacyLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0).isActive = true
         
-        
     }
     
     @objc private func signUp() {
-       // let number =  numberTextField.text
-      //let pin = pinTextField.text
+       let numberCode = countryButton.currentTitle!.split(separator: " ")[1]
+       let number =  numberTextField.text!
+       let pin = pinTextField.text!
+       let pinAgain = pinTextField.text!
+       let fullName = nameTextField.text!
+       var gender = ""
+       
+        if number.isEmpty {
+            ViewControllerHelper.showAlert(vc: self, message: "Phone number is required", type: .failed)
+            return
+        }
+        
+        if pin.count != 4 {
+            ViewControllerHelper.showAlert(vc: self, message: "4 Digit PIN is required", type: .failed)
+            return
+        }
+        
+        if pin != pinAgain {
+            ViewControllerHelper.showAlert(vc: self, message: "PIN do not match", type: .failed)
+            return
+        }
+        
+        if fullName.isEmpty {
+            ViewControllerHelper.showAlert(vc: self, message: "Full name is required", type: .failed)
+            return
+        }
+        
+        if maleButton.isSelected {
+            gender = "M"
+        }
+        
+        if feMaleButton.isSelected {
+            gender = "F"
+        }
+        
+        if gender.isEmpty {
+             ViewControllerHelper.showAlert(vc: self, message: "Gender is required", type: .failed)
+            return
+        }
+        
+        if parsableDate.isEmpty {
+            ViewControllerHelper.showAlert(vc: self, message: "Date of birth is required", type: .failed)
+            return
+        }
+        
+        let realNumber = "\(numberCode)\(number)"
+        print("\(realNumber)")
+        self.utilController.showActivityIndicator()
+        self.apiService.register(number: realNumber, password: pin, username: fullName, firstName: "", lastName: "", gender: gender, birthday: parsableDate) { (user, message, status) in
+            self.utilController.hideActivityIndicator()
+            if status != ApiCallStatus.SUCCESS {
+                let appearance = SCLAlertView.SCLAppearance(dynamicAnimatorActive: true)
+                SCLAlertView(appearance: appearance).showError("SpeakUpp Error", subTitle: message)
+            } else {
+               self.present(SignUpVerificationController(), animated: true, completion: nil)
+            }
+        }
         
     }
     
     @objc private func closeAction(gesture: UITapGestureRecognizer) {
-        print("CALLED")
         self.dismiss(animated: true, completion: nil)
     }
     
     @objc private func tapLabel(gesture: UITapGestureRecognizer) {
-        print("Tapped")
+       ViewControllerHelper.openLink(url: "www.google.com", vc: self)
     }
     
     @objc private func pickCountry() {
@@ -513,8 +568,9 @@ class SignUpController: BaseScrollViewController {
         let startingDate = Date(timeInterval: -sixteenInterval, since: Date())
         let datePicker = ActionSheetDatePicker(title: "Select Birthday", datePickerMode: UIDatePickerMode.date, selectedDate: startingDate, doneBlock: {
             picker, value, index in
-            //let dateFormatterGet = DateFormatter()
-            //dateFormatterGet.dateFormat = "yyyy-MM-dd hh:mm:ss"
+            let dateFormatterGet = DateFormatter()
+            dateFormatterGet.dateFormat = "yyyy-MM-dd"
+            self.parsableDate = dateFormatterGet.string(from: value! as! Date)
             
             let dateFormatterPrint = DateFormatter()
             dateFormatterPrint.dateFormat = "MMM dd,yyyy"

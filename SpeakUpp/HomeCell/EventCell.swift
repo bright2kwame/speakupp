@@ -11,7 +11,9 @@ import UIKit
 class EventCell: BaseCell {
     var homeController: HomeController?
     let feedCellId = "eventCellId"
-    var feed = [Any]()
+    var feed = [Poll]()
+    let apiService = ApiService()
+    var nextPageUrl = ""
     
     lazy var feedCollectionView: UICollectionView = {
         let flow = UICollectionViewFlowLayout()
@@ -27,7 +29,7 @@ class EventCell: BaseCell {
     override func setUpView() {
         super.setUpView()
         
-        backgroundColor = UIColor.white
+        backgroundColor = UIColor.groupTableViewBackground
         addSubview(feedCollectionView)
         
         feedCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0).isActive = true
@@ -41,11 +43,32 @@ class EventCell: BaseCell {
             flowLayout.minimumLineSpacing = 5
         }
         
-        let feedItem = Feed()
-        feedItem.id = "1"
-        feed.append(feedItem)
-        feed.append(feedItem)
-        feedCollectionView.reloadData()
+        self.setUpAndCall(url: ApiUrl().allEvents())
+    }
+    
+    func setUpAndCall(url: String)  {
+        self.homeController?.startProgress()
+        self.getData(url: url)
+    }
+    
+    func getData(url:String)  {
+        self.apiService.allEvents(url: url) { (polls, status, message, nextUrl) in
+            self.homeController?.stopProgress()
+            if let pollsIn = polls {
+                for poll in pollsIn {
+                    self.feed.append(poll)
+                }
+                self.feedCollectionView.reloadData()
+            }
+            if let next = nextUrl {
+                self.nextPageUrl = next
+            }
+            if let vc = self.homeController {
+                if status == ApiCallStatus.FAILED {
+                    ViewControllerHelper.showAlert(vc: vc, message: message!, type: MessageType.failed)
+                }
+            }
+        }
     }
 }
 
@@ -56,15 +79,15 @@ extension EventCell: UICollectionViewDataSource,UICollectionViewDelegateFlowLayo
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let _ = self.feed[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: feedCellId, for: indexPath) as! EventItemCell
+        cell.feed = self.feed[indexPath.row]
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let contentInset = collectionView.contentInset.left * 2
         let itemWidth = collectionView.frame.width
-        return CGSize(width: itemWidth - contentInset, height: 400)
+        return CGSize(width: itemWidth - contentInset, height: 300)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -79,6 +102,13 @@ extension EventCell: UICollectionViewDataSource,UICollectionViewDelegateFlowLayo
     func scrollToMenuIndex(menuIndex: Int)  {
         let selectedIndexPath = IndexPath(item: menuIndex, section: 0)
         feedCollectionView.selectItem(at: selectedIndexPath, animated: true, scrollPosition: .centeredHorizontally)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let event = self.feed[indexPath.row]
+        let destination = EventDetailController()
+        destination.event = event
+        self.homeController?.navigationController?.pushViewController(destination, animated: true)
     }
     
 }

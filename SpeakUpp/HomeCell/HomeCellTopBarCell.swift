@@ -12,6 +12,7 @@ class HomeCellTopBarCell: BaseCell {
     
     let menuCellId = "menuCellId"
     let labels = ["ALL","POLLS","RATINGS"]
+    var homeCell: HomeCell?
     
     lazy var feedCollectionView: UICollectionView = {
         let flow = UICollectionViewFlowLayout()
@@ -38,8 +39,7 @@ class HomeCellTopBarCell: BaseCell {
         feedCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         feedCollectionView.register(HomeCellTopBarCellInner.self, forCellWithReuseIdentifier: menuCellId)
         
-        let selectedIndexPath = IndexPath(item: 0, section: 0)
-        feedCollectionView.selectItem(at: selectedIndexPath, animated: true, scrollPosition: .centeredHorizontally)
+        self.scrollToMenuIndex(menuIndex: 0)
         
         if let flowLayout = feedCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.scrollDirection = .vertical
@@ -77,9 +77,14 @@ extension HomeCellTopBarCell: UICollectionViewDataSource,UICollectionViewDelegat
         return UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+         self.scrollToMenuIndex(menuIndex: indexPath.row)
+         self.homeCell?.typeOfPoll = self.labels[indexPath.row]
+    }
+    
     func scrollToMenuIndex(menuIndex: Int)  {
         let selectedIndexPath = IndexPath(item: menuIndex, section: 0)
-        feedCollectionView.selectItem(at: selectedIndexPath, animated: true, scrollPosition: .centeredHorizontally)
+        self.feedCollectionView.selectItem(at: selectedIndexPath, animated: true, scrollPosition: .centeredHorizontally)
     }
     
 }

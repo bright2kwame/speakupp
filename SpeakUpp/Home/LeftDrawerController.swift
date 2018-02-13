@@ -8,6 +8,7 @@
 
 import UIKit
 import ZKDrawerController
+import AlamofireImage
 
 
 class LeftDrawerController: UIViewController {
@@ -15,6 +16,7 @@ class LeftDrawerController: UIViewController {
     var homeDrawerController: ZKDrawerController!
     var homeController: HomeController?
     
+    //MARK - UI element configurations
     let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "AppBg")
@@ -26,7 +28,8 @@ class LeftDrawerController: UIViewController {
     
     let profileImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
+        imageView.image = UIImage(named: "UserIcon")
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 50
         imageView.layer.borderColor = UIColor.white.cgColor
@@ -38,9 +41,10 @@ class LeftDrawerController: UIViewController {
     let nameButton: UIButton = {
         let button = ViewControllerHelper.plainButton()
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-        button.setTitle("Bright Ahedor", for: .normal)
+        button.setTitle("----", for: .normal)
         button.layer.cornerRadius = 0
         button.setTitleColor(UIColor.white, for: .normal)
+        button.contentHorizontalAlignment = .center
         button.addTarget(self, action: #selector(tappedAccount), for: .touchUpInside)
         return button
     }()
@@ -51,7 +55,6 @@ class LeftDrawerController: UIViewController {
         uiView.translatesAutoresizingMaskIntoConstraints = false
         return uiView
     }()
-    
     
     let homeButton: UIButton = {
         let button = ViewControllerHelper.plainButton()
@@ -141,7 +144,6 @@ class LeftDrawerController: UIViewController {
         self.imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
         self.imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
         
-        
         self.profileImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         self.profileImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100).isActive = true
         self.profileImageView.widthAnchor.constraint(equalToConstant: 100).isActive = true
@@ -151,7 +153,7 @@ class LeftDrawerController: UIViewController {
         self.nameButton.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 16).isActive = true
         self.nameButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
         self.nameButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
-        
+       
         
         self.profileDividerView.heightAnchor.constraint(equalToConstant: 1).isActive = true
         self.profileDividerView.topAnchor.constraint(equalTo: nameButton.bottomAnchor, constant: 16).isActive = true
@@ -187,11 +189,27 @@ class LeftDrawerController: UIViewController {
         
         self.settingButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
         self.settingButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        self.settingButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 16).isActive = true
+        self.settingButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
         self.settingButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8).isActive = true
+        
+        self.updateUI()
+    }
+    
+    
+    func updateUI()  {
+        let user = User.getUser()!
+        self.nameButton.setTitle(user.fullName, for: .normal)
+    
+        if  !(user.profile.isEmpty) {
+                self.profileImageView.af_setImage(
+                    withURL: URL(string: (user.profile))!,
+                    placeholderImage: Mics.placeHolder(),
+                    imageTransition: .crossDissolve(0.2)
+        )}
         
     }
     
+    //MARK - Action on the buttons
     @objc private func tappedTrending() {
         self.homeDrawerController.hide(animated: true)
         self.homeController?.scrollBothToMenuIndex(menuIndex: 1)
@@ -209,12 +227,14 @@ class LeftDrawerController: UIViewController {
     
     @objc private func tappedInvite() {
         self.homeDrawerController.hide(animated: true)
-        print("Tapped")
+        let nav = UINavigationController(rootViewController: InviteController())
+        self.present(nav, animated: true, completion: nil)
     }
     
     @objc private func tappedAccount() {
         self.homeDrawerController.hide(animated: true)
-        print("Tapped")
+        let nav = UINavigationController(rootViewController: SettingController())
+        self.present(nav, animated: true, completion: nil)
     }
     
     @objc private func tappedSetting() {

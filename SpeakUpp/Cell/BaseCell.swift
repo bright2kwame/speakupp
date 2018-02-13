@@ -14,7 +14,7 @@ class BaseCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = UIColor.clear
-        setUpView()
+        self.setUpView()
     }
     
     required init?(coder aDecoder: NSCoder) {

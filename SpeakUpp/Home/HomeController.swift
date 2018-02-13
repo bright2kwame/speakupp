@@ -8,6 +8,7 @@
 
 import UIKit
 import ZKDrawerController
+import LinearProgressBarMaterial
 
 class HomeController: UIViewController {
     
@@ -16,6 +17,9 @@ class HomeController: UIViewController {
     let eventCellId = "eventCellId"
     let acountCellId = "acountCellId"
     let labels = ["Home","Trending","Event","Me"]
+    let user = User.getUser()!
+    let apiService = ApiService()
+    
 
     lazy var collectionView: UICollectionView = {
         let flow = UICollectionViewFlowLayout()
@@ -24,12 +28,17 @@ class HomeController: UIViewController {
         collectionView.backgroundColor = UIColor.clear
         collectionView.dataSource = self
         collectionView.delegate = self
+        collectionView.bounces = false
+        collectionView.alwaysBounceVertical = false
+        collectionView.alwaysBounceHorizontal = false
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
     
+    var indicator: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
+
     lazy var menuBar: HomeMenuBar = {
         let menuBar = HomeMenuBar()
         menuBar.homeController = self
@@ -89,11 +98,41 @@ class HomeController: UIViewController {
             flowLayout.scrollDirection = .horizontal
             flowLayout.minimumLineSpacing = 0
         }
+
+        self.setUpUniversalIndication()
+        
+     
+        self.updateUtil()
     }
     
+    
+    func updateUtil() {
+        let url =  "\(ApiUrl().baseUrl)word_cloud_value/"
+        self.apiService.workCloud(url: url) { (words, sttus, message) in
+           
+        }
+        self.apiService.saveCredentials { (status) in
+            
+        }
+    }
+    
+    func setUpUniversalIndication()   {
+        self.indicator.frame = CGRect(x: 0.0, y: 0.0, width: 40.0, height: 40.0)
+        self.indicator.center = view.center
+        self.view.addSubview(indicator)
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+    }
+    
+    func startProgress() {
+        self.indicator.startAnimating()
+    }
+    
+    func stopProgress() {
+        self.indicator.stopAnimating()
+    }
+
     func setUpMenu()  {
         navigationItem.title = ""
-        
         let titleImageView = UIImageView(image: UIImage(named: "LogoImage"))
         titleImageView.frame = CGRect(x: 0, y: 0, width: 150, height: 34)
         titleImageView.contentMode = .scaleAspectFit
@@ -130,15 +169,20 @@ extension HomeController: UICollectionViewDataSource,UICollectionViewDelegateFlo
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.row == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: homeCellId, for: indexPath) as! HomeCell
+            cell.homeController = self
             return cell
         } else if indexPath.row == 1 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: trendingCellId, for: indexPath) as! TrendingCell
+            cell.homeController = self
             return cell
         } else if indexPath.row == 2 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: eventCellId, for: indexPath) as! EventCell
+            cell.homeController = self
             return cell
         }  else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: acountCellId, for: indexPath) as! ProfileCell
+            cell.homeController = self
+            cell.profile = self.user
             return cell
         }
         

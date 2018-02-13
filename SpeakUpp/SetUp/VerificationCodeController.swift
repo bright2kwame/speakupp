@@ -10,6 +10,10 @@ import UIKit
 
 class VerificationCodeController: UIViewController {
     
+    let apiService = ApiService()
+    let phoneNumber = User.getUser()!.number
+    let utilController = ViewControllerHelper()
+    
     lazy var firstCodeTextField: UITextField = {
         return baseInnerField()
     }()
@@ -26,6 +30,14 @@ class VerificationCodeController: UIViewController {
         return baseInnerField()
     }()
     
+    lazy var fithCodeTextField: UITextField = {
+        return baseInnerField()
+    }()
+    
+    lazy var sixCodeTextField: UITextField = {
+        return baseInnerField()
+    }()
+    
     
     func baseInnerField() -> UITextField {
         let color = UIColor.darkGray
@@ -38,13 +50,13 @@ class VerificationCodeController: UIViewController {
         return textField
     }
     
-    let messageLabel: UILabel = {
+    lazy var messageLabel: UILabel = {
         let textView = ViewControllerHelper.baseLabel()
         
         let attributes = [NSAttributedStringKey.foregroundColor: UIColor.darkGray, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 20)]
         let termsAttributes = [NSAttributedStringKey.foregroundColor: UIColor.lightGray, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]
         
-        let header = NSMutableAttributedString(string: "Enter the code sent to \n\n05000294411\n\n", attributes: attributes)
+        let header = NSMutableAttributedString(string: "Enter the code sent to \n\n\(phoneNumber)\n\n", attributes: attributes)
         let terms = NSMutableAttributedString(string: "Please enter the verification code you received from SpeakUpp to proceed.", attributes: termsAttributes)
         
         let combinedText = NSMutableAttributedString()
@@ -85,7 +97,7 @@ class VerificationCodeController: UIViewController {
         self.view.addSubview(messageLabel)
         self.view.addSubview(resendCodeButton)
         
-        let codeStack = UIStackView(arrangedSubviews: [firstCodeTextField,secondCodeTextField,thirdCodeTextField,fourthCodeTextField])
+        let codeStack = UIStackView(arrangedSubviews: [firstCodeTextField,secondCodeTextField,thirdCodeTextField,fourthCodeTextField,fithCodeTextField,sixCodeTextField])
         codeStack.translatesAutoresizingMaskIntoConstraints = false
         codeStack.distribution = .fillEqually
         codeStack.axis = .horizontal
@@ -110,8 +122,17 @@ class VerificationCodeController: UIViewController {
     }
     
     @objc private func resendCode() {
-        
+        self.apiService.resendVerificationCode() { (status, message) in
+            self.utilController.hideActivityIndicator()
+            let appearance = SCLAlertView.SCLAppearance(dynamicAnimatorActive: true)
+            if status != ApiCallStatus.SUCCESS {
+                SCLAlertView(appearance: appearance).showError("SpeakUpp Error", subTitle: message)
+            }  else {
+               SCLAlertView(appearance: appearance).showSuccess("Code Sent", subTitle: message)
+            }
+        }
     }
+
 }
 
 extension VerificationCodeController : UITextFieldDelegate {
@@ -122,6 +143,29 @@ extension VerificationCodeController : UITextFieldDelegate {
         guard let text = textField.text else { return true }
         let newLength = text.count + string.count - range.length
         return newLength <= 1
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        self.startVerification()
+    }
+    
+    func startVerification()  {
+        let code = "\(firstCodeTextField.text!)\(secondCodeTextField.text!)\(thirdCodeTextField.text!)\(fourthCodeTextField.text!)\(fithCodeTextField.text!)\(sixCodeTextField.text!)"
+        if (code.count == 6){
+            self.utilController.showActivityIndicator()
+            self.apiService.verifyRegisterationCode(uniqueCode: code, completion: { (status, message) in
+                self.utilController.hideActivityIndicator()
+                if status != ApiCallStatus.SUCCESS {
+                    let appearance = SCLAlertView.SCLAppearance(dynamicAnimatorActive: true)
+                    SCLAlertView(appearance: appearance).showError("SpeakUpp Error", subTitle: message)
+                }  else {
+                    let home = HomeController()
+                    let drawer = ViewControllerHelper.startHome(controller: home)
+                    home.homeDrawerController = drawer
+                    self.present(drawer, animated: true, completion: nil)
+                }
+            })
+        }
     }
 
 }

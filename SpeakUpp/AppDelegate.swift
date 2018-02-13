@@ -41,7 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //realm migration
         let config = Realm.Configuration(
-            schemaVersion: 1,
+            schemaVersion: 5,
             migrationBlock: { migration, oldSchemaVersion in
                 if (oldSchemaVersion < 1) {
                     
@@ -51,36 +51,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Realm.Configuration.defaultConfiguration = config
         IQKeyboardManager.sharedManager().enable = true
         
-        let home = HomeController()
-        let drawer = setUpDrawer(controller: home)
-        
         let user = User.getUser()
         if (user == nil){
+           window?.rootViewController = WelcomeController()
+        } else if (user?.isVerified == false){
+            //MARK - check the logic before
+             window?.rootViewController = VerificationCodeController()
+        } else {
+            let home = HomeController()
+            let drawer = ViewControllerHelper.startHome(controller: home)
+            
             window?.rootViewController = drawer
             home.homeDrawerController = drawer
-        } else if (user?.isVerified == false){
-            window?.rootViewController = WelcomeController()
-        } else {
-            window?.rootViewController = WelcomeController()
         }
         
         return true
     }
     
-    func setUpDrawer(controller: UIViewController) -> ZKDrawerController {
-        let drawer = ZKDrawerController(center: UINavigationController(rootViewController: controller), right: nil, left: nil)
-        drawer.defaultRightWidth = 280
-        drawer.defaultLeftWidth = 280
-        drawer.shadowWidth = 5
-        drawer.gestureRecognizerWidth = 40
-        drawer.mainScale = 0.7
-        //drawer.backgroundImageView.image = UIImage(named: "AppBg")
-        drawer.backgroundImageView.backgroundColor = UIColor.white
-        drawer.drawerStyle = .insert
-        return drawer
-    }
-    
-
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.

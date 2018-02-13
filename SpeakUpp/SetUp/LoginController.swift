@@ -15,6 +15,9 @@ import Dodo
 
 class LoginController: UIViewController {
     
+    let apiService = ApiService()
+    let utilController = ViewControllerHelper()
+    
     let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "AppBg")
@@ -141,6 +144,7 @@ class LoginController: UIViewController {
         let textField = ViewControllerHelper.baseField()
         textField.keyboardType = UIKeyboardType.numberPad
         textField.delegate = self
+        textField.isSecureTextEntry = true
         textField.attributedPlaceholder =  NSAttributedString(string: "4 Digit Pin",
                                                               attributes: [NSAttributedStringKey.foregroundColor: color])
         return textField
@@ -198,35 +202,33 @@ class LoginController: UIViewController {
         let tappedAction = UITapGestureRecognizer(target: self, action: #selector(LoginController.closeAction(gesture:)))
         self.closeImageView.addGestureRecognizer(tappedAction)
         
-        
         self.profileImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50).isActive = true
         self.profileImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50).isActive = true
         self.profileImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         self.profileImageView.topAnchor.constraint(equalTo: closeImageView.bottomAnchor, constant: 20).isActive = true
-        self.profileImageView.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        self.profileImageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
        
-        
         self.welcomeTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
         self.welcomeTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50).isActive = true
         self.welcomeTextView.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 4).isActive = true
         self.welcomeTextView.heightAnchor.constraint(equalToConstant: 100).isActive = true
       
         self.phoneNumberLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
-        self.phoneNumberLabel.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        self.phoneNumberLabel.widthAnchor.constraint(equalToConstant: 50).isActive = true
         self.phoneNumberLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        self.phoneNumberLabel.topAnchor.constraint(equalTo: welcomeTextView.bottomAnchor, constant: 50).isActive = true
+        self.phoneNumberLabel.topAnchor.constraint(equalTo: welcomeTextView.bottomAnchor, constant: 20).isActive = true
         
         self.countryButton.leadingAnchor.constraint(equalTo: phoneNumberLabel.trailingAnchor, constant: 16).isActive = true
-        self.countryButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        self.countryButton.widthAnchor.constraint(equalToConstant: 100).isActive = true
         self.countryButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        self.countryButton.topAnchor.constraint(equalTo: welcomeTextView.bottomAnchor, constant: 50).isActive = true
+        self.countryButton.topAnchor.constraint(equalTo: welcomeTextView.bottomAnchor, constant: 20).isActive = true
       
-        self.numberDividerView.topAnchor.constraint(equalTo: welcomeTextView.bottomAnchor, constant: 55).isActive = true
+        self.numberDividerView.topAnchor.constraint(equalTo: welcomeTextView.bottomAnchor, constant: 25).isActive = true
         self.numberDividerView.leadingAnchor.constraint(equalTo: countryButton.trailingAnchor, constant: 4).isActive = true
         self.numberDividerView.widthAnchor.constraint(equalToConstant: 1).isActive = true
         self.numberDividerView.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
-        self.numberTextField.topAnchor.constraint(equalTo: welcomeTextView.bottomAnchor, constant: 50).isActive = true
+        self.numberTextField.topAnchor.constraint(equalTo: welcomeTextView.bottomAnchor, constant: 20).isActive = true
         self.numberTextField.leadingAnchor.constraint(equalTo: numberDividerView.trailingAnchor, constant: 4).isActive = true
         self.numberTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
         self.numberTextField.heightAnchor.constraint(equalToConstant: 40).isActive = true
@@ -237,7 +239,7 @@ class LoginController: UIViewController {
         self.uiView.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
         self.pinNumberLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
-        self.pinNumberLabel.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        self.pinNumberLabel.widthAnchor.constraint(equalToConstant: 50).isActive = true
         self.pinNumberLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
         self.pinNumberLabel.topAnchor.constraint(equalTo: uiView.bottomAnchor, constant: 16).isActive = true
         
@@ -251,12 +253,10 @@ class LoginController: UIViewController {
         self.pinDividerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
         self.pinDividerView.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
-        
         self.loginButton.topAnchor.constraint(equalTo: pinDividerView.bottomAnchor, constant: 50).isActive = true
         self.loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         self.loginButton.widthAnchor.constraint(equalToConstant: 200).isActive = true
         self.loginButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
         
         self.privacyLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
         self.privacyLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
@@ -267,19 +267,35 @@ class LoginController: UIViewController {
     
     
     @objc private func login() {
-       let number =  numberTextField.text
-       let pin = pinTextField.text
+       let numberCode = countryButton.currentTitle!.split(separator: " ")[1]
+       let number =  numberTextField.text!
+       let pin = pinTextField.text!
         
-        if (number?.isEmpty)! {
-            let appearance = SCLAlertView.SCLAppearance(dynamicAnimatorActive: true)
-            SCLAlertView(appearance: appearance).showError("SpeakUpp Error", subTitle: "Provide a valid number")
+        if (number.isEmpty) {
+            ViewControllerHelper.showAlert(vc: self, message: "Number is required", type: .failed)
+            return
+        }
+    
+        if (pin.isEmpty) {
+            ViewControllerHelper.showAlert(vc: self, message: "Enter a valid PIN", type: .failed)
             return
         }
         
-        if (pin?.isEmpty)! {
-            ViewControllerHelper.showAlert(vc: self, message: "Enter a valid PIN", type: .failed)
+        let realNumber = "\(numberCode)\(number)"
+        print("\(realNumber)")
+        self.utilController.showActivityIndicator()
+        self.apiService.login(number: realNumber, pin: pin) { (status, message) in
+            self.utilController.hideActivityIndicator()
+            if status != ApiCallStatus.SUCCESS {
+                let appearance = SCLAlertView.SCLAppearance(dynamicAnimatorActive: true)
+                SCLAlertView(appearance: appearance).showError("SpeakUpp Error", subTitle: message)
+            }  else {
+                let home = HomeController()
+                let drawer = ViewControllerHelper.startHome(controller: home)
+                home.homeDrawerController = drawer
+                self.present(drawer, animated: true, completion: nil)
+            }
         }
-       
     }
     
     

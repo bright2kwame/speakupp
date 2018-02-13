@@ -10,7 +10,11 @@ import UIKit
 
 class TrendingCellTopBarCell: BaseCell {
     let menuCellId = "menuCellId"
-    let labels = ["ALL","LIFESTYLE","SPORTS","SOCIAL MEDIA","PEOPLE","EVENTS","THE MEDIA","TECHNOLOGY","FOOD","SERVICE DELIVERY","EDUCATION"]
+    var labels = [TrendingMenuLabel]()
+    let apiService = ApiService()
+    var trendingCell: TrendingCell?
+    
+
     
     lazy var feedCollectionView: UICollectionView = {
         let flow = UICollectionViewFlowLayout()
@@ -37,14 +41,30 @@ class TrendingCellTopBarCell: BaseCell {
         feedCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         feedCollectionView.register(TrendingCellTopBarCellInner.self, forCellWithReuseIdentifier: menuCellId)
         
-        let selectedIndexPath = IndexPath(item: 0, section: 0)
-        feedCollectionView.selectItem(at: selectedIndexPath, animated: true, scrollPosition: .centeredHorizontally)
-        
+       
         if let flowLayout = feedCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.scrollDirection = .horizontal
             flowLayout.minimumLineSpacing = 0
         }
         
+        self.labels.append(TrendingMenuLabel(title: "ALL", id: "0"))
+        self.feedCollectionView.reloadData()
+        self.scrollToMenuIndex(menuIndex: 0)
+        self.setUpAndCall(url: ApiUrl().allTrendingCategory())
+    }
+    
+    func setUpAndCall(url: String)  {
+        self.getData(url: url)
+    }
+    
+    func getData(url:String)  {
+        self.apiService.allPollsCategory(url: url) { (categories, status, message, nextUrl) in
+            if let allCategory = categories {
+                self.labels.append(contentsOf: allCategory)
+                self.feedCollectionView.reloadData()
+                self.scrollToMenuIndex(menuIndex: 0)
+            }
+        }
     }
 }
 
@@ -81,14 +101,18 @@ extension TrendingCellTopBarCell: UICollectionViewDataSource,UICollectionViewDel
         feedCollectionView.selectItem(at: selectedIndexPath, animated: true, scrollPosition: .centeredHorizontally)
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.trendingCell?.getDataWithParam(url: ApiUrl().allTrendingDeatails(), category: self.labels[indexPath.row].id)
+    }
+    
 }
 
 class TrendingCellTopBarCellInner: BaseCell {
     
-    var menuItem: String? {
+    var menuItem: TrendingMenuLabel? {
         didSet {
             guard let unwrapedMenuItem = menuItem else {return}
-            label.text = unwrapedMenuItem
+            label.text = unwrapedMenuItem.title.uppercased()
         }
     }
     
@@ -141,6 +165,12 @@ class TrendingCellTopBarCellInner: BaseCell {
         indicatorBar.heightAnchor.constraint(equalToConstant: 1).isActive = true
         indicatorBar.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.label.text = ""
+        self.label.textColor = UIColor.hex(hex: Key.primaryHomeHexCode)
     }
 }
 

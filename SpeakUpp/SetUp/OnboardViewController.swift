@@ -43,6 +43,9 @@ class OnboardViewController: UIViewController,UICollectionViewDelegateFlowLayout
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.backgroundColor = UIColor.clear
+        collectionView.bounces = false
+        collectionView.alwaysBounceVertical = false
+        collectionView.alwaysBounceHorizontal = false
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -111,7 +114,7 @@ class OnboardViewController: UIViewController,UICollectionViewDelegateFlowLayout
         self.profileImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50).isActive = true
         self.profileImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50).isActive = true
         self.profileImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 50).isActive = true
-        self.profileImageView.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        self.profileImageView.heightAnchor.constraint(equalToConstant: 80).isActive = true
         
         
         pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true

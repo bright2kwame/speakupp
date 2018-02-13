@@ -15,12 +15,14 @@ class User: Object {
     @objc dynamic var lastName = ""
     @objc dynamic var number = ""
     @objc dynamic var fullName = ""
-    @objc dynamic var email = ""
+    @objc dynamic var username = ""
     @objc dynamic var profile = ""
-    @objc dynamic var dob = ""
-    @objc dynamic var lastLogin = ""
-    @objc dynamic var deviceInfo = ""
-    @objc dynamic var pin = ""
+    @objc dynamic var birthday = ""
+    @objc dynamic var gender = "M"
+    @objc dynamic var backgroundImage = ""
+    @objc dynamic var numberOfPolls = 0
+    @objc dynamic var numberOfFollowers = 0
+    @objc dynamic var numberOfFollowing = 0
     @objc dynamic var isVerified = false
     
 

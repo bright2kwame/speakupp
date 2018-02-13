@@ -82,7 +82,7 @@ class SignUpVerificationController: UIViewController {
     }
     
     @objc private func goNext() {
-       
+       self.present(VerificationCodeController(), animated: true, completion: nil)
     }
     
     func setUpViews()  {

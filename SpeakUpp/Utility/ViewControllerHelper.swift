@@ -7,6 +7,11 @@
 //
 
 import UIKit
+import SafariServices
+import ZKDrawerController
+import Lightbox
+import Alamofire
+import EFAutoScrollLabel
 
 
 class ViewControllerHelper {
@@ -93,15 +98,34 @@ class ViewControllerHelper {
     
     static func baseLabel() -> UILabel {
         let label = UILabel()
-        label.font = UIFont(name: "RobotoLight", size: 10)
         label.textAlignment = .left
         label.numberOfLines = 0
         label.textColor = UIColor.gray
         label.backgroundColor = UIColor.clear
         label.text = ""
+        label.minimumScaleFactor = 0.2
+        label.lineBreakMode = .byCharWrapping
+        label.adjustsFontSizeToFitWidth = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }
+    
+    static func baseScrollingLabel() -> EFAutoScrollLabel {
+        let label = EFAutoScrollLabel()
+        label.backgroundColor = UIColor.clear
+        label.textColor = UIColor.white
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.labelSpacing = 30                       // Distance between start and end labels
+        label.pauseInterval = 1.7                     // Seconds of pause before scrolling starts again
+        label.scrollSpeed = 30                        // Pixels per second
+        label.textAlignment = NSTextAlignment.left    // Centers text when no auto-scrolling is applied
+        label.fadeLength = 12                         // Length of the left and right edge fade, 0 to disable
+        label.scrollDirection = EFAutoScrollDirection.Left
+        label.observeApplicationNotifications()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }
+
     
     static func baseUISwitch() -> UISwitch {
         let uiSwitchIn = UISwitch(frame: CGRect(x: 0, y: 0, width: 100, height: 44))
@@ -138,9 +162,21 @@ class ViewControllerHelper {
         button.layer.borderWidth = 1
         button.layer.borderColor = color.cgColor
         button.setTitleColor(UIColor.white, for: .normal)
-        let spacing = CGFloat(5)
-        button.imageEdgeInsets = UIEdgeInsetsMake(spacing, 0, spacing, 20)
-        button.titleEdgeInsets = UIEdgeInsetsMake(0, spacing, 0, spacing)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }
+    
+    static func plainImageButton() -> UIButton {
+        let button = UIButton()
+        let color = UIColor.clear
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+        button.backgroundColor = UIColor.clear
+        button.layer.cornerRadius = 0
+        button.layer.borderWidth = 1
+        button.layer.borderColor = color.cgColor
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 2,left: 10,bottom: 2,right: 10)
+        button.titleEdgeInsets = UIEdgeInsets(top: 5,left: 30,bottom: 5,right: 0)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }
@@ -163,9 +199,6 @@ class ViewControllerHelper {
         return button
     }
     
-    static func presentSingleImage(targetVC: UIViewController,url:String)  {
-        print("Show image preview")
-    }
     
     static func placeCall(phone:String){
         let formatedNumber = phone.components(separatedBy: NSCharacterSet.decimalDigits.inverted).joined(separator: "")
@@ -174,6 +207,14 @@ class ViewControllerHelper {
             UIApplication.shared.open(number, options: [:], completionHandler: nil)
         } else {
             UIApplication.shared.openURL(number)
+        }
+    }
+    
+    static func openLink(url:String,vc: UIViewController){
+        if let requestUrl = NSURL(string: url) {
+            let svc = SFSafariViewController(url: requestUrl as URL)
+            vc.present(svc, animated: true, completion: nil)
+            //UIApplication.sharedApplication().openURL(requestUrl)
         }
     }
     
@@ -215,6 +256,44 @@ class ViewControllerHelper {
             view.dodo.hide()
         }
         
+    }
+    
+    
+    static func startHome(controller:UIViewController) -> ZKDrawerController {
+            let drawer = ZKDrawerController(center: UINavigationController(rootViewController: controller), right: nil, left: nil)
+            drawer.defaultRightWidth = 280
+            drawer.defaultLeftWidth = 280
+            drawer.shadowWidth = 5
+            drawer.gestureRecognizerWidth = 40
+            drawer.mainScale = 0.7
+            //drawer.backgroundImageView.image = UIImage(named: "AppBg")
+            drawer.backgroundImageView.backgroundColor = UIColor.white
+            drawer.drawerStyle = .insert
+            return drawer
+        
+    }
+    
+    static func presentSingleImage(targetVC: UIViewController,url:String)  {
+        let images = [
+            LightboxImage(imageURL: URL(string: url)!)
+        ]
+        // Create an instance of LightboxController.
+        let controller = LightboxController(images: images)
+        controller.dynamicBackground = true
+        targetVC.present(controller, animated: true, completion: nil)
+        
+    }
+    
+    //MARK: sharing -- present sharing screen
+    static func presentSharer(targetVC: UIViewController,message:String){
+        let link = "https://www.speakupp.com/download_app/"
+        var sharingContent = [AnyObject]()
+        sharingContent.append(message as AnyObject)
+        sharingContent.append(link as AnyObject)
+        let activityViewController = UIActivityViewController(activityItems: sharingContent, applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = targetVC.view
+        activityViewController.excludedActivityTypes = [ UIActivityType.airDrop, UIActivityType.postToFacebook ]
+        targetVC.present(activityViewController, animated: true, completion: nil)
     }
     
 

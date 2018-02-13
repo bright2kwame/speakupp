@@ -69,18 +69,6 @@ struct Mics {
         return code.uppercased()
     }
     
-    static func attributeText(feed:String,fontSize:Int) -> NSAttributedString{
-        let combination = NSMutableAttributedString()
-        let yourAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black, NSAttributedStringKey.font: UIFont.systemFont(ofSize: CGFloat(fontSize))]
-        let partOne = NSMutableAttributedString(string: feed, attributes: yourAttributes)
-        
-        combination.append(partOne)
-        
-        return combination
-        
-    }
-    
-    
     static func dateNowInInt() -> Int{
         let someDate = Date()
         let timeInterval = someDate.timeIntervalSince1970
@@ -160,11 +148,11 @@ struct Mics {
     }
     
     static func placeHolder() -> UIImage {
-        return  UIImage(named: "default")!
+        return  UIImage(named: "Default")!
     }
     
     static func userPlaceHolder() -> UIImage {
-        return  UIImage(named: "ProfileGray")!
+        return  UIImage(named: "UserIcon")!
     }
     
     static func flag(country:String) -> String {
@@ -174,6 +162,36 @@ struct Mics {
             s.unicodeScalars.append(UnicodeScalar(base + v.value)!)
         }
         return String(s)
+    }
+    
+    static func formatNumber(number: Int,text:String) -> String  {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        var textShowable = ""
+        if let formattedNumber = numberFormatter.number(from: String(number)){
+            let newShowingCount = self.suffixNumber(numberInt: number)
+            textShowable = Int(formattedNumber) == 1 ? "\(newShowingCount) \(text)" : "\(newShowingCount) \(text)s"
+        } else{
+            textShowable  = number == 1 ? "\(number) \(text)" : "\(number) \(text)s"
+        }
+        return textShowable
+        
+    }
+    
+    static func suffixNumber(numberInt:Int) -> String {
+        let number = numberInt as NSNumber
+        var num:Double = number.doubleValue
+        let sign = ((num < 0) ? "-" : "" )
+        num = fabs(num)
+        if (num < 1000.0){
+            return "\(numberInt)"
+        }
+        
+        let exp:Int = Int(log10(num) / 3.0 ); //log10(1000));
+        let units:[String] = ["K","M","G","T","P","E"];
+        let roundedNum:Double = round(10 * num / pow(1000.0,Double(exp))) / 10;
+        
+        return "\(sign)\(roundedNum)\(units[exp-1])"
     }
     
 }
