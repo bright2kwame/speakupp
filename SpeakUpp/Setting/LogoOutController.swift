@@ -30,7 +30,7 @@ class LogoOutController: UIViewController {
         button.layer.borderColor = color.cgColor
         button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.addTarget(self, action: #selector(closeAction), for: .touchUpInside)
+        button.addTarget(self, action: #selector(logoutAction), for: .touchUpInside)
         return button
     }()
     
@@ -103,5 +103,13 @@ class LogoOutController: UIViewController {
     
     @objc private func closeAction() {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    @objc private func logoutAction() {
+        User.delete()
+        
+        let vc = LoginController()
+        self.present(vc, animated: true, completion: nil)
+        
     }
 }

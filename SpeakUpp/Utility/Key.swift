@@ -15,9 +15,6 @@ struct Key {
     static let tertiaryHexCode = "#898B8E"
     static let backgroundColor = "#E8E8E8"
     static let startedButtonColor = "#32A7D8"
-    static let callStatus = ["OK","DETAIL","RETRY","FAILED","ERROR"]
-    static let homeMenuTitles = ["SERVICES","PAYMENTS","WALLETS","BILLS","HISTORY","GALLERY"]
-    
-    
+ 
 }
 

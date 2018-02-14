@@ -85,9 +85,7 @@ extension EventCell: UICollectionViewDataSource,UICollectionViewDelegateFlowLayo
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let contentInset = collectionView.contentInset.left * 2
-        let itemWidth = collectionView.frame.width
-        return CGSize(width: itemWidth - contentInset, height: 300)
+        return CellHelper.configureCellHeight(collectionView: collectionView, feed: self.feed[indexPath.row])
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -101,7 +99,7 @@ extension EventCell: UICollectionViewDataSource,UICollectionViewDelegateFlowLayo
     
     func scrollToMenuIndex(menuIndex: Int)  {
         let selectedIndexPath = IndexPath(item: menuIndex, section: 0)
-        feedCollectionView.selectItem(at: selectedIndexPath, animated: true, scrollPosition: .centeredHorizontally)
+        self.feedCollectionView.selectItem(at: selectedIndexPath, animated: true, scrollPosition: .centeredHorizontally)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

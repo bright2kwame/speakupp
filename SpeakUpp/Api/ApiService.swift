@@ -155,7 +155,8 @@ class ApiService {
                     print("Status \(status)")
                     switch(status){
                     case 200...300:
-                        //existing device
+                        //parse user
+                        User.delete()
                         let result = JSON(data: response.data!)
                         let user = self.parseUser(item: result["results"])
                         User.save(data: user)
@@ -170,6 +171,70 @@ class ApiService {
                 }
         }
     }
+    
+    
+    //MARK: - get user
+    func getUser(completion: @escaping (ApiCallStatus) -> ()){
+        // this is where the completion handler code goes
+        let url =  "\(ApiUrl().activeBaseUrl())users/me/"
+        print("URL \(url)")
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: headerAuth())
+            .responseJSON { response in
+                if response.error != nil {
+                    completion(.FAILED)
+                    return
+                }
+                if let status = response.response?.statusCode {
+                    print("Status \(status)")
+                    switch(status){
+                    case 200...300:
+                        //existing device
+                        let result = JSON(data: response.data!)
+                        let user = self.parseUser(item: result["results"])
+                        User.save(data: user)
+                        completion(.SUCCESS)
+                    case 301...499:
+                        let item = JSON(data: response.data!)
+                        let _ = item["detail"].stringValue
+                        completion(.DETAIL)
+                    default:
+                        completion(.FAILED)
+                    }
+                }
+        }
+    }
+    
+    //MARK: - update user
+    func updateUser(completion: @escaping (ApiCallStatus) -> ()){
+        // this is where the completion handler code goes
+        let url =  "\(ApiUrl().activeBaseUrl())users/me/"
+        print("URL \(url)")
+        Alamofire.request(url, method: .put, parameters: nil, encoding: JSONEncoding.default,headers: headerAuth())
+            .responseJSON { response in
+                if response.error != nil {
+                    completion(.FAILED)
+                    return
+                }
+                if let status = response.response?.statusCode {
+                    print("Status \(status)")
+                    switch(status){
+                    case 200...300:
+                        //existing device
+                        let result = JSON(data: response.data!)
+                        let user = self.parseUser(item: result["results"])
+                        User.save(data: user)
+                        completion(.SUCCESS)
+                    case 301...499:
+                        let item = JSON(data: response.data!)
+                        let _ = item["detail"].stringValue
+                        completion(.DETAIL)
+                    default:
+                        completion(.FAILED)
+                    }
+                }
+        }
+    }
+    
     
     //MARK: - resending confirmation code
     func resendVerificationCode(completion: @escaping (ApiCallStatus,String) -> ()){
@@ -408,7 +473,7 @@ class ApiService {
     }
     
     //MARK:- search polls
-    func searchPoll(url:String,serchText:String,completion: @escaping (_ polls: [Poll]?,_ status: ApiCallStatus,_ message: String?,_ nextUrl: String?) -> ()){
+    func searchPoll(url:String,serchText:String,type:SearchType,completion: @escaping (_ result: [Any]?,_ status: ApiCallStatus,_ message: String?,_ nextUrl: String?) -> ()){
         print("URL \(url)")
         let params = ["search_text":serchText]
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default,headers: headerAuth())
@@ -421,14 +486,24 @@ class ApiService {
                     print("Status \(status)")
                     switch(status){
                     case 200...300:
-                        var polls = [Poll]()
+                        var polls = [Any]()
                         let item = JSON(data: response.data!)
                         let arrayItems = item["results"]
-                        print("RESULT \(arrayItems)")
                         let nextUrl = item["next"].stringValue
                         for itemIn in arrayItems.enumerated() {
-                            let pollRetreived = self.parsePoll(item: itemIn.element.1)
-                            polls.append(pollRetreived)
+                            
+                            if type == SearchType.poll || type == SearchType.events {
+                                let itemRetrieved = self.parsePoll(item: itemIn.element.1)
+                                polls.append(itemRetrieved)
+                            }
+                            if type == SearchType.brands {
+                                let itemRetrieved = self.parseBrand(item: itemIn.element.1)
+                                polls.append(itemRetrieved)
+                            }
+                            if type == SearchType.people {
+                                let itemRetrieved = self.parsePollAuthour(item: itemIn.element.1)
+                                polls.append(itemRetrieved)
+                            }
                         }
                         completion(polls, .SUCCESS, nil,nextUrl)
                     case 401...499:
@@ -549,6 +624,7 @@ class ApiService {
     
     //MARK:- parse poll
     func parsePoll(item: JSON) -> Poll  {
+        print("POLL \(item)")
         let id = item["id"].intValue.description
         let totalVotes = item["total_votes"].intValue
         let totalRatingVotes = item["total_rating_votes"].intValue

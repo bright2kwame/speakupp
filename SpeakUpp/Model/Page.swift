@@ -22,3 +22,8 @@ struct TrendingMenuLabel {
     let id:String
 }
 
+struct SearchMenuLabel {
+    let title:String
+    let type:SearchType
+}
+

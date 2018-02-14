@@ -122,6 +122,7 @@ class ViewControllerHelper {
         label.fadeLength = 12                         // Length of the left and right edge fade, 0 to disable
         label.scrollDirection = EFAutoScrollDirection.Left
         label.observeApplicationNotifications()
+        label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }
@@ -245,11 +246,11 @@ class ViewControllerHelper {
         case .failed:
             view.dodo.error(message)
         case .info:
-            print("Watch out for penguins")
+             view.dodo.info(message)
         case .success:
-            print("Where the sun rises")
+            view.dodo.success(message)
         case .warning:
-            print("Where the skies are blue")
+            view.dodo.warning(message)
         }
         let when = DispatchTime.now() + 1
         DispatchQueue.main.asyncAfter(deadline: when) {

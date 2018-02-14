@@ -288,37 +288,7 @@ extension HomeCell: UICollectionViewDataSource,UICollectionViewDelegateFlowLayou
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let feed = self.feed[indexPath.row]
-        let contentInset = collectionView.contentInset.left * 2
-        let itemWidth = collectionView.frame.width
-        if feed is String {
-            return CGSize(width: itemWidth - contentInset, height: 50)
-        }
-        let bottomSectionHeight = 62.0
-        let profileHeight = 82.0
-        let choiceHeight = 166.0
-        let feedItem = feed as? Poll
-        if feedItem?.pollType == "rating"  {
-           var starAndLabelHeight = 100.0
-           let questionHeight = 116.0
-           let imageHeight = 266.0
-            //for unrated poll adjust the height
-            if !((feedItem?.hasVoted)!){
-               starAndLabelHeight = 30.0
-            }
-           let totalHeight = CGFloat(profileHeight + imageHeight + bottomSectionHeight + questionHeight + starAndLabelHeight)
-           return CGSize(width: itemWidth - contentInset, height: totalHeight)
-        }
-        
-        //image question
-        if !(feedItem?.image.isEmpty)!  {
-            let imageHeight = 266.0
-            let totalHeight = CGFloat(profileHeight + imageHeight + choiceHeight + bottomSectionHeight)
-            return CGSize(width: itemWidth - contentInset, height: totalHeight)
-        }
-         //no image question
-        let questionHeight = 116.0
-        let totalHeight = CGFloat(profileHeight + questionHeight + choiceHeight + bottomSectionHeight)
-        return CGSize(width: itemWidth - contentInset, height: totalHeight)
+        return CellHelper.configureCellHeight(collectionView: collectionView, feed: feed)
         
     }
     

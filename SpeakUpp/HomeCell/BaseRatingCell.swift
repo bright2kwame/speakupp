@@ -76,9 +76,9 @@ class BaseRatingCell: BaseCell {
         cosmosView.settings.fillMode = .full
         cosmosView.settings.starSize = 30
         cosmosView.settings.starMargin = 5
-        cosmosView.settings.filledColor = UIColor.orange
-        cosmosView.settings.emptyBorderColor = UIColor.orange
-        cosmosView.settings.filledBorderColor = UIColor.orange
+        cosmosView.settings.filledColor = UIColor(red:0.23, green:0.60, blue:0.85, alpha:1.0)
+        cosmosView.settings.emptyBorderColor = UIColor(red:0.23, green:0.60, blue:0.85, alpha:1.0)
+        cosmosView.settings.filledBorderColor = UIColor(red:0.23, green:0.60, blue:0.85, alpha:1.0)
         cosmosView.translatesAutoresizingMaskIntoConstraints = false
         return cosmosView
     }()

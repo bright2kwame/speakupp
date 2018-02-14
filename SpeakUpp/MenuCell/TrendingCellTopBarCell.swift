@@ -15,7 +15,6 @@ class TrendingCellTopBarCell: BaseCell {
     var trendingCell: TrendingCell?
     
 
-    
     lazy var feedCollectionView: UICollectionView = {
         let flow = UICollectionViewFlowLayout()
         flow.scrollDirection = .horizontal
@@ -144,7 +143,7 @@ class TrendingCellTopBarCellInner: BaseCell {
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 14)
         label.backgroundColor = UIColor.clear
-        label.textColor = UIColor.hex(hex: Key.primaryHomeHexCode)
+        label.textColor = UIColor.darkGray
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -170,7 +169,6 @@ class TrendingCellTopBarCellInner: BaseCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         self.label.text = ""
-        self.label.textColor = UIColor.hex(hex: Key.primaryHomeHexCode)
     }
 }
 

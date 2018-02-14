@@ -28,6 +28,9 @@
 		ED46DB892032F34600F6A06E /* AWSCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED46DB882032F34600F6A06E /* AWSCredentials.swift */; };
 		ED46DB8C20330A1200F6A06E /* PayVottingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED46DB8B20330A1200F6A06E /* PayVottingController.swift */; };
 		ED46DB8E20331D5600F6A06E /* PaymentRedirectController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED46DB8D20331D5600F6A06E /* PaymentRedirectController.swift */; };
+		ED46DB922033A8D300F6A06E /* SearchMenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED46DB912033A8D300F6A06E /* SearchMenuBar.swift */; };
+		ED46DB942034161000F6A06E /* CellHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED46DB932034161000F6A06E /* CellHelper.swift */; };
+		ED46DB9620345E8300F6A06E /* PollAudioChoiceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED46DB9520345E8300F6A06E /* PollAudioChoiceCell.swift */; };
 		ED5679E12016119700F52B89 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5679E02016119700F52B89 /* AppDelegate.swift */; };
 		ED5679E32016119700F52B89 /* OnboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5679E22016119700F52B89 /* OnboardViewController.swift */; };
 		ED5679E82016119700F52B89 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED5679E72016119700F52B89 /* Assets.xcassets */; };
@@ -102,6 +105,9 @@
 		ED46DB882032F34600F6A06E /* AWSCredentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AWSCredentials.swift; sourceTree = "<group>"; };
 		ED46DB8B20330A1200F6A06E /* PayVottingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayVottingController.swift; sourceTree = "<group>"; };
 		ED46DB8D20331D5600F6A06E /* PaymentRedirectController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentRedirectController.swift; sourceTree = "<group>"; };
+		ED46DB912033A8D300F6A06E /* SearchMenuBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMenuBar.swift; sourceTree = "<group>"; };
+		ED46DB932034161000F6A06E /* CellHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellHelper.swift; sourceTree = "<group>"; };
+		ED46DB9520345E8300F6A06E /* PollAudioChoiceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollAudioChoiceCell.swift; sourceTree = "<group>"; };
 		ED5679DD2016119700F52B89 /* SpeakUpp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpeakUpp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED5679E02016119700F52B89 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ED5679E22016119700F52B89 /* OnboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardViewController.swift; sourceTree = "<group>"; };
@@ -189,6 +195,7 @@
 		ED158FBD2020BEBD000E43BB /* Setting */ = {
 			isa = PBXGroup;
 			children = (
+				ED158FBB2020BAA0000E43BB /* LogoOutController.swift */,
 				ED158FBE2020E626000E43BB /* SettingController.swift */,
 				ED421DDF203211B300D8DF1F /* BrandsController.swift */,
 				ED421DE520322F9D00D8DF1F /* InterestController.swift */,
@@ -315,6 +322,7 @@
 				ED7E17A820192C61006DF756 /* SpeakUppEnums.swift */,
 				ED7E17AF2019FECB006DF756 /* CheckBox.swift */,
 				ED6C6E48201F739100C15586 /* BaseUIView.swift */,
+				ED46DB932034161000F6A06E /* CellHelper.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -329,7 +337,6 @@
 				ED7E17B1201B5DF4006DF756 /* SignUpVerificationController.swift */,
 				EDA8D834201CCA96004F6A8C /* VerificationCodeController.swift */,
 				ED158FB92020B216000E43BB /* ResetPinController.swift */,
-				ED158FBB2020BAA0000E43BB /* LogoOutController.swift */,
 			);
 			path = SetUp;
 			sourceTree = "<group>";
@@ -346,8 +353,11 @@
 		ED6C6E4C201F964400C15586 /* MenuCell */ = {
 			isa = PBXGroup;
 			children = (
+				ED6C6E52201FB1F400C15586 /* HomeCellTopBarCell.swift */,
+				ED6C6E58201FEB9400C15586 /* TrendingCellTopBarCell.swift */,
 				ED6C6E46201F732600C15586 /* HomeMenuBar.swift */,
 				ED6C6E4A201F74B900C15586 /* HomeMenuBarCell.swift */,
+				ED46DB912033A8D300F6A06E /* SearchMenuBar.swift */,
 			);
 			path = MenuCell;
 			sourceTree = "<group>";
@@ -356,12 +366,10 @@
 			isa = PBXGroup;
 			children = (
 				ED6C6E4E201F967D00C15586 /* HomeCell.swift */,
-				ED6C6E52201FB1F400C15586 /* HomeCellTopBarCell.swift */,
 				ED6C6E54201FD8B200C15586 /* BaseFeedCell.swift */,
 				ED777665202CE6720006A8F3 /* BaseRatingCell.swift */,
 				ED6C6E56201FE98200C15586 /* TrendingCell.swift */,
 				ED7E9747202E108600B35E0F /* TrendingItemCell.swift */,
-				ED6C6E58201FEB9400C15586 /* TrendingCellTopBarCell.swift */,
 				ED6C6E5A202072AF00C15586 /* EventCell.swift */,
 				ED6C6E5C2020734E00C15586 /* EventItemCell.swift */,
 				ED6C6E5E2020740200C15586 /* ProfileCell.swift */,
@@ -395,6 +403,7 @@
 				ED7E9745202DD9EF00B35E0F /* PollNoImageChoiceCell.swift */,
 				ED421DD6202F33CB00D8DF1F /* PollAnsweredCell.swift */,
 				ED421DD8202F8B5F00D8DF1F /* PollAnsweredWithImageCell.swift */,
+				ED46DB9520345E8300F6A06E /* PollAudioChoiceCell.swift */,
 			);
 			path = PollInnerCell;
 			sourceTree = "<group>";
@@ -569,12 +578,14 @@
 				ED5679F9201645F300F52B89 /* Key.swift in Sources */,
 				EDA5E34D202A213B00C0F61B /* Poll.swift in Sources */,
 				ED421DE620322F9D00D8DF1F /* InterestController.swift in Sources */,
+				ED46DB9620345E8300F6A06E /* PollAudioChoiceCell.swift in Sources */,
 				ED6C6E5D2020734E00C15586 /* EventItemCell.swift in Sources */,
 				ED7E9746202DD9EF00B35E0F /* PollNoImageChoiceCell.swift in Sources */,
 				ED567A0020165EE300F52B89 /* WelcomeController.swift in Sources */,
 				ED6C6E5F2020740200C15586 /* ProfileCell.swift in Sources */,
 				ED421DDB203200C700D8DF1F /* UserWorkCloud.swift in Sources */,
 				ED567A07201666A400F52B89 /* Extension.swift in Sources */,
+				ED46DB942034161000F6A06E /* CellHelper.swift in Sources */,
 				ED5679FB2016465300F52B89 /* ViewControllerHelper.swift in Sources */,
 				ED6C6E59201FEB9400C15586 /* TrendingCellTopBarCell.swift in Sources */,
 				ED158FC920211639000E43BB /* SearchController.swift in Sources */,
@@ -590,6 +601,7 @@
 				ED7E9748202E108600B35E0F /* TrendingItemCell.swift in Sources */,
 				ED46DB872032D95C00F6A06E /* EditProfileController.swift in Sources */,
 				ED5679F72016459100F52B89 /* Mics.swift in Sources */,
+				ED46DB922033A8D300F6A06E /* SearchMenuBar.swift in Sources */,
 				ED421DE82032322300D8DF1F /* InterestCell.swift in Sources */,
 				ED7E17B2201B5DF4006DF756 /* SignUpVerificationController.swift in Sources */,
 				ED5679FE20165E9900F52B89 /* Page.swift in Sources */,

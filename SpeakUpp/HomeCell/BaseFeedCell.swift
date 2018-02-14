@@ -15,6 +15,7 @@ class BaseFeedCell: BaseCell {
     let imageCellId = "menuCellId"
     let pollAnsweredCell = "pollAnsweredCellId"
     let pollAnsweredWithImageCell = "PollAnsweredWithImageCell"
+    let pollAudioCell = "pollAudioCell"
     var choiceCollectionTopConsraint: NSLayoutConstraint?
     var homeCell: HomeCell?
     
@@ -27,6 +28,11 @@ class BaseFeedCell: BaseCell {
             self.pollTypeLabel.text = unwrapedItem.pollType.formatPollType().uppercased()
             self.nameLabel.text = unwrapedItem.author?.username
             self.dateTimeLabel.text = "\(unwrapedItem.elapsedTime)\n\(unwrapedItem.expiryDate)"
+            
+            let numberFormatter = NumberFormatter()
+            numberFormatter.numberStyle = .decimal
+            let nsNumber = NSNumber(value: unwrapedItem.totalVotes)
+            self.allVotesCountLabel.text = "\(numberFormatter.string(from: nsNumber)!) Votes cast."
             //MARK- like configuration
             if unwrapedItem.hasLiked {
                 self.likeButton.setTitleColor(UIColor.hex(hex: Key.primaryHexCode), for: .normal)
@@ -204,6 +210,15 @@ class BaseFeedCell: BaseCell {
         return blurEffectView
     }()
     
+    let allVotesCountLabel: UILabel = {
+        let textView = ViewControllerHelper.baseLabel()
+        textView.textAlignment = .left
+        textView.text = "*******"
+        textView.font = UIFont.systemFont(ofSize: 16)
+        textView.textColor = UIColor.darkGray
+        return textView
+    }()
+    
     lazy var choiceCollectionView: UICollectionView = {
         let flow = UICollectionViewFlowLayout()
         flow.scrollDirection = .horizontal
@@ -231,6 +246,7 @@ class BaseFeedCell: BaseCell {
         self.addSubview(questionCoverView)
         self.addSubview(imageQuestionLabel)
         self.addSubview(choiceCollectionView)
+        self.addSubview(allVotesCountLabel)
         self.addSubview(dividerView)
         
         
@@ -279,12 +295,13 @@ class BaseFeedCell: BaseCell {
         self.choiceCollectionTopConsraint = choiceCollectionView.topAnchor.constraint(equalTo: questionImageView.bottomAnchor, constant: 8)
         self.choiceCollectionTopConsraint?.isActive = true
         self.choiceCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16).isActive = true
-        self.choiceCollectionView.bottomAnchor.constraint(equalTo: dividerView.topAnchor, constant: -8).isActive = true
+        self.choiceCollectionView.bottomAnchor.constraint(equalTo: allVotesCountLabel.topAnchor, constant: -8).isActive = true
         self.choiceCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16).isActive = true
         self.choiceCollectionView.register(PollNoImageChoiceCell.self, forCellWithReuseIdentifier: radioCellId)
         self.choiceCollectionView.register(PollImageChoiceCell.self, forCellWithReuseIdentifier: imageCellId)
         self.choiceCollectionView.register(PollAnsweredCell.self, forCellWithReuseIdentifier: pollAnsweredCell)
         self.choiceCollectionView.register(PollAnsweredWithImageCell.self, forCellWithReuseIdentifier: pollAnsweredWithImageCell)
+        self.choiceCollectionView.register(PollAudioChoiceCell.self, forCellWithReuseIdentifier: pollAudioCell)
         
         
         let container = UIStackView(arrangedSubviews: [likeButton,commentButton,shareButton])
@@ -298,6 +315,12 @@ class BaseFeedCell: BaseCell {
         container.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16).isActive = true
         container.heightAnchor.constraint(equalToConstant: 30).isActive = true
        
+        
+        self.allVotesCountLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16).isActive = true
+        self.allVotesCountLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16).isActive = true
+        self.allVotesCountLabel.bottomAnchor.constraint(equalTo: dividerView.topAnchor, constant: -8).isActive = true
+        self.allVotesCountLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
         self.dividerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0).isActive = true
         self.dividerView.bottomAnchor.constraint(equalTo: container.topAnchor, constant: -8).isActive = true
         self.dividerView.heightAnchor.constraint(equalToConstant: 1).isActive = true
@@ -341,8 +364,6 @@ extension BaseFeedCell: UICollectionViewDataSource,UICollectionViewDelegateFlowL
                 cell.feed = feed
                 return cell
             }
-          
-            
             
         } else if !feed.image.isEmpty {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: imageCellId, for: indexPath) as! PollImageChoiceCell
@@ -361,7 +382,19 @@ extension BaseFeedCell: UICollectionViewDataSource,UICollectionViewDelegateFlowL
             cell.rejectImageView.addGestureRecognizer(tappedRejectContent)
             
             return cell
-        } else {
+        } else if !feed.audio.isEmpty {
+            //MARK - audio cell section
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: pollAudioCell, for: indexPath) as! PollAudioChoiceCell
+            cell.feed = feed
+            
+            //cast vote for image ballot
+            let tappedContent = UITapGestureRecognizer(target: self, action: #selector(self.vote(_:)))
+            cell.optionImageView.isUserInteractionEnabled = true
+            cell.optionImageView.tag = indexPath.row
+            cell.optionImageView.addGestureRecognizer(tappedContent)
+            
+            return cell
+        }else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: radioCellId, for: indexPath) as! PollNoImageChoiceCell
             cell.feed = feed
             

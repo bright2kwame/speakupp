@@ -58,6 +58,7 @@ class PayVottingController: UIViewController {
     override func viewDidLoad() {
         self.view.backgroundColor = UIColor.white
         self.setUpNavigationBar()
+        //self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
         
         self.view.addSubview(descriptionTextLabel)
@@ -82,6 +83,10 @@ class PayVottingController: UIViewController {
         
         self.updateUI()
         
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        //self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }
     
     func updateUI()  {
@@ -119,6 +124,7 @@ class PayVottingController: UIViewController {
     }
     
     @objc func handleSave()  {
+        print("CLICKED")
         let number = self.numberOfVoteTextField.text!
         if number.isEmpty {
             ViewControllerHelper.showAlert(vc: self, message: "Provide quantity of vote to cast", type: .warning)

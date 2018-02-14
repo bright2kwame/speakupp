@@ -16,8 +16,8 @@ class ProfileCell: BaseCell {
     
     var profile: User? {
         didSet {
-            guard let unwrapedItem = profile else {return}
-            self.updateUI(user: unwrapedItem)
+            guard let _ = profile else {return}
+            self.updateUI(user: User.getUser()!)
             self.feed.append(contentsOf: UserWorkCloud.getAll())
             self.wordCloudCollectionView.reloadData()
         }

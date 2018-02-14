@@ -108,12 +108,15 @@ class HomeController: UIViewController {
     
     func updateUtil() {
         let url =  "\(ApiUrl().baseUrl)word_cloud_value/"
-        self.apiService.workCloud(url: url) { (words, sttus, message) in
-           
+        self.apiService.workCloud(url: url) { (words, status, message) in
+           print("CLOUDS \(status)")
         }
         self.apiService.saveCredentials { (status) in
-            
+            print("CREDENTAILS \(status)")
         }
+        self.apiService.getUser(completion: { (status) in
+           print("USER \(status)")
+        })
     }
     
     func setUpUniversalIndication()   {

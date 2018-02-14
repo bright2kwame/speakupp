@@ -18,11 +18,15 @@ class PollImageChoiceCell: BaseCell {
         didSet {
             guard let unwrapedItem = feed else {return}
             self.optionTextLabel.text = unwrapedItem.choiceText
-            self.voteCountTextLabel.attributedText = "\(unwrapedItem.numOfVotes)".formatAttributedWithImage(image: "VoteNumber")
+            let numberFormatter = NumberFormatter()
+            numberFormatter.numberStyle = .decimal
+            let nsNumber = NSNumber(value: unwrapedItem.numOfVotes)
+            self.voteCountTextLabel.attributedText = "\(numberFormatter.string(from: nsNumber)!)".formatAttributedWithImage(image: "VoteNumber")
             
             self.voteCountTextLabel.minimumScaleFactor = 0.2
             self.voteCountTextLabel.lineBreakMode = .byCharWrapping
             self.voteCountTextLabel.adjustsFontSizeToFitWidth = true
+            self.voteCountTextLabel.textAlignment = .left
             
             if  !(unwrapedItem.image.isEmpty) {
                 self.optionImageView.af_setImage(
@@ -69,7 +73,7 @@ class PollImageChoiceCell: BaseCell {
     
     let voteCountTextLabel: UILabel = {
         let textView = ViewControllerHelper.baseLabel()
-        textView.textAlignment = .center
+        textView.textAlignment = .left
         textView.text = ""
         textView.numberOfLines = 1
         textView.font = UIFont.systemFont(ofSize: 12)
@@ -98,10 +102,11 @@ class PollImageChoiceCell: BaseCell {
     
     let acceptImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        imageView.image = UIImage(named: "Accept")
+        imageView.contentMode = .center
+        imageView.image = UIImage(named: "VoteThumbsUp")
         imageView.layer.masksToBounds = true
-        imageView.layer.cornerRadius = 0
+        imageView.layer.cornerRadius = 4
+        imageView.backgroundColor = UIColor(red:0.23, green:0.60, blue:0.85, alpha:1.0)
         imageView.layer.borderWidth = 0
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -109,10 +114,11 @@ class PollImageChoiceCell: BaseCell {
     
     let rejectImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        imageView.image = UIImage(named: "Reject")
+        imageView.contentMode = .center
+        imageView.image = UIImage(named: "VoteThumbsDown")
         imageView.layer.masksToBounds = true
-        imageView.layer.cornerRadius = 0
+        imageView.layer.cornerRadius = 4
+        imageView.backgroundColor = UIColor.white
         imageView.layer.borderWidth = 0
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -145,16 +151,16 @@ class PollImageChoiceCell: BaseCell {
         self.coverView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0).isActive = true
         self.coverView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0).isActive = true
         
-        let width = frame.width - 100
+        let width = frame.width - 80
         self.voteCountTextLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        self.voteCountTextLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5).isActive = true
+        self.voteCountTextLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -2).isActive = true
         self.voteCountTextLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
         self.voteCountTextLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5).isActive = true
        
         self.optionTextLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        self.optionTextLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5).isActive = true
-        self.optionTextLabel.leadingAnchor.constraint(equalTo: voteCountTextLabel.trailingAnchor, constant: 5).isActive = true
-        self.optionTextLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5).isActive = true
+        self.optionTextLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -2).isActive = true
+        self.optionTextLabel.leadingAnchor.constraint(equalTo: voteCountTextLabel.trailingAnchor, constant: 2).isActive = true
+        self.optionTextLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -2).isActive = true
         
         let margin = frame.width/4
         self.voteStackView.topAnchor.constraint(equalTo: topAnchor,constant: margin).isActive = true

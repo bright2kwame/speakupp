@@ -41,7 +41,7 @@ class HomeMenuBar: BaseUIView {
         menuCollectionView.selectItem(at: selectedIndexPath, animated: true, scrollPosition: .centeredHorizontally)
         
         if let flowLayout = menuCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            flowLayout.scrollDirection = .vertical
+            flowLayout.scrollDirection = .horizontal
             flowLayout.minimumLineSpacing = 5
         }
         

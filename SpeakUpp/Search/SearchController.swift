@@ -13,13 +13,15 @@ class SearchController: UIViewController {
     let apiService = ApiService()
     let searchUrl = "\(ApiUrl().activeBaseUrl())new_search_poll/"
     let feedCellId = "feedCellId"
+    let brandCellId = "brandCellId"
     let baseRatingCellId = "baseRatingCell"
+    let eventCellId = "eventCellId"
     var nextPageUrl = ""
     var loadedPages = [String]()
-    var feed = [Poll]()
+    var feed = [Any]()
+    var searchType = SearchType.poll
     var indicator: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
 
-    
     lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.delegate = self
@@ -28,7 +30,7 @@ class SearchController: UIViewController {
         searchBar.showsCancelButton = false
         searchBar.showsBookmarkButton = false
         searchBar.searchBarStyle = UISearchBarStyle.default
-        searchBar.placeholder = "Search for poll"
+        searchBar.placeholder = "Search SpeakUPP"
         searchBar.tintColor = UIColor.hex(hex: Key.primaryHexCode)
         searchBar.showsSearchResultsButton = false
         searchBar.translatesAutoresizingMaskIntoConstraints = false
@@ -46,7 +48,12 @@ class SearchController: UIViewController {
         return collectionView
     }()
     
-    
+    lazy var menuBar: SearchMenuBar = {
+      let menubar = SearchMenuBar()
+      menubar.searchController = self
+      menubar.translatesAutoresizingMaskIntoConstraints = false
+      return menubar
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,6 +66,7 @@ class SearchController: UIViewController {
         self.view.backgroundColor = UIColor.groupTableViewBackground
         self.setUpNavigationBar()
         self.view.addSubview(searchBar)
+        self.view.addSubview(menuBar)
         self.view.addSubview(feedCollectionView)
         
         self.searchBar.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
@@ -66,12 +74,19 @@ class SearchController: UIViewController {
         self.searchBar.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: 0).isActive = true
         self.searchBar.heightAnchor.constraint(equalToConstant: 44).isActive = true
         
-        feedCollectionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: 0).isActive = true
-        feedCollectionView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 8).isActive = true
-        feedCollectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
-        feedCollectionView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 0).isActive = true
-        feedCollectionView.register(BaseFeedCell.self, forCellWithReuseIdentifier: feedCellId)
-        feedCollectionView.register(BaseRatingCell.self, forCellWithReuseIdentifier: baseRatingCellId)
+        self.menuBar.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 0).isActive = true
+        self.menuBar.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: 0).isActive = true
+        self.menuBar.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        self.menuBar.topAnchor.constraint(equalTo: self.searchBar.bottomAnchor, constant: 0).isActive = true
+        
+        self.feedCollectionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: 0).isActive = true
+        self.feedCollectionView.topAnchor.constraint(equalTo: self.menuBar.bottomAnchor, constant: 8).isActive = true
+        self.feedCollectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
+        self.feedCollectionView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 0).isActive = true
+        self.feedCollectionView.register(BaseFeedCell.self, forCellWithReuseIdentifier: feedCellId)
+        self.feedCollectionView.register(BaseRatingCell.self, forCellWithReuseIdentifier: baseRatingCellId)
+        self.feedCollectionView.register(BrandCell.self, forCellWithReuseIdentifier: brandCellId)
+        self.feedCollectionView.register(EventItemCell.self, forCellWithReuseIdentifier: eventCellId)
         
         
         if let flowLayout = feedCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
@@ -113,13 +128,36 @@ class SearchController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
-    func getData(url:String,text:String)  {
+    func setSearchType(type: SearchType) {
+        self.searchType = type
+        let searchText = self.searchBar.text!
+        if searchText.count < 3 {
+            print("COUNT LESS")
+            return
+        }
+        var url = self.searchUrl
+        if self.searchType == SearchType.brands {
+            url =  "\(ApiUrl().activeBaseUrl())search_brand/"
+        }
+        if self.searchType == SearchType.events {
+            url =  "\(ApiUrl().activeBaseUrl())search_event/"
+        }
+        if self.searchType == SearchType.people {
+            url =  "\(ApiUrl().activeBaseUrl())users/search_user/"
+        }
+        
+        self.feed.removeAll()
+        self.feedCollectionView.reloadData()
         self.startProgress()
-        self.apiService.searchPoll(url: url, serchText: text) { (polls, status, messsage, nextUrl) in
+        self.getData(url: url, text: searchText)
+    }
+    
+    func getData(url:String,text:String)  {
+        self.apiService.searchPoll(url: url, serchText: text,type: self.searchType) { (result, status, messsage, nextUrl) in
             self.stopProgress()
-            if let pollsIn = polls {
-                for poll in pollsIn {
-                    self.feed.append(poll)
+            if let resultIn = result {
+                for item in resultIn {
+                    self.feed.append(item)
                 }
                 self.feedCollectionView.reloadData()
             }
@@ -127,7 +165,7 @@ class SearchController: UIViewController {
     }
 }
 
-extension SearchController: UISearchBarDelegate{
+extension SearchController: UISearchBarDelegate {
     
     // called whenever text is changed.
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -154,86 +192,74 @@ extension SearchController: UICollectionViewDataSource,UICollectionViewDelegateF
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let feed = self.feed[indexPath.row]
-        let feedItem = feed
-        if feedItem.pollType == "rating"  {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: baseRatingCellId, for: indexPath) as! BaseRatingCell
-            cell.feed = feed
+        if feed is Poll {
+            let feedItem = feed as! Poll
+            if feedItem.pollType == "rating"  {
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: baseRatingCellId, for: indexPath) as! BaseRatingCell
+                cell.feed = feedItem
             
-            //trigger rating
-            let tappedRatingView = UITapGestureRecognizer(target: self, action: #selector(self.ratePoll(_:)))
-            cell.ratingView.isUserInteractionEnabled = true
-            cell.ratingView.tag = indexPath.row
-            cell.ratingView.addGestureRecognizer(tappedRatingView)
+                //trigger rating
+                let tappedRatingView = UITapGestureRecognizer(target: self, action: #selector(self.ratePoll(_:)))
+                cell.ratingView.isUserInteractionEnabled = true
+                cell.ratingView.tag = indexPath.row
+                cell.ratingView.addGestureRecognizer(tappedRatingView)
             
             
+                //trigger imageView
+                let tappedImageView = UITapGestureRecognizer(target: self, action: #selector(self.previewImage(_:)))
+                cell.questionImageView.isUserInteractionEnabled = true
+                cell.questionImageView.tag = indexPath.row
+                cell.questionImageView.addGestureRecognizer(tappedImageView)
+            
+                cell.shareButton.tag = indexPath.row
+                cell.shareButton.addTarget(self, action: #selector(self.share(_:)), for: .touchUpInside)
+            
+                return cell
+            }
+            
+            if !feedItem.eventTitle.isEmpty {
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: eventCellId, for: indexPath) as! EventItemCell
+                cell.feed = feedItem
+                return cell
+            }
+            
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: feedCellId, for: indexPath) as! BaseFeedCell
+            cell.feed = feedItem
+       
             //trigger imageView
             let tappedImageView = UITapGestureRecognizer(target: self, action: #selector(self.previewImage(_:)))
             cell.questionImageView.isUserInteractionEnabled = true
             cell.questionImageView.tag = indexPath.row
             cell.questionImageView.addGestureRecognizer(tappedImageView)
-            
+        
             cell.shareButton.tag = indexPath.row
             cell.shareButton.addTarget(self, action: #selector(self.share(_:)), for: .touchUpInside)
-            
+        
+            return cell
+        }  else {
+            let feedItem = feed as! Brand
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: brandCellId, for: indexPath) as! BrandCell
+            cell.feed = feedItem
+            cell.tag = indexPath.row
+            //cell.followingButton.addTarget(self, action: #selector(followAction), for: .touchUpInside)
             return cell
         }
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: feedCellId, for: indexPath) as! BaseFeedCell
-        cell.feed = feed
-       
-        //trigger imageView
-        let tappedImageView = UITapGestureRecognizer(target: self, action: #selector(self.previewImage(_:)))
-        cell.questionImageView.isUserInteractionEnabled = true
-        cell.questionImageView.tag = indexPath.row
-        cell.questionImageView.addGestureRecognizer(tappedImageView)
-        
-        cell.shareButton.tag = indexPath.row
-        cell.shareButton.addTarget(self, action: #selector(self.share(_:)), for: .touchUpInside)
-        
-        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let feed = self.feed[indexPath.row]
-        let contentInset = collectionView.contentInset.left * 2
-        let itemWidth = collectionView.frame.width
-        let bottomSectionHeight = 62.0
-        let profileHeight = 82.0
-        let choiceHeight = 166.0
-        let feedItem = feed
-        if feedItem.pollType == "rating"  {
-            var starAndLabelHeight = 100.0
-            let questionHeight = 116.0
-            let imageHeight = 266.0
-            //for unrated poll adjust the height
-            if !((feedItem.hasVoted)){
-                starAndLabelHeight = 30.0
-            }
-            let totalHeight = CGFloat(profileHeight + imageHeight + bottomSectionHeight + questionHeight + starAndLabelHeight)
-            return CGSize(width: itemWidth - contentInset, height: totalHeight)
-        }
-        
-        //image question
-        if !(feedItem.image.isEmpty)  {
-            let imageHeight = 266.0
-            let totalHeight = CGFloat(profileHeight + imageHeight + choiceHeight + bottomSectionHeight)
-            return CGSize(width: itemWidth - contentInset, height: totalHeight)
-        }
-        //no image question
-        let questionHeight = 116.0
-        let totalHeight = CGFloat(profileHeight + questionHeight + choiceHeight + bottomSectionHeight)
-        return CGSize(width: itemWidth - contentInset, height: totalHeight)
-        
+        return CellHelper.configureCellHeight(collectionView: collectionView, feed: feed)
     }
     
     @objc func share(_ sender: UIButton) {
-        let poll = self.feed[sender.tag]
+        let poll = self.feed[sender.tag] as! Poll
         ViewControllerHelper.presentSharer(targetVC: self, message: poll.question)
     }
     
     
     @objc func ratePoll(_ sender: UITapGestureRecognizer) {
         let ratingView = sender.view as! CosmosView
-        let poll = self.feed[ratingView.tag]
+        let poll = self.feed[ratingView.tag] as! Poll
         ratingView.didFinishTouchingCosmos = { rating in
             let rate = Int(rating)
             self.ratePoll(pollId: poll.id, ratingValue: "\(rate)")
@@ -242,7 +268,8 @@ extension SearchController: UICollectionViewDataSource,UICollectionViewDelegateF
     
     //MARK - rate a poll
     func ratePoll(pollId:String,ratingValue:String)  {
-        for (index, pollIntended) in self.feed.enumerated() {
+        for (index, poll) in self.feed.enumerated() {
+                let pollIntended = poll as! Poll
                 if (pollIntended.id == pollId) {
                     pollIntended.hasVoted = true
                     pollIntended.totalRatingVotes = pollIntended.totalRatingVotes + 1
@@ -259,7 +286,7 @@ extension SearchController: UICollectionViewDataSource,UICollectionViewDelegateF
     
     @objc func previewImage(_ sender: UITapGestureRecognizer) {
         let view = sender.view as! UIImageView
-        let poll = self.feed[view.tag]
+        let poll = self.feed[view.tag] as! Poll
         ViewControllerHelper.presentSingleImage(targetVC: self, url: poll.image)
     }
     

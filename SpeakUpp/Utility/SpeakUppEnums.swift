@@ -16,4 +16,11 @@ enum MessageType {
     case info
 }
 
+enum SearchType {
+    case poll
+    case people
+    case brands
+    case events
+}
+
 
