@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B1C51AA43C69AA5DDD497D4 /* libPods-OneSignalNotificationServiceExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9523630B788BAD90C98AFB6F /* libPods-OneSignalNotificationServiceExtension.a */; };
 		61034065158F824F00FDD139 /* Pods_SpeakUpp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDC8A705F567908CBFC1B8E5 /* Pods_SpeakUpp.framework */; };
 		ED158FBA2020B216000E43BB /* ResetPinController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED158FB92020B216000E43BB /* ResetPinController.swift */; };
 		ED158FBC2020BAA0000E43BB /* LogoOutController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED158FBB2020BAA0000E43BB /* LogoOutController.swift */; };
@@ -31,6 +32,9 @@
 		ED46DB922033A8D300F6A06E /* SearchMenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED46DB912033A8D300F6A06E /* SearchMenuBar.swift */; };
 		ED46DB942034161000F6A06E /* CellHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED46DB932034161000F6A06E /* CellHelper.swift */; };
 		ED46DB9620345E8300F6A06E /* PollAudioChoiceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED46DB9520345E8300F6A06E /* PollAudioChoiceCell.swift */; };
+		ED46DB982034B32600F6A06E /* PeopleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED46DB972034B32600F6A06E /* PeopleCell.swift */; };
+		ED46DB9A203596FE00F6A06E /* BaseTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED46DB99203596FE00F6A06E /* BaseTableCell.swift */; };
+		ED46DB9C2035A96000F6A06E /* GetStartedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED46DB9B2035A96000F6A06E /* GetStartedController.swift */; };
 		ED5679E12016119700F52B89 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5679E02016119700F52B89 /* AppDelegate.swift */; };
 		ED5679E32016119700F52B89 /* OnboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5679E22016119700F52B89 /* OnboardViewController.swift */; };
 		ED5679E82016119700F52B89 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED5679E72016119700F52B89 /* Assets.xcassets */; };
@@ -72,6 +76,10 @@
 		ED7E9744202DD32C00B35E0F /* PollImageChoiceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7E9743202DD32C00B35E0F /* PollImageChoiceCell.swift */; };
 		ED7E9746202DD9EF00B35E0F /* PollNoImageChoiceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7E9745202DD9EF00B35E0F /* PollNoImageChoiceCell.swift */; };
 		ED7E9748202E108600B35E0F /* TrendingItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7E9747202E108600B35E0F /* TrendingItemCell.swift */; };
+		ED8C2351203626E50048A7E8 /* InviteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8C2350203626E50048A7E8 /* InviteCell.swift */; };
+		ED8C23552036E1E90048A7E8 /* PollDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8C23542036E1E90048A7E8 /* PollDetailController.swift */; };
+		ED8C23572036E4060048A7E8 /* PollCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8C23562036E4060048A7E8 /* PollCommentCell.swift */; };
+		ED8C23592036E91D0048A7E8 /* PollComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8C23582036E91D0048A7E8 /* PollComment.swift */; };
 		EDA5E34D202A213B00C0F61B /* Poll.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA5E34C202A213B00C0F61B /* Poll.swift */; };
 		EDA5E34F202A26C600C0F61B /* PollCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA5E34E202A26C600C0F61B /* PollCategory.swift */; };
 		EDA5E351202A27FE00C0F61B /* PollChoice.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA5E350202A27FE00C0F61B /* PollChoice.swift */; };
@@ -80,11 +88,47 @@
 		EDDE09482028F44E002DF2B4 /* ApiUrl.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDE09472028F44E002DF2B4 /* ApiUrl.swift */; };
 		EDDE094A2028F66F002DF2B4 /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDE09492028F66F002DF2B4 /* ApiService.swift */; };
 		EDDE094C202902BA002DF2B4 /* ApiCallStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDE094B202902BA002DF2B4 /* ApiCallStatus.swift */; };
+		EDEA35EB203AD92400330608 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDEA35EA203AD92400330608 /* NotificationService.swift */; };
+		EDEA35EF203AD92400330608 /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = EDEA35E8203AD92400330608 /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		EDED9B512037450100B072D9 /* SettingPageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDED9B502037450100B072D9 /* SettingPageController.swift */; };
+		EDED9B532037583000B072D9 /* BaseScrollNoImageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDED9B522037583000B072D9 /* BaseScrollNoImageController.swift */; };
+		EDED9B5520376A2300B072D9 /* FaqController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDED9B5420376A2300B072D9 /* FaqController.swift */; };
+		EDED9B5720387DF700B072D9 /* PollsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDED9B5620387DF700B072D9 /* PollsController.swift */; };
+		EDED9B592038AD6F00B072D9 /* ScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDED9B582038AD6F00B072D9 /* ScannerViewController.swift */; };
+		EDED9B5B2038C4C000B072D9 /* EventTicketController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDED9B5A2038C4C000B072D9 /* EventTicketController.swift */; };
+		EDED9B5D2038C50100B072D9 /* EventTicket.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDED9B5C2038C50100B072D9 /* EventTicket.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		EDEA35ED203AD92400330608 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ED5679D52016119700F52B89 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EDEA35E7203AD92400330608;
+			remoteInfo = OneSignalNotificationServiceExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		EDEA35F3203AD92400330608 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				EDEA35EF203AD92400330608 /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		88A84A43B959EA9276DDF07C /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
 		90354B2B583449A03445F929 /* Pods-SpeakUpp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpeakUpp.release.xcconfig"; path = "Pods/Target Support Files/Pods-SpeakUpp/Pods-SpeakUpp.release.xcconfig"; sourceTree = "<group>"; };
+		9523630B788BAD90C98AFB6F /* libPods-OneSignalNotificationServiceExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OneSignalNotificationServiceExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9728968BE78037722D55C171 /* Pods-SpeakUpp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpeakUpp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SpeakUpp/Pods-SpeakUpp.debug.xcconfig"; sourceTree = "<group>"; };
+		D823EF2A956CC1347C09DE9F /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		ED158FB92020B216000E43BB /* ResetPinController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPinController.swift; sourceTree = "<group>"; };
 		ED158FBB2020BAA0000E43BB /* LogoOutController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoOutController.swift; sourceTree = "<group>"; };
 		ED158FBE2020E626000E43BB /* SettingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingController.swift; sourceTree = "<group>"; };
@@ -108,6 +152,9 @@
 		ED46DB912033A8D300F6A06E /* SearchMenuBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMenuBar.swift; sourceTree = "<group>"; };
 		ED46DB932034161000F6A06E /* CellHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellHelper.swift; sourceTree = "<group>"; };
 		ED46DB9520345E8300F6A06E /* PollAudioChoiceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollAudioChoiceCell.swift; sourceTree = "<group>"; };
+		ED46DB972034B32600F6A06E /* PeopleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleCell.swift; sourceTree = "<group>"; };
+		ED46DB99203596FE00F6A06E /* BaseTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableCell.swift; sourceTree = "<group>"; };
+		ED46DB9B2035A96000F6A06E /* GetStartedController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetStartedController.swift; sourceTree = "<group>"; };
 		ED5679DD2016119700F52B89 /* SpeakUpp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpeakUpp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED5679E02016119700F52B89 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ED5679E22016119700F52B89 /* OnboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardViewController.swift; sourceTree = "<group>"; };
@@ -152,6 +199,10 @@
 		ED7E9743202DD32C00B35E0F /* PollImageChoiceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollImageChoiceCell.swift; sourceTree = "<group>"; };
 		ED7E9745202DD9EF00B35E0F /* PollNoImageChoiceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollNoImageChoiceCell.swift; sourceTree = "<group>"; };
 		ED7E9747202E108600B35E0F /* TrendingItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendingItemCell.swift; sourceTree = "<group>"; };
+		ED8C2350203626E50048A7E8 /* InviteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteCell.swift; sourceTree = "<group>"; };
+		ED8C23542036E1E90048A7E8 /* PollDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollDetailController.swift; sourceTree = "<group>"; };
+		ED8C23562036E4060048A7E8 /* PollCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollCommentCell.swift; sourceTree = "<group>"; };
+		ED8C23582036E91D0048A7E8 /* PollComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollComment.swift; sourceTree = "<group>"; };
 		EDA5E34C202A213B00C0F61B /* Poll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Poll.swift; sourceTree = "<group>"; };
 		EDA5E34E202A26C600C0F61B /* PollCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollCategory.swift; sourceTree = "<group>"; };
 		EDA5E350202A27FE00C0F61B /* PollChoice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollChoice.swift; sourceTree = "<group>"; };
@@ -160,6 +211,18 @@
 		EDDE09472028F44E002DF2B4 /* ApiUrl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiUrl.swift; sourceTree = "<group>"; };
 		EDDE09492028F66F002DF2B4 /* ApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiService.swift; sourceTree = "<group>"; };
 		EDDE094B202902BA002DF2B4 /* ApiCallStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiCallStatus.swift; sourceTree = "<group>"; };
+		EDEA35E8203AD92400330608 /* OneSignalNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OneSignalNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		EDEA35EA203AD92400330608 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		EDEA35EC203AD92400330608 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EDEA35F4203ADAA000330608 /* OneSignalNotificationServiceExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OneSignalNotificationServiceExtension.entitlements; sourceTree = "<group>"; };
+		EDEA35F5203ADB1800330608 /* SpeakUpp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SpeakUpp.entitlements; sourceTree = "<group>"; };
+		EDED9B502037450100B072D9 /* SettingPageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingPageController.swift; sourceTree = "<group>"; };
+		EDED9B522037583000B072D9 /* BaseScrollNoImageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseScrollNoImageController.swift; sourceTree = "<group>"; };
+		EDED9B5420376A2300B072D9 /* FaqController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaqController.swift; sourceTree = "<group>"; };
+		EDED9B5620387DF700B072D9 /* PollsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollsController.swift; sourceTree = "<group>"; };
+		EDED9B582038AD6F00B072D9 /* ScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerViewController.swift; sourceTree = "<group>"; };
+		EDED9B5A2038C4C000B072D9 /* EventTicketController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTicketController.swift; sourceTree = "<group>"; };
+		EDED9B5C2038C50100B072D9 /* EventTicket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTicket.swift; sourceTree = "<group>"; };
 		FDC8A705F567908CBFC1B8E5 /* Pods_SpeakUpp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SpeakUpp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -172,6 +235,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EDEA35E5203AD92400330608 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0B1C51AA43C69AA5DDD497D4 /* libPods-OneSignalNotificationServiceExtension.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -180,6 +251,8 @@
 			children = (
 				9728968BE78037722D55C171 /* Pods-SpeakUpp.debug.xcconfig */,
 				90354B2B583449A03445F929 /* Pods-SpeakUpp.release.xcconfig */,
+				D823EF2A956CC1347C09DE9F /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */,
+				88A84A43B959EA9276DDF07C /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -188,6 +261,7 @@
 			isa = PBXGroup;
 			children = (
 				FDC8A705F567908CBFC1B8E5 /* Pods_SpeakUpp.framework */,
+				9523630B788BAD90C98AFB6F /* libPods-OneSignalNotificationServiceExtension.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -200,6 +274,8 @@
 				ED421DDF203211B300D8DF1F /* BrandsController.swift */,
 				ED421DE520322F9D00D8DF1F /* InterestController.swift */,
 				ED46DB862032D95C00F6A06E /* EditProfileController.swift */,
+				EDED9B502037450100B072D9 /* SettingPageController.swift */,
+				EDED9B5420376A2300B072D9 /* FaqController.swift */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -216,6 +292,7 @@
 			isa = PBXGroup;
 			children = (
 				ED158FCB20211999000E43BB /* InviteController.swift */,
+				ED8C2350203626E50048A7E8 /* InviteCell.swift */,
 			);
 			path = Invite;
 			sourceTree = "<group>";
@@ -224,6 +301,10 @@
 			isa = PBXGroup;
 			children = (
 				ED421DD4202E55C700D8DF1F /* EventDetailController.swift */,
+				ED8C23542036E1E90048A7E8 /* PollDetailController.swift */,
+				EDED9B5620387DF700B072D9 /* PollsController.swift */,
+				EDED9B582038AD6F00B072D9 /* ScannerViewController.swift */,
+				EDED9B5A2038C4C000B072D9 /* EventTicketController.swift */,
 			);
 			path = Details;
 			sourceTree = "<group>";
@@ -234,6 +315,8 @@
 				ED421DDD2032058700D8DF1F /* WordCloudCell.swift */,
 				ED421DE12032138300D8DF1F /* BrandCell.swift */,
 				ED421DE72032322300D8DF1F /* InterestCell.swift */,
+				ED46DB972034B32600F6A06E /* PeopleCell.swift */,
+				ED8C23562036E4060048A7E8 /* PollCommentCell.swift */,
 			);
 			path = ProfileCell;
 			sourceTree = "<group>";
@@ -251,6 +334,7 @@
 			isa = PBXGroup;
 			children = (
 				ED5679DF2016119700F52B89 /* SpeakUpp */,
+				EDEA35E9203AD92400330608 /* OneSignalNotificationServiceExtension */,
 				ED5679DE2016119700F52B89 /* Products */,
 				877E572D4106D1A53A3AAA1B /* Pods */,
 				D92D659581D38B2DF7E606AD /* Frameworks */,
@@ -261,6 +345,7 @@
 			isa = PBXGroup;
 			children = (
 				ED5679DD2016119700F52B89 /* SpeakUpp.app */,
+				EDEA35E8203AD92400330608 /* OneSignalNotificationServiceExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -268,6 +353,7 @@
 		ED5679DF2016119700F52B89 /* SpeakUpp */ = {
 			isa = PBXGroup;
 			children = (
+				EDEA35F5203ADB1800330608 /* SpeakUpp.entitlements */,
 				ED46DB8A203309AF00F6A06E /* Payment */,
 				ED421DDC2032056800D8DF1F /* ProfileCell */,
 				ED421DD3202E4B9600D8DF1F /* Details */,
@@ -306,6 +392,8 @@
 				ED421DDA203200C700D8DF1F /* UserWorkCloud.swift */,
 				ED421DE3203214C200D8DF1F /* Brand.swift */,
 				ED46DB882032F34600F6A06E /* AWSCredentials.swift */,
+				ED8C23582036E91D0048A7E8 /* PollComment.swift */,
+				EDED9B5C2038C50100B072D9 /* EventTicket.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -337,6 +425,7 @@
 				ED7E17B1201B5DF4006DF756 /* SignUpVerificationController.swift */,
 				EDA8D834201CCA96004F6A8C /* VerificationCodeController.swift */,
 				ED158FB92020B216000E43BB /* ResetPinController.swift */,
+				ED46DB9B2035A96000F6A06E /* GetStartedController.swift */,
 			);
 			path = SetUp;
 			sourceTree = "<group>";
@@ -346,6 +435,7 @@
 			children = (
 				ED567A01201665A700F52B89 /* BaseCell.swift */,
 				ED567A04201665D200F52B89 /* SwipingPageCell.swift */,
+				ED46DB99203596FE00F6A06E /* BaseTableCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -392,6 +482,7 @@
 			isa = PBXGroup;
 			children = (
 				ED7E17AA2019D4FB006DF756 /* BaseScrollViewController.swift */,
+				EDED9B522037583000B072D9 /* BaseScrollNoImageController.swift */,
 			);
 			path = HelperController;
 			sourceTree = "<group>";
@@ -427,6 +518,16 @@
 			path = Api;
 			sourceTree = "<group>";
 		};
+		EDEA35E9203AD92400330608 /* OneSignalNotificationServiceExtension */ = {
+			isa = PBXGroup;
+			children = (
+				EDEA35F4203ADAA000330608 /* OneSignalNotificationServiceExtension.entitlements */,
+				EDEA35EA203AD92400330608 /* NotificationService.swift */,
+				EDEA35EC203AD92400330608 /* Info.plist */,
+			);
+			path = OneSignalNotificationServiceExtension;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -440,15 +541,36 @@
 				ED5679DB2016119700F52B89 /* Resources */,
 				0B2F665411E18B86379F40F4 /* [CP] Embed Pods Frameworks */,
 				B40E2C9DB66723CEFFAB414F /* [CP] Copy Pods Resources */,
+				EDEA35F3203AD92400330608 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				EDEA35EE203AD92400330608 /* PBXTargetDependency */,
 			);
 			name = SpeakUpp;
 			productName = SpeakUpp;
 			productReference = ED5679DD2016119700F52B89 /* SpeakUpp.app */;
 			productType = "com.apple.product-type.application";
+		};
+		EDEA35E7203AD92400330608 /* OneSignalNotificationServiceExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EDEA35F0203AD92400330608 /* Build configuration list for PBXNativeTarget "OneSignalNotificationServiceExtension" */;
+			buildPhases = (
+				A6329DBAB974F2AE5B16EBA0 /* [CP] Check Pods Manifest.lock */,
+				EDEA35E4203AD92400330608 /* Sources */,
+				EDEA35E5203AD92400330608 /* Frameworks */,
+				EDEA35E6203AD92400330608 /* Resources */,
+				8F8D8100B632081D4283CA85 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OneSignalNotificationServiceExtension;
+			productName = OneSignalNotificationServiceExtension;
+			productReference = EDEA35E8203AD92400330608 /* OneSignalNotificationServiceExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -463,6 +585,23 @@
 					ED5679DC2016119700F52B89 = {
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
+					};
+					EDEA35E7203AD92400330608 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -480,6 +619,7 @@
 			projectRoot = "";
 			targets = (
 				ED5679DC2016119700F52B89 /* SpeakUpp */,
+				EDEA35E7203AD92400330608 /* OneSignalNotificationServiceExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -495,6 +635,13 @@
 				ED7E17A220188EEE006DF756 /* RobotoRegular.ttf in Resources */,
 				ED5679EB2016119700F52B89 /* LaunchScreen.storyboard in Resources */,
 				ED5679E82016119700F52B89 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EDEA35E6203AD92400330608 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -517,6 +664,36 @@
 			showEnvVarsInLog = 0;
 		};
 		26D9C0D62446309AFC85B6F3 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		8F8D8100B632081D4283CA85 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A6329DBAB974F2AE5B16EBA0 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -554,6 +731,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ED46DB8C20330A1200F6A06E /* PayVottingController.swift in Sources */,
+				ED46DB982034B32600F6A06E /* PeopleCell.swift in Sources */,
 				ED567A05201665D200F52B89 /* SwipingPageCell.swift in Sources */,
 				ED421DE4203214C200D8DF1F /* Brand.swift in Sources */,
 				ED257C77201CF95A00F1E5F3 /* LeftDrawerController.swift in Sources */,
@@ -563,24 +741,32 @@
 				ED7E17992017DB88006DF756 /* LoginController.swift in Sources */,
 				ED421DD7202F33CB00D8DF1F /* PollAnsweredCell.swift in Sources */,
 				ED6C6E4B201F74B900C15586 /* HomeMenuBarCell.swift in Sources */,
+				ED8C23552036E1E90048A7E8 /* PollDetailController.swift in Sources */,
 				ED421DD5202E55C700D8DF1F /* EventDetailController.swift in Sources */,
 				ED421DD9202F8B5F00D8DF1F /* PollAnsweredWithImageCell.swift in Sources */,
 				EDA8D838201CDCB4004F6A8C /* HomeController.swift in Sources */,
 				ED7E17B02019FECB006DF756 /* CheckBox.swift in Sources */,
 				ED6C6E4F201F967D00C15586 /* HomeCell.swift in Sources */,
+				EDED9B532037583000B072D9 /* BaseScrollNoImageController.swift in Sources */,
+				EDED9B5D2038C50100B072D9 /* EventTicket.swift in Sources */,
 				EDA5E34F202A26C600C0F61B /* PollCategory.swift in Sources */,
+				ED8C23592036E91D0048A7E8 /* PollComment.swift in Sources */,
 				ED7E17AB2019D4FB006DF756 /* BaseScrollViewController.swift in Sources */,
 				ED6C6E47201F732600C15586 /* HomeMenuBar.swift in Sources */,
 				ED7E17A920192C61006DF756 /* SpeakUppEnums.swift in Sources */,
 				ED5679E32016119700F52B89 /* OnboardViewController.swift in Sources */,
 				ED6C6E5B202072AF00C15586 /* EventCell.swift in Sources */,
 				EDA8D835201CCA96004F6A8C /* VerificationCodeController.swift in Sources */,
+				EDED9B5720387DF700B072D9 /* PollsController.swift in Sources */,
 				ED5679F9201645F300F52B89 /* Key.swift in Sources */,
+				ED8C2351203626E50048A7E8 /* InviteCell.swift in Sources */,
+				ED46DB9C2035A96000F6A06E /* GetStartedController.swift in Sources */,
 				EDA5E34D202A213B00C0F61B /* Poll.swift in Sources */,
 				ED421DE620322F9D00D8DF1F /* InterestController.swift in Sources */,
 				ED46DB9620345E8300F6A06E /* PollAudioChoiceCell.swift in Sources */,
 				ED6C6E5D2020734E00C15586 /* EventItemCell.swift in Sources */,
 				ED7E9746202DD9EF00B35E0F /* PollNoImageChoiceCell.swift in Sources */,
+				EDED9B5B2038C4C000B072D9 /* EventTicketController.swift in Sources */,
 				ED567A0020165EE300F52B89 /* WelcomeController.swift in Sources */,
 				ED6C6E5F2020740200C15586 /* ProfileCell.swift in Sources */,
 				ED421DDB203200C700D8DF1F /* UserWorkCloud.swift in Sources */,
@@ -593,6 +779,9 @@
 				ED7E17AE2019DB1C006DF756 /* SignUpController.swift in Sources */,
 				ED421DE0203211B300D8DF1F /* BrandsController.swift in Sources */,
 				ED567A02201665A700F52B89 /* BaseCell.swift in Sources */,
+				EDED9B512037450100B072D9 /* SettingPageController.swift in Sources */,
+				ED8C23572036E4060048A7E8 /* PollCommentCell.swift in Sources */,
+				EDED9B592038AD6F00B072D9 /* ScannerViewController.swift in Sources */,
 				ED158FBC2020BAA0000E43BB /* LogoOutController.swift in Sources */,
 				ED7E17A7201921A1006DF756 /* SCLExtensions.swift in Sources */,
 				ED6C6E51201FA35D00C15586 /* PollAuthor.swift in Sources */,
@@ -615,14 +804,32 @@
 				EDDE094A2028F66F002DF2B4 /* ApiService.swift in Sources */,
 				EDDE094C202902BA002DF2B4 /* ApiCallStatus.swift in Sources */,
 				ED421DDE2032058700D8DF1F /* WordCloudCell.swift in Sources */,
+				EDED9B5520376A2300B072D9 /* FaqController.swift in Sources */,
 				ED158FCC20211999000E43BB /* InviteController.swift in Sources */,
 				EDA5E351202A27FE00C0F61B /* PollChoice.swift in Sources */,
+				ED46DB9A203596FE00F6A06E /* BaseTableCell.swift in Sources */,
 				ED6C6E49201F739100C15586 /* BaseUIView.swift in Sources */,
 				ED6C6E55201FD8B200C15586 /* BaseFeedCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EDEA35E4203AD92400330608 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EDEA35EB203AD92400330608 /* NotificationService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		EDEA35EE203AD92400330608 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EDEA35E7203AD92400330608 /* OneSignalNotificationServiceExtension */;
+			targetProxy = EDEA35ED203AD92400330608 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		ED5679E42016119700F52B89 /* Main.storyboard */ = {
@@ -755,13 +962,19 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9728968BE78037722D55C171 /* Pods-SpeakUpp.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SpeakUpp/SpeakUpp.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 3YB9QYP2E3;
+				DEVELOPMENT_TEAM = QFPRFS68B4;
 				INFOPLIST_FILE = SpeakUpp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.contus.mobile.SpeakUpp;
+				PRODUCT_BUNDLE_IDENTIFIER = mobile.ios.speakupp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -771,13 +984,53 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 90354B2B583449A03445F929 /* Pods-SpeakUpp.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SpeakUpp/SpeakUpp.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 3YB9QYP2E3;
+				DEVELOPMENT_TEAM = QFPRFS68B4;
 				INFOPLIST_FILE = SpeakUpp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.contus.mobile.SpeakUpp;
+				PRODUCT_BUNDLE_IDENTIFIER = mobile.ios.speakupp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		EDEA35F1203AD92400330608 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D823EF2A956CC1347C09DE9F /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = QFPRFS68B4;
+				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = mobile.ios.speakupp.OneSignalNotificationServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		EDEA35F2203AD92400330608 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 88A84A43B959EA9276DDF07C /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = QFPRFS68B4;
+				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = mobile.ios.speakupp.OneSignalNotificationServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -800,6 +1053,15 @@
 			buildConfigurations = (
 				ED5679F02016119700F52B89 /* Debug */,
 				ED5679F12016119700F52B89 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EDEA35F0203AD92400330608 /* Build configuration list for PBXNativeTarget "OneSignalNotificationServiceExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EDEA35F1203AD92400330608 /* Debug */,
+				EDEA35F2203AD92400330608 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

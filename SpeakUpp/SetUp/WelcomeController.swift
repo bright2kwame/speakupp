@@ -79,5 +79,9 @@ class WelcomeController: UIViewController {
         let vc = OnboardViewController()
         self.present(vc, animated: true, completion: nil)
     }
+    
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+    }
 }
 

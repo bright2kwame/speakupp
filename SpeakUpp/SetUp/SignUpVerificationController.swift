@@ -58,7 +58,6 @@ class SignUpVerificationController: UIViewController {
         return textView
     }()
     
-    
     let nextButton: UIButton = {
         let button = ViewControllerHelper.baseButton()
         let color = UIColor.white

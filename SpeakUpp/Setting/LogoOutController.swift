@@ -107,8 +107,8 @@ class LogoOutController: UIViewController {
     
     @objc private func logoutAction() {
         User.delete()
-        
-        let vc = LoginController()
+        //go back to welcome screen
+        let vc = WelcomeController()
         self.present(vc, animated: true, completion: nil)
         
     }

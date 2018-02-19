@@ -11,10 +11,11 @@ import RealmSwift
 import UserNotifications
 import IQKeyboardManagerSwift
 import ZKDrawerController
+import OneSignal
 
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate,OSSubscriptionObserver {
 
     var window: UIWindow?
 
@@ -41,12 +42,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //realm migration
         let config = Realm.Configuration(
-            schemaVersion: 5,
+            schemaVersion: 2,
             migrationBlock: { migration, oldSchemaVersion in
                 if (oldSchemaVersion < 1) {
                     
                 }
         })
+        
+        //MARK:-  one signal section
+        OneSignal.add(self as OSSubscriptionObserver)
+        self.configureOneSignal(launchOptions: launchOptions)
         
         Realm.Configuration.defaultConfiguration = config
         IQKeyboardManager.sharedManager().enable = true
@@ -66,6 +71,64 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         return true
+    }
+    
+    // Add this new method
+    func onOSSubscriptionChanged(_ stateChanges: OSSubscriptionStateChanges!) {
+        if !stateChanges.from.subscribed && stateChanges.to.subscribed {
+            print("Subscribed for OneSignal push notifications!")
+            // get player ID
+            let _ = stateChanges.to.userId
+            let user = User.getUser()
+            if user == nil {
+                return
+            }
+            ApiService().updateUserToken(completion: { (status) in
+                
+            })
+        }
+    }
+    
+    func configureOneSignal(launchOptions: [UIApplicationLaunchOptionsKey: Any]?) {
+        //MARK:- NOTIFICATION SECTION
+        let notificationReceivedBlock: OSHandleNotificationReceivedBlock = { notification in
+            print("Received Notification: \(notification!.payload.notificationID)")
+        }
+        
+        let notificationOpenedBlock: OSHandleNotificationActionBlock = { result in
+            // This block gets called when the user reacts to a notification received
+            let payload: OSNotificationPayload = result!.notification.payload
+            var fullMessage = payload.body
+            print("Message = \(fullMessage)")
+            
+            if payload.additionalData != nil {
+                if payload.title != nil {
+                    let messageTitle = payload.title
+                    print("Message Title = \(messageTitle!)")
+                }
+                
+                let additionalData = payload.additionalData
+                if additionalData?["actionSelected"] != nil {
+                    fullMessage = fullMessage! + "\nPressed ButtonID: \(additionalData!["actionSelected"])"
+                }
+            }
+        }
+        
+        let onesignalInitSettings = [kOSSettingsKeyAutoPrompt: true,
+                                     kOSSettingsKeyInAppLaunchURL: true]
+        
+        OneSignal.initWithLaunchOptions(launchOptions,
+                                        appId: Key.oneSignalKey,
+                                        handleNotificationReceived: notificationReceivedBlock,
+                                        handleNotificationAction: notificationOpenedBlock,
+                                        settings: onesignalInitSettings)
+        OneSignal.inFocusDisplayType = OSNotificationDisplayType.notification
+        
+        // Recommend moving the below line to prompt for push after informing the user about
+        OneSignal.promptForPushNotifications(userResponse: { accepted in
+            print("User accepted notifications: \(accepted)")
+        })
+        //END
     }
     
     func applicationWillResignActive(_ application: UIApplication) {

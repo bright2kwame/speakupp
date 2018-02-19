@@ -77,10 +77,10 @@ class TrendingCell: BaseCell {
     func manageData(polls:[Poll]?, status:ApiCallStatus, message:String?, nextUrl:String?) {
          self.homeController?.stopProgress()
         if let pollsIn = polls {
+            self.feed.removeAll()
+            self.feed.append("HEADER")
+            self.feedCollectionView.reloadData()
             for poll in pollsIn {
-                self.feed.removeAll()
-                self.feed.append("HEADER")
-                self.feedCollectionView.reloadData()
                 self.feed.append(poll)
             }
             self.feedCollectionView.reloadData()
@@ -125,12 +125,22 @@ extension TrendingCell: UICollectionViewDataSource,UICollectionViewDelegateFlowL
         let trend = feed as! Poll
         let width = itemWidth - contentInset - CGFloat(90)
         let calculatedHeight = Mics.getHeightOfLabel(text: trend.question.attributeText(fontSize: 16), fontSize: 16, width: width, numberOfLines: 0)
-        let heigth = CGFloat(calculatedHeight + 16)
+        let heigth = CGFloat(calculatedHeight + 30)
         return CGSize(width: itemWidth - contentInset, height: heigth)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let item = self.feed[indexPath.row]
+        if item is Poll {
+            let destination = PollsController()
+            destination.categoryId = (item as! Poll).id
+            let vc = UINavigationController(rootViewController: destination)
+            self.homeController?.present(vc, animated: true, completion: nil)
+        }
     }
     
     

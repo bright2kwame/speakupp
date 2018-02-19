@@ -101,7 +101,6 @@ class HomeController: UIViewController {
 
         self.setUpUniversalIndication()
         
-     
         self.updateUtil()
     }
     
@@ -117,6 +116,9 @@ class HomeController: UIViewController {
         self.apiService.getUser(completion: { (status) in
            print("USER \(status)")
         })
+        self.apiService.updateUserToken { (status) in
+             print("PLAYER \(status)")
+        }
     }
     
     func setUpUniversalIndication()   {
@@ -193,8 +195,7 @@ extension HomeController: UICollectionViewDataSource,UICollectionViewDelegateFlo
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let contentInset = collectionView.contentInset.left * 2
-        return CGSize(width: collectionView.frame.width - contentInset, height: collectionView.frame.height)
+        return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
     }
     
     
@@ -225,6 +226,19 @@ extension HomeController: UICollectionViewDataSource,UICollectionViewDelegateFlo
         let selectedIndexPath = IndexPath(item: currentPage, section: 0)
         menuBar.menuCollectionView.selectItem(at: selectedIndexPath, animated: true, scrollPosition: .centeredHorizontally)
         
+    }
+    
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        coordinator.animate(alongsideTransition: { (_) in
+            self.collectionView.invalidateIntrinsicContentSize()
+            self.collectionView.contentOffset = .zero
+        }, completion: {(bear_) in
+            
+        })
     }
     
 }

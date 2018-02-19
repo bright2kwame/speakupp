@@ -33,7 +33,7 @@ class TrendingItemCell: BaseCell {
         textView.text = ""
         textView.numberOfLines = 0
         textView.font = UIFont.systemFont(ofSize: 16)
-        textView.textColor = UIColor.darkGray
+        textView.textColor = UIColor.hex(hex: Key.primaryHexCode)
         return textView
     }()
 

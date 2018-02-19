@@ -18,6 +18,7 @@ class PollAuthor: Object {
     @objc dynamic var username = ""
     @objc dynamic var birthday = ""
     @objc dynamic var country = ""
+    @objc dynamic var isFriend = false
    
     override class func primaryKey() -> String? {
         return "id"

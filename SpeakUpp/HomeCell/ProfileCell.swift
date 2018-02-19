@@ -42,7 +42,6 @@ class ProfileCell: BaseCell {
         return imageView
     }()
     
-    
     let profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -116,6 +115,10 @@ class ProfileCell: BaseCell {
         button.layer.borderWidth = 0.5
         button.layer.borderColor = color.cgColor
         button.setTitleColor(color, for: .normal)
+        button.titleLabel!.numberOfLines = 1
+        button.titleLabel!.adjustsFontSizeToFitWidth = true
+        button.titleLabel!.baselineAdjustment = .alignCenters
+        button.titleLabel!.lineBreakMode = NSLineBreakMode.byClipping
         return button
     }
     
@@ -240,12 +243,14 @@ class ProfileCell: BaseCell {
     }
     
     @objc private func startInterests() {
-        let brands = InterestController()
-        self.homeController?.present(UINavigationController(rootViewController: brands), animated: true, completion: nil)
+        let interest = InterestController()
+        interest.isOnboard = false
+        self.homeController?.present(UINavigationController(rootViewController: interest), animated: true, completion: nil)
     }
     
     @objc private func startBrands() {
         let brands = BrandsController()
+        brands.isOnboard = false
         self.homeController?.present(UINavigationController(rootViewController: brands), animated: true, completion: nil)
     }
     
@@ -257,14 +262,14 @@ class ProfileCell: BaseCell {
                 placeholderImage: Mics.userPlaceHolder(),
                 imageTransition: .crossDissolve(0.2)
             )
-            
+        }
+         if !(user.backgroundImage.isEmpty) {
             self.avatarImageView.af_setImage(
-                withURL: URL(string: (user.profile))!,
+                withURL: URL(string: (user.backgroundImage))!,
                 placeholderImage: Mics.placeHolder(),
                 imageTransition: .crossDissolve(0.2)
             )
         }
-        
         self.nameTextLabel.text = user.fullName
         self.followersTextLabel.text = Mics.formatNumber(number: user.numberOfFollowers, text: "Follower")
         self.followingTextLabel.text = Mics.formatNumber(number: user.numberOfFollowing, text: "Following")

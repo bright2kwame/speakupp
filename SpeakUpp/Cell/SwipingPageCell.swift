@@ -51,14 +51,14 @@ class SwipingPageCell: BaseCell {
         addSubview(mainImageView)
         addSubview(detailTextView)
         
-        mainImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -50).isActive = true
-        mainImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 50).isActive = true
+        mainImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16).isActive = true
+        mainImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16).isActive = true
         mainImageView.topAnchor.constraint(equalTo: topAnchor, constant: 16).isActive = true
         mainImageView.bottomAnchor.constraint(equalTo: detailTextView.topAnchor, constant: -16).isActive = true
         
-        detailTextView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -50).isActive = true
-        detailTextView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 50).isActive = true
-        detailTextView.heightAnchor.constraint(equalToConstant: 250).isActive = true
+        detailTextView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16).isActive = true
+        detailTextView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16).isActive = true
+        detailTextView.heightAnchor.constraint(equalToConstant: 200).isActive = true
         detailTextView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -24).isActive = true
         detailTextView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         

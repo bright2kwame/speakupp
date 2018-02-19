@@ -18,8 +18,10 @@ class EditProfileController: UIViewController {
     let apiService = ApiService()
     var parsableDate = ""
     let utilController = ViewControllerHelper()
-    let labelWidth = CGFloat(60)
-    
+    let labelWidth = CGFloat(80)
+    var isProfile = true
+
+
     lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView(frame: self.view.bounds)
         scrollView.alwaysBounceVertical = true
@@ -27,14 +29,6 @@ class EditProfileController: UIViewController {
         return scrollView
     }()
     
-    let imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "AppBg")
-        imageView.contentMode = .scaleAspectFill
-        imageView.layer.masksToBounds = true
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }()
     
     let profileImageView: UIImageView = {
         let imageView = UIImageView()
@@ -53,13 +47,14 @@ class EditProfileController: UIViewController {
         textView.textAlignment = .left
         textView.text = "FULL NAME*"
         textView.font = UIFont.systemFont(ofSize: 12)
-        textView.textColor = UIColor.rgb(red: 230, green: 230, blue: 230, alpha: 0.5)
+        textView.textColor = UIColor.lightGray
         return textView
     }()
     
     lazy var nameTextField: UITextField = {
-        let color = UIColor.rgb(red: 230, green: 230, blue: 230, alpha: 0.2)
+        let color = UIColor.lightGray
         let textField = ViewControllerHelper.baseField()
+        textField.textColor = UIColor.darkText
         textField.keyboardType = UIKeyboardType.alphabet
         textField.attributedPlaceholder =  NSAttributedString(string: "Full Name",
                                                               attributes: [NSAttributedStringKey.foregroundColor: color])
@@ -68,7 +63,7 @@ class EditProfileController: UIViewController {
     
     let nameUnderlineView: UIView = {
         let uiView = UIView()
-        uiView.backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 230, alpha: 0.2)
+        uiView.backgroundColor = UIColor.lightGray
         uiView.translatesAutoresizingMaskIntoConstraints = false
         return uiView
     }()
@@ -78,22 +73,23 @@ class EditProfileController: UIViewController {
         textView.textAlignment = .left
         textView.text = "PHONE\nNUMBER*"
         textView.font = UIFont.systemFont(ofSize: 12)
-        textView.textColor = UIColor.rgb(red: 230, green: 230, blue: 230, alpha: 0.5)
+        textView.textColor = UIColor.lightGray
         return textView
     }()
     
 
     let numberDividerView: UIView = {
         let uiView = UIView()
-        uiView.backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 230, alpha: 0.2)
+        uiView.backgroundColor = UIColor.lightGray
         uiView.translatesAutoresizingMaskIntoConstraints = false
         return uiView
     }()
     
     lazy var numberTextField: UITextField = {
-        let color = UIColor.rgb(red: 230, green: 230, blue: 230, alpha: 0.2)
+        let color = UIColor.lightGray
         let textField = ViewControllerHelper.baseField()
         textField.keyboardType = UIKeyboardType.numberPad
+        textField.textColor = UIColor.darkText
         textField.delegate = self
         textField.attributedPlaceholder =  NSAttributedString(string: "Phone Number",
                                                               attributes: [NSAttributedStringKey.foregroundColor: color])
@@ -106,19 +102,19 @@ class EditProfileController: UIViewController {
         textView.textAlignment = .left
         textView.text = "GENDER*"
         textView.font = UIFont.systemFont(ofSize: 12)
-        textView.textColor = UIColor.rgb(red: 230, green: 230, blue: 230, alpha: 0.5)
+        textView.textColor = UIColor.lightGray
         return textView
     }()
     
     lazy var maleButton: DLRadioButton = {
-        let radioButton = self.createRadioButton(title : "Male", color : UIColor.white)
+        let radioButton = self.createRadioButton(title : "Male", color : UIColor.darkText)
         radioButton.addTarget(self, action: #selector(LogSelectedButton), for: UIControlEvents.touchUpInside)
         radioButton.translatesAutoresizingMaskIntoConstraints = false
         return radioButton
     }()
     
     lazy var feMaleButton: DLRadioButton = {
-        let radioButton = self.createRadioButton(title : "Female", color : UIColor.white)
+        let radioButton = self.createRadioButton(title : "Female", color : UIColor.darkText)
         radioButton.addTarget(self, action: #selector(LogSelectedButton), for: UIControlEvents.touchUpInside)
         radioButton.translatesAutoresizingMaskIntoConstraints = false
         return radioButton
@@ -137,7 +133,7 @@ class EditProfileController: UIViewController {
     
     let genderUnderlineView: UIView = {
         let uiView = UIView()
-        uiView.backgroundColor = UIColor.rgb(red: 230, green: 230, blue: 230, alpha: 0.2)
+        uiView.backgroundColor = UIColor.lightGray
         uiView.translatesAutoresizingMaskIntoConstraints = false
         return uiView
     }()
@@ -147,7 +143,7 @@ class EditProfileController: UIViewController {
         textView.textAlignment = .left
         textView.text = "BIRTHDAY\n(Age 16+)*"
         textView.font = UIFont.systemFont(ofSize: 12)
-        textView.textColor = UIColor.rgb(red: 230, green: 230, blue: 230, alpha: 0.5)
+        textView.textColor = UIColor.lightGray
         return textView
     }()
     
@@ -156,14 +152,43 @@ class EditProfileController: UIViewController {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
         button.setTitle("Choose Birthday", for: .normal)
         button.layer.cornerRadius = 0
-        button.setTitleColor(UIColor.white, for: .normal)
+        button.setTitleColor(UIColor.darkText, for: .normal)
         button.contentHorizontalAlignment = .left
         button.addTarget(self, action: #selector(dateAndTime), for: .touchUpInside)
         return button
     }()
     
+    let activityIndicator: UIActivityIndicatorView = {
+        var activityIndicator = UIActivityIndicatorView()
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        return activityIndicator
+    }()
+    
+    
+    let avatarImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = nil
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.masksToBounds = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    lazy var coverView:  UIVisualEffectView = {
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = self.view.bounds
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        blurEffectView.alpha = 0.7
+        blurEffectView.translatesAutoresizingMaskIntoConstraints = false
+        return blurEffectView
+    }()
+    
+    
     
     override func viewDidLoad() {
+        self.view.backgroundColor = UIColor.white
         self.setUpLayouts()
         
         self.setUpNavigationBar()
@@ -192,9 +217,10 @@ class EditProfileController: UIViewController {
     
     
     func setUpLayouts()  {
-
-        self.view.addSubview(imageView)
+        
         self.view.addSubview(scrollView)
+        self.scrollView.addSubview(avatarImageView)
+        self.scrollView.addSubview(coverView)
         self.scrollView.addSubview(profileImageView)
         self.scrollView.addSubview(nameLabel)
         self.scrollView.addSubview(nameUnderlineView)
@@ -208,13 +234,9 @@ class EditProfileController: UIViewController {
         self.scrollView.addSubview(feMaleButton)
         self.scrollView.addSubview(dateOfBirthLabel)
         self.scrollView.addSubview(datePickerButton)
+        self.scrollView.addSubview(activityIndicator)
   
-        self.imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
-        self.imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
-        self.imageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
-        self.imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
-        
-        
+   
         let screenWidth = self.view.frame.width
         self.scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,constant: 0).isActive = true
         self.scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
@@ -222,10 +244,25 @@ class EditProfileController: UIViewController {
         self.scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,constant: 0).isActive = true
         self.scrollView.widthAnchor.constraint(equalToConstant: screenWidth).isActive = true
         
+        self.avatarImageView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 0).isActive = true
+        self.avatarImageView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: 0).isActive = true
+        self.avatarImageView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 0).isActive = true
+        self.avatarImageView.heightAnchor.constraint(equalToConstant: screenWidth - 200).isActive = true
+        
+        self.coverView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+        self.coverView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        self.coverView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
+        self.coverView.heightAnchor.constraint(equalToConstant: screenWidth - 200).isActive = true
+        
         self.profileImageView.widthAnchor.constraint(equalToConstant: 100).isActive = true
         self.profileImageView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        self.profileImageView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 20).isActive = true
+        self.profileImageView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: screenWidth - 250).isActive = true
         self.profileImageView.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        
+        self.activityIndicator.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        self.activityIndicator.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        self.activityIndicator.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 80).isActive = true
+        self.activityIndicator.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
         //MARK -- name section
         self.nameLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16).isActive = true
@@ -235,8 +272,9 @@ class EditProfileController: UIViewController {
         
         self.nameTextField.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 40).isActive = true
         self.nameTextField.leadingAnchor.constraint(equalTo: nameLabel.trailingAnchor, constant: 4).isActive = true
-        self.nameTextField.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16).isActive = true
+        //self.nameTextField.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16).isActive = true
         self.nameTextField.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        self.nameTextField.widthAnchor.constraint(equalToConstant: screenWidth-32).isActive = true
         
         self.nameUnderlineView.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 4).isActive = true
         self.nameUnderlineView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16).isActive = true
@@ -296,22 +334,35 @@ class EditProfileController: UIViewController {
         self.datePickerButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         //self.datePickerButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0).isActive = true
         
-        
         //tapped image
         let tappedImage = UITapGestureRecognizer(target: self, action: #selector(showAction(gesture:)))
         profileImageView.isUserInteractionEnabled = true
         profileImageView.addGestureRecognizer(tappedImage)
+        
+        //tapped image
+        let tapped = UITapGestureRecognizer(target: self, action: #selector(showAction(gesture:)))
+        coverView.isUserInteractionEnabled = true
+        coverView.addGestureRecognizer(tapped)
         
         self.setUpUIElements()
     }
     
     func setUpUIElements()  {
         if let user = User.getUser() {
-            self.profileImageView.af_setImage(
-                withURL: URL(string: (user.profile))!,
-                placeholderImage: Mics.userPlaceHolder(),
-                imageTransition: .crossDissolve(0.2)
-            )
+            if  !(user.profile.isEmpty) {
+                self.profileImageView.af_setImage(
+                    withURL: URL(string: (user.profile))!,
+                    placeholderImage: Mics.userPlaceHolder(),
+                    imageTransition: .crossDissolve(0.2)
+                )
+            }
+            if  !(user.backgroundImage.isEmpty) {
+                self.avatarImageView.af_setImage(
+                    withURL: URL(string: (user.backgroundImage))!,
+                    placeholderImage: Mics.userPlaceHolder(),
+                    imageTransition: .crossDissolve(0.2)
+                )
+            }
             
             self.nameTextField.text = user.fullName
             if user.gender == "M" {
@@ -328,32 +379,112 @@ class EditProfileController: UIViewController {
     }
     
     @objc private func updateUser() {
-        let number =  numberTextField.text!
-        let name = nameTextField.text!
+        let fullName = nameTextField.text!
+        var gender = ""
+       
+        if fullName.isEmpty {
+            ViewControllerHelper.showAlert(vc: self, message: "Full name is required", type: .failed)
+            return
+        }
         
+        if maleButton.isSelected {
+            gender = "M"
+        }
         
-     
+        if feMaleButton.isSelected {
+            gender = "F"
+        }
+        
+        if gender.isEmpty {
+            ViewControllerHelper.showAlert(vc: self, message: "Gender is required", type: .failed)
+            return
+        }
+        
+        if parsableDate.isEmpty {
+            ViewControllerHelper.showAlert(vc: self, message: "Date of birth is required", type: .failed)
+            return
+        }
+        
+        self.utilController.showActivityIndicator()
+        self.apiService.updateUser(fullName: fullName, gender: gender, dateOfBirth: self.parsableDate) { (status, messsge) in
+            self.utilController.hideActivityIndicator()
+            if status != ApiCallStatus.SUCCESS {
+                ViewControllerHelper.showAlert(vc: self, message: messsge, type: MessageType.failed)
+            }  else {
+               self.restartApp()
+            }
+        }
     }
+    
     
     
     func getImage(asset:DKAsset) -> Void {
         asset.fetchFullScreenImage(true, completeBlock: { resultImage, info in
-            self.profileImageView.image = nil
-            self.profileImageView.image = resultImage
+            if self.isProfile {
+                self.profileImageView.image = nil
+                self.profileImageView.image = resultImage
+            }  else {
+                self.avatarImageView.image = nil
+                self.avatarImageView.image = resultImage
+            }
+            self.activityIndicator.startAnimating()
             self.apiService.startUpload(file: resultImage!, nameOfFolder: "PROFILE", completion: { (status,fileUrl,message) in
-                 print(message)
+                if status == ApiCallStatus.SUCCESS{
+                    if self.isProfile {
+                       self.updateProfile(url: fileUrl!)
+                    }  else {
+                       self.updateBgProfile(url: fileUrl!)
+                    }
+                } else {
+                    self.activityIndicator.stopAnimating()
+                    ViewControllerHelper.showAlert(vc: self, message: message!, type: MessageType.failed)
+                }
             })
         })
     }
     
+    func updateProfile(url:String)  {
+        self.apiService.updateUserProfile(url: url) { (status, message) in
+            self.activityIndicator.stopAnimating()
+            if (status == ApiCallStatus.SUCCESS){
+                self.restartApp()
+            } else {
+               ViewControllerHelper.showAlert(vc: self, message: message, type: MessageType.failed)
+            }
+        }
+    }
+    
+    func updateBgProfile(url:String)  {
+        self.apiService.updateUserBgProfile(url: url) { (status, message) in
+            self.activityIndicator.stopAnimating()
+            if (status == ApiCallStatus.SUCCESS){
+                self.restartApp()
+            } else {
+                ViewControllerHelper.showAlert(vc: self, message: message, type: MessageType.failed)
+            }
+        }
+    }
+    
+    func restartApp()  {
+         if let window = UIApplication.shared.keyWindow {
+            let home = HomeController()
+            let drawer = ViewControllerHelper.startHome(controller: home)
+            window.rootViewController = drawer
+            home.homeDrawerController = drawer
+        }
+    }
+    
     //MARK- start image picking
     @objc func showAction(gesture: UITapGestureRecognizer) {
+        self.isProfile = gesture.view == self.profileImageView
         pickerController.maxSelectableCount = 1
         pickerController.assetType = .allPhotos
         pickerController.didSelectAssets = { (assets: [DKAsset]) in
+            if assets.isEmpty {
+                return
+            }
             self.getImage(asset: assets[0])
         }
-        
         let alertActionControl = UIAlertController.init(title: nil, message: "Pick from", preferredStyle: .actionSheet)
         let alertActionGallery = UIAlertAction.init(title: "Gallery", style: .default) {(Alert:UIAlertAction!) -> Void in
             self.present(self.pickerController, animated: true) {}

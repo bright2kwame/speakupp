@@ -19,20 +19,13 @@ class HomeCell: BaseCell {
     var loadedPages = [String]()
     var feed = [Any]()
     let apiService = ApiService()
+    var selctedPoll = "ALL"
     
     var typeOfPoll: String? {
         didSet {
            guard let unwrapedItem = typeOfPoll else {return}
-            print("\(unwrapedItem)")
-            if unwrapedItem == "ALL" {
-                 self.setUpAndCall(url: ApiUrl().allNewPolls())
-            }
-            if unwrapedItem == "POLLS" {
-                self.setUpAndCall(url: ApiUrl().allOnlyPolls())
-            }
-            if unwrapedItem == "RATINGS" {
-                self.setUpAndCall(url: ApiUrl().allRatingPolls())
-            }
+           self.selctedPoll = unwrapedItem
+           self.callRefresh()
         }
     }
     
@@ -75,13 +68,32 @@ class HomeCell: BaseCell {
         }
         
         self.callRefresh()
+        
+        //MARK - notfication center
+         NotificationCenter.default.addObserver(self, selector: #selector(self.receivedLikedNotification(notification:)), name: Notification.Name(Key.POLL_LIKE), object: nil)
+    }
+    
+    
+    
+    //MARK - receiving notification
+    @objc func receivedLikedNotification(notification: Notification){
+        let poll = notification.object as! Poll
+        print("POSITION \(poll)")
     }
     
     
     //MARK - call for refresh from other places
     func callRefresh()  {
-      self.loadedPages.removeAll()
-      self.setUpAndCall(url: ApiUrl().allNewPolls())
+        self.loadedPages.removeAll()
+        if selctedPoll == "ALL" {
+            self.setUpAndCall(url: ApiUrl().allNewPolls())
+        }
+        if selctedPoll == "POLLS" {
+            self.setUpAndCall(url: ApiUrl().allOnlyPolls())
+        }
+        if selctedPoll == "RATINGS" {
+            self.setUpAndCall(url: ApiUrl().allRatingPolls())
+        }
     }
     
     //MARK - continue paymemt
@@ -93,8 +105,7 @@ class HomeCell: BaseCell {
     }
     
     @objc func loadData()  {
-       self.loadedPages.removeAll()
-       self.setUpAndCall(url: ApiUrl().allNewPolls())
+       self.callRefresh()
     }
     
     func setUpAndCall(url: String)  {
@@ -103,6 +114,14 @@ class HomeCell: BaseCell {
         feedCollectionView.reloadData()
         self.homeController?.startProgress()
         self.getData(url: url)
+    }
+    
+    func startComment(position: Int)  {
+        let poll = self.feed[position] as! Poll
+        let vc = PollDetailController()
+        vc.pollId = poll.id
+        let destination = UINavigationController(rootViewController: vc)
+        self.homeController?.present(destination, animated: true, completion: nil)
     }
     
     func getData(url:String)  {
@@ -134,7 +153,7 @@ class HomeCell: BaseCell {
                 let pollIntended = item as! Poll
                 if (pollIntended.id == pollId) {
                     pollIntended.hasVoted = true
-                    pollIntended.totalRatingVotes = pollIntended.totalRatingVotes + 1
+                    pollIntended.totalRatingVotes += 1
                     let selectedIndexPath = IndexPath(item: index, section: 0)
                     self.feedCollectionView.reloadItems(at: [selectedIndexPath])
                     self.apiService.ratePoll(pollId: pollId, ratingValue: ratingValue, completion: { (status,message) in
@@ -165,10 +184,11 @@ class HomeCell: BaseCell {
                         return
                     }
                     pollIntended.hasVoted = true
+                    pollIntended.totalVotes += 1
                     for itemsChoice in pollIntended.pollChoice.enumerated() {
                         let element = itemsChoice.element
                         if (element.id == choiceId){
-                           element.numOfVotes = element.numOfVotes + 1
+                           element.numOfVotes += 1
                         }
                     }
                     let selectedIndexPath = IndexPath(item: index, section: 0)
@@ -207,13 +227,13 @@ class HomeCell: BaseCell {
                 let poll = pollIntended as! Poll
                 if (poll.hasLiked){
                     poll.hasLiked = false
-                    poll.numOfLikes = poll.numOfLikes - 1
+                    poll.numOfLikes -= 1
                     self.apiService.unLikePoll(pollId: poll.id, completion: { (status) in
                          print("STATUS \(status)")
                     })
                 }  else {
                    poll.hasLiked = true
-                    poll.numOfLikes = poll.numOfLikes + 1
+                    poll.numOfLikes += 1
                     self.apiService.likePoll(pollId: poll.id, completion: { (status) in
                          print("STATUS \(status)")
                     })
@@ -260,6 +280,10 @@ extension HomeCell: UICollectionViewDataSource,UICollectionViewDelegateFlowLayou
             cell.shareButton.tag = indexPath.row
             cell.shareButton.addTarget(self, action: #selector(self.share(_:)), for: .touchUpInside)
             
+            cell.commentButton.tag = indexPath.row
+            cell.commentButton.addTarget(self, action: #selector(self.startComment(_:)), for: .touchUpInside)
+            
+            
             cell.likeButton.tag = indexPath.row
             cell.likeButton.addTarget(self, action: #selector(self.like(_:)), for: .touchUpInside)
             
@@ -279,6 +303,9 @@ extension HomeCell: UICollectionViewDataSource,UICollectionViewDelegateFlowLayou
         cell.shareButton.tag = indexPath.row
         cell.shareButton.addTarget(self, action: #selector(self.share(_:)), for: .touchUpInside)
         
+        cell.commentButton.tag = indexPath.row
+        cell.commentButton.addTarget(self, action: #selector(self.startComment(_:)), for: .touchUpInside)
+        
         
         cell.likeButton.tag = indexPath.row
         cell.likeButton.addTarget(self, action: #selector(self.like(_:)), for: .touchUpInside)
@@ -288,7 +315,7 @@ extension HomeCell: UICollectionViewDataSource,UICollectionViewDelegateFlowLayou
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let feed = self.feed[indexPath.row]
-        return CellHelper.configureCellHeight(collectionView: collectionView, feed: feed)
+        return CellHelper.configureCellHeight(collectionView: collectionView, collectionViewLayout: collectionViewLayout, feed: feed)
         
     }
     
@@ -300,6 +327,11 @@ extension HomeCell: UICollectionViewDataSource,UICollectionViewDelegateFlowLayou
     //MARK- send liking action
     @objc func like(_ sender: UIButton) {
         self.likePoll(position: sender.tag)
+    }
+    
+    //MARK- start commenting
+    @objc func startComment(_ sender: UIButton) {
+        self.startComment(position: sender.tag)
     }
     
     @objc func ratePoll(_ sender: UITapGestureRecognizer) {

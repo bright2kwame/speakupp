@@ -73,6 +73,16 @@ class User: Object {
         }
     }
     
+    static func updateBgProfile(avatar:String){
+        let realm = try! Realm()
+        try! realm.write() {
+            let data = realm.objects(User.self).first
+            data?.backgroundImage = avatar
+            realm.add(data!,update: true)
+        }
+    }
+    
+    
     
     //delete all
     static func delete(){

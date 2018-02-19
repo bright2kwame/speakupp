@@ -14,27 +14,27 @@
         <scene sceneID="EHf-IW-A2E">
             <objects>
                 <viewController id="01J-lp-oVM" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
+                    <view key="view" clipsSubviews="YES" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AppBg" translatesAutoresizingMaskIntoConstraints="NO" id="kIv-4X-4Ax">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LogoImage" translatesAutoresizingMaskIntoConstraints="NO" id="ZKh-Iz-f8h">
                                 <rect key="frame" x="50" y="272" width="275" height="123"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" red="0.25098039220000001" green="0.61176470589999998" blue="0.85490196080000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="ZKh-Iz-f8h" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="50" id="DaO-dQ-OOn"/>
+                            <constraint firstItem="kIv-4X-4Ax" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="IEr-g7-9oH"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ZKh-Iz-f8h" secondAttribute="trailing" constant="50" id="ITo-DA-cT4"/>
                             <constraint firstItem="ZKh-Iz-f8h" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="LcT-9i-wzP"/>
-                            <constraint firstItem="kIv-4X-4Ax" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Mx3-XG-waa"/>
                             <constraint firstItem="ZKh-Iz-f8h" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="RSK-EX-dpa"/>
-                            <constraint firstItem="kIv-4X-4Ax" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Xm5-x1-MP8"/>
-                            <constraint firstItem="kIv-4X-4Ax" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="dvC-sh-DoI"/>
-                            <constraint firstItem="kIv-4X-4Ax" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="hsy-fI-mU8"/>
+                            <constraint firstItem="kIv-4X-4Ax" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="cre-Kd-j9t"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="kIv-4X-4Ax" secondAttribute="bottom" id="he7-Ob-bGX"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="kIv-4X-4Ax" secondAttribute="trailing" id="z4Q-bh-utS"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>

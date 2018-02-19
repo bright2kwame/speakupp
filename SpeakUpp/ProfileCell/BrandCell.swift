@@ -72,7 +72,7 @@ class BrandCell: BaseCell {
         
        
         let margin = CGFloat(8)
-         let width = frame.height - 2*margin
+        let width = frame.height - 2*margin
         self.profileImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: margin).isActive = true
         self.profileImageView.topAnchor.constraint(equalTo: topAnchor, constant: margin).isActive = true
         self.profileImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8).isActive = true
@@ -85,9 +85,10 @@ class BrandCell: BaseCell {
         self.followingButton.widthAnchor.constraint(equalToConstant: 100).isActive = true
         
         self.nameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 16).isActive = true
-        self.nameLabel.trailingAnchor.constraint(equalTo: followingButton.leadingAnchor, constant: 8).isActive = true
+        self.nameLabel.trailingAnchor.constraint(equalTo: followingButton.leadingAnchor, constant: -8).isActive = true
         self.nameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8).isActive = true
         self.nameLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8).isActive = true
+        
         
     }
     

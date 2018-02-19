@@ -11,12 +11,13 @@ import SwiftyJSON
 import RealmSwift
 import AWSS3
 import AWSCore
+import OneSignal
 
 
 
 class ApiService {
     let interntConnectionStatus = "Your request failed due to lost of internt connection."
-    let failureStatus = "Your request failed, the administrator will contact you shortly."
+    let failureStatus = "Your request failed, try again later."
     let defaultStatus = "Unable to get requested data, try again later."
     
     //MARK:- set dynamic headers
@@ -56,9 +57,9 @@ class ApiService {
                             completion(nil, detail,ApiCallStatus.DETAIL)
                         }
                     case 401...499:
-                        completion(nil, self.interntConnectionStatus,.DETAIL)
+                        completion(nil, self.failureStatus,.DETAIL)
                     default:
-                        completion(nil, self.interntConnectionStatus,.DETAIL)
+                        completion(nil, self.failureStatus,.DETAIL)
                     }
                 }
                 
@@ -68,6 +69,7 @@ class ApiService {
     
     //MARK:- parse user
     func parseUser(item: JSON) -> User  {
+        
         let id = item["id"].intValue.description
         let username = item["username"].stringValue
         let token = item["auth_token"].stringValue
@@ -108,10 +110,11 @@ class ApiService {
     //MARK: - verify registration
     func verifyRegisterationCode(uniqueCode: String,completion: @escaping (ApiCallStatus,String) -> ()){
         // this is where the completion handler code goes
-        let params = ["unique_code":uniqueCode]
+        let user = User.getUser()!
+        let params = ["unique_code":uniqueCode,"phone_number": user.number]
         let url =  "\(ApiUrl().verify())"
         print("URL \(url) \(params)")
-        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: self.headerAuth())
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: nil)
             .responseJSON { response in
                 if response.error != nil {
                     completion(.FAILED,self.interntConnectionStatus)
@@ -121,7 +124,7 @@ class ApiService {
                     print("Status \(status)")
                     switch(status){
                     case 200...300:
-                        //changed successfully
+                        //Verified successfully
                         let item = JSON(data: response.data!)
                         let _ = item["detail"].stringValue
                         User.verify()
@@ -204,15 +207,109 @@ class ApiService {
         }
     }
     
-    //MARK: - update user
-    func updateUser(completion: @escaping (ApiCallStatus) -> ()){
+    //MARK -- SMS invite
+    func inviteViaSMS(number:String,completion: @escaping (ApiCallStatus,String) -> ()){
         // this is where the completion handler code goes
-        let url =  "\(ApiUrl().activeBaseUrl())users/me/"
-        print("URL \(url)")
-        Alamofire.request(url, method: .put, parameters: nil, encoding: JSONEncoding.default,headers: headerAuth())
+        let realUrl =  "\(ApiUrl().activeBaseUrl())single_send_sms/"
+        let params = ["phone_number":number]
+        print("URL \(realUrl) \(params)")
+        Alamofire.request(realUrl, method: .post, parameters: params, encoding: JSONEncoding.default,headers: headerAuth())
             .responseJSON { response in
                 if response.error != nil {
-                    completion(.FAILED)
+                    completion(.FAILED,self.interntConnectionStatus)
+                    return
+                }
+                if let status = response.response?.statusCode {
+                    print("Status \(status)")
+                    switch(status){
+                    case 200...300:
+                        let _ = JSON(data: response.data!)
+                        completion(.SUCCESS,"Invite sent successfully")
+                    case 301...499:
+                        let item = JSON(data: response.data!)
+                        let detail = item["detail"].stringValue
+                        completion(.DETAIL,detail)
+                    default:
+                        completion(.FAILED,self.failureStatus)
+                    }
+                }
+        }
+    }
+    
+    //MARK -- update user images
+    func updateUserProfile(url:String,completion: @escaping (ApiCallStatus,String) -> ()){
+        // this is where the completion handler code goes
+        let realUrl =  "\(ApiUrl().activeBaseUrl())users/upload_avatar_url/"
+        let params = ["avatar":url]
+        print("URL \(realUrl) \(params)")
+        Alamofire.request(realUrl, method: .post, parameters: params, encoding: JSONEncoding.default,headers: headerAuth())
+            .responseJSON { response in
+                if response.error != nil {
+                    completion(.FAILED,self.interntConnectionStatus)
+                    return
+                }
+                if let status = response.response?.statusCode {
+                    print("Status \(status)")
+                    switch(status){
+                    case 200...300:
+                        //Profile updated
+                        let _ = JSON(data: response.data!)
+                        User.updateProfile(avatar: url)
+                        completion(.SUCCESS,"Profile updated successfully")
+                    case 301...499:
+                        let item = JSON(data: response.data!)
+                        let detail = item["detail"].stringValue
+                        completion(.DETAIL,detail)
+                    default:
+                        completion(.FAILED,self.failureStatus)
+                    }
+                }
+        }
+    }
+    
+    //MARK -- update user images
+    func updateUserBgProfile(url:String,completion: @escaping (ApiCallStatus,String) -> ()){
+        // this is where the completion handler code goes
+        let realUrl =  "\(ApiUrl().activeBaseUrl())users/update_background_image/"
+        let params = ["avatar":url]
+        print("URL \(url)")
+        Alamofire.request(realUrl, method: .post, parameters: params, encoding: JSONEncoding.default,headers: headerAuth())
+            .responseJSON { response in
+                if response.error != nil {
+                    completion(.FAILED,self.interntConnectionStatus)
+                    return
+                }
+                if let status = response.response?.statusCode {
+                    print("Status \(status)")
+                    switch(status){
+                    case 200...300:
+                        //existing device
+                        let _ = JSON(data: response.data!)
+                        User.updateBgProfile(avatar: url)
+                        completion(.SUCCESS,"Profile updated successfully")
+                    case 301...499:
+                        let item = JSON(data: response.data!)
+                        let detail = item["detail"].stringValue
+                        completion(.DETAIL,detail)
+                    default:
+                        completion(.FAILED,self.failureStatus)
+                    }
+                }
+        }
+    }
+  
+    //MARK: - update user
+    func updateUser(fullName:String,gender:String,dateOfBirth:String,completion: @escaping (ApiCallStatus,String) -> ()){
+        // this is where the completion handler code goes
+        let url =  "\(ApiUrl().activeBaseUrl())users/me/"
+        let user = User.getUser()!
+        let params = ["phone_number":user.number,"first_name":"","last_name":"",
+                      "gender":gender,"birthday":dateOfBirth,"username":fullName]
+        print("URL \(url)")
+        Alamofire.request(url, method: .put, parameters: params, encoding: JSONEncoding.default,headers: headerAuth())
+            .responseJSON { response in
+                if response.error != nil {
+                    completion(.FAILED,self.interntConnectionStatus)
                     return
                 }
                 if let status = response.response?.statusCode {
@@ -223,13 +320,13 @@ class ApiService {
                         let result = JSON(data: response.data!)
                         let user = self.parseUser(item: result["results"])
                         User.save(data: user)
-                        completion(.SUCCESS)
+                        completion(.SUCCESS,"Profile updated successfully")
                     case 301...499:
                         let item = JSON(data: response.data!)
-                        let _ = item["detail"].stringValue
-                        completion(.DETAIL)
+                        let detail = item["detail"].stringValue
+                        completion(.DETAIL,detail)
                     default:
-                        completion(.FAILED)
+                        completion(.FAILED,self.failureStatus)
                     }
                 }
         }
@@ -303,7 +400,7 @@ class ApiService {
                     case 401...499:
                         completion(nil,.FAILED,self.interntConnectionStatus,nil)
                     default:
-                        completion(nil,.FAILED,self.interntConnectionStatus,nil)
+                        completion(nil,.FAILED,self.failureStatus,nil)
                     }
                 }
                 
@@ -338,7 +435,7 @@ class ApiService {
                     case 401...499:
                         completion(nil,.FAILED,self.interntConnectionStatus)
                     default:
-                        completion(nil,.FAILED,self.interntConnectionStatus)
+                        completion(nil,.FAILED,self.failureStatus)
                     }
                 }
                 
@@ -374,7 +471,7 @@ class ApiService {
                     case 401...499:
                         completion(nil,.FAILED,self.interntConnectionStatus,nil)
                     default:
-                        completion(nil,.FAILED,self.interntConnectionStatus,nil)
+                        completion(nil,.FAILED,self.failureStatus,nil)
                     }
                 }
                 
@@ -434,7 +531,7 @@ class ApiService {
                     case 401...499:
                         completion(nil,.FAILED,self.interntConnectionStatus,nil)
                     default:
-                        completion(nil,.FAILED,self.interntConnectionStatus,nil)
+                        completion(nil,.FAILED,self.failureStatus,nil)
                     }
                 }
                 
@@ -615,6 +712,7 @@ class ApiService {
         }
     }
     
+    //MARK: - parse poll category
     func parseTrendingCategoryItem(item: JSON) -> TrendingMenuLabel  {
         let id = item["id"].intValue.description
         let name = item["name"].stringValue
@@ -624,7 +722,6 @@ class ApiService {
     
     //MARK:- parse poll
     func parsePoll(item: JSON) -> Poll  {
-        print("POLL \(item)")
         let id = item["id"].intValue.description
         let totalVotes = item["total_votes"].intValue
         let totalRatingVotes = item["total_rating_votes"].intValue
@@ -635,6 +732,7 @@ class ApiService {
         let eventLocation = item["event_location"].stringValue
         let ratingOption = item["rating_option"].stringValue
         let pricePerSMS = item["price_per_sms"].stringValue
+        let price = item["price"].stringValue
         let author = self.parsePollAuthour(item: item["author"])
         let isAudio = item["is_audio"].boolValue
         let hasExpired = item["has_expired"].boolValue
@@ -644,6 +742,8 @@ class ApiService {
         let hasLiked = item["has_liked"].boolValue
         let hasVoted = item["has_voted"].boolValue
         let isShared = item["is_shared"].boolValue
+        let hasTicket = item["has_ticket"].boolValue
+        let hasPurchased = item["has_purchased"].boolValue
         let category = self.parsePollCategory(item: item["category"])
         let pollType = item["poll_type"].stringValue
         let eventDescription = item["event_description"].stringValue
@@ -697,6 +797,9 @@ class ApiService {
         poll.shortCode = shortCode
         poll.elapsedTime = elapsedTime
         poll.question = question
+        poll.price = price
+        poll.hasTicket = hasTicket
+        poll.hasPurchased = hasPurchased
         
         let pollChoices = List<PollChoice>()
         for pollChoice in item["poll_choices"].arrayValue {
@@ -730,6 +833,21 @@ class ApiService {
         return itemParsed
     }
     
+    //MARK - parse comment
+    func parsePollComment(item: JSON) -> PollComment  {
+        let id = item["id"].intValue.description
+        let comment = item["comment"].stringValue
+        let elapsedTime = item["elapsed_time"].stringValue
+        let author = self.parsePollAuthour(item: item["author"])
+
+        let itemParsed = PollComment()
+        itemParsed.id = id
+        itemParsed.author = author
+        itemParsed.comment = comment
+        itemParsed.elapedTime = elapsedTime
+        return itemParsed
+    }
+    
     func parsePollCategory(item: JSON) -> PollCategory  {
         let id = item["id"].intValue.description
         let totalPolls = item["total_polls"].intValue
@@ -746,6 +864,8 @@ class ApiService {
         return itemParsed
     }
     
+    
+    //MARK - parse poll author
     func parsePollAuthour(item: JSON) -> PollAuthor  {
         let id = item["id"].intValue.description
         var avatarThumb = item["avatar_thumb"].stringValue
@@ -771,6 +891,31 @@ class ApiService {
         itemParsed.country = country
         itemParsed.birthday = birthday
         itemParsed.username = username
+        return itemParsed
+    }
+    
+    
+    //MARK -- parse the event ticket
+    func parsePollTicket(item: JSON) -> EventTicket  {
+        let id = item["id"].intValue.description
+        let quantity = item["quantity"].intValue
+        let totalAmount = item["total_amount"].stringValue
+        let date = item["date_redeemed"].stringValue
+        let orderNumber = item["order_number"].stringValue
+        let isUsed = item["is_used"].boolValue
+        
+        let author = self.parsePollAuthour(item: item["author"])
+        let poll = self.parsePoll(item: item["poll"])
+        let itemParsed = EventTicket()
+        itemParsed.id = id
+        itemParsed.author = author
+        itemParsed.poll = poll
+        itemParsed.isUsed = isUsed
+        itemParsed.quantity = quantity
+        itemParsed.totalAmount = totalAmount
+        itemParsed.dateRedeemed = date
+        itemParsed.orderNumber = orderNumber
+  
         return itemParsed
     }
     
@@ -968,6 +1113,205 @@ class ApiService {
         }
     }
     
+    //MARK: - Buy ticket
+    func buyTicket(pollId: String,quantity:String,completion: @escaping (ApiCallStatus,String?) -> ()){
+        let params = ["event_id":pollId,"quantity":quantity]
+        let url =  "\(ApiUrl().activeBaseUrl())get_slydepay_url/"
+        print("URL \(url) \(params)")
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default,headers: headerAuth())
+            .responseJSON { response in
+                if response.error != nil {
+                    completion(.FAILED,nil)
+                    return
+                }
+                if let status = response.response?.statusCode {
+                    print("Status \(status)")
+                    switch(status){
+                    case 200...300:
+                        if let dataIn =  response.data {
+                            let item = JSON(data: dataIn)
+                            let redirect = item["redirect_url"].stringValue
+                            completion(.SUCCESS,redirect)
+                        } else {
+                            completion(.DETAIL,nil)
+                        }
+                    case 300...499:
+                        completion(.DETAIL,nil)
+                    default:
+                        completion(.FAILED,nil)
+                    }
+                }
+        }
+    }
+
+    //MARK: - get poll
+    func getPoll(pollId:String,completion: @escaping (ApiCallStatus,Poll?,String?) -> ()){
+        // this is where the completion handler code goes
+        let url =  "\(ApiUrl().activeBaseUrl())polls/\(pollId)/"
+        print("URL \(url)")
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: headerAuth())
+            .responseJSON { response in
+                if response.error != nil {
+                    completion(.FAILED,nil,self.interntConnectionStatus)
+                    return
+                }
+                if let status = response.response?.statusCode {
+                    print("Status \(status)")
+                    switch(status){
+                    case 200...300:
+                        //existing device
+                        let result = JSON(data: response.data!)
+                        let poll = self.parsePoll(item: result["results"])
+                        completion(.SUCCESS,poll,nil)
+                    case 301...499:
+                        let item = JSON(data: response.data!)
+                        let detail = item["detail"].stringValue
+                        completion(.DETAIL,nil,detail)
+                    default:
+                        completion(.FAILED,nil,self.interntConnectionStatus)
+                    }
+                }
+        }
+    }
+    
+    //MARK: - get ticket
+    func getEventTicket(pollId:String,completion: @escaping (ApiCallStatus,EventTicket?,String?) -> ()){
+        // this is where the completion handler code goes
+        let url =  "\(ApiUrl().activeBaseUrl())events/\(pollId)/get_receipt/"
+        print("URL \(url)")
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: headerAuth())
+            .responseJSON { response in
+                if response.error != nil {
+                    completion(.FAILED,nil,self.interntConnectionStatus)
+                    return
+                }
+                if let status = response.response?.statusCode {
+                    print("Status \(status)")
+                    switch(status){
+                    case 200...300:
+                        //tcket in now
+                        let item = JSON(data: response.data!)
+                        let arrayItems = item["results"]
+                        for itemIn in arrayItems.enumerated() {
+                            let retreived = self.parsePollTicket(item: itemIn.element.1)
+                            completion(.SUCCESS,retreived,nil)
+                            break
+                        }
+                        completion(.DETAIL,nil,"Ticket used by another person.")
+                    case 301...499:
+                        let item = JSON(data: response.data!)
+                        let detail = item["detail"].stringValue
+                        completion(.DETAIL,nil,detail)
+                    default:
+                        completion(.FAILED,nil,self.interntConnectionStatus)
+                    }
+                }
+        }
+    }
+    
+    
+    //MARK: - cancel ticket
+    func cancelTicket(orderNumber:String,completion: @escaping (ApiCallStatus,String) -> ()){
+        let params = ["ticket_code":orderNumber]
+        let url =  "\(ApiUrl().activeBaseUrl())cancel_ticket/"
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default,headers: headerAuth())
+            .responseJSON { response in
+                if response.error != nil {
+                    completion(.FAILED,self.interntConnectionStatus)
+                    return
+                }
+                if let status = response.response?.statusCode {
+                    print("Status \(status)")
+                    switch(status){
+                    case 200...300:
+                        //ticket operation
+                        let result = JSON(data: response.data!)
+                        let detail = result["detail"].stringValue
+                        if !detail.isEmpty {
+                           completion(.DETAIL,detail)
+                        }
+                        let resultInfo = result["results"].stringValue
+                        let quantity = result["quantity"].intValue
+                        let message = "\(resultInfo) Quantity: \(quantity)"
+                        completion(.SUCCESS, message)
+                    case 301...499:
+                        let item = JSON(data: response.data!)
+                        let detail = item["detail"].stringValue
+                        completion(.DETAIL,detail)
+                    default:
+                        completion(.FAILED,self.interntConnectionStatus)
+                    }
+                }
+        }
+    }
+    
+    //MARK: - get poll comment
+    func getPollComments(url:String,completion: @escaping (ApiCallStatus,[PollComment]?,String?,String?) -> ()){
+        // this is where the completion handler code goes
+        print("URL \(url)")
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: headerAuth())
+            .responseJSON { response in
+                if response.error != nil {
+                    completion(.FAILED,nil,self.interntConnectionStatus,nil)
+                    return
+                }
+                if let status = response.response?.statusCode {
+                    print("Status \(status)")
+                    switch(status){
+                    case 200...300:
+                        //existing device
+                        var comments = [PollComment]()
+                        let item = JSON(data: response.data!)
+                        let arrayItems = item["results"]
+                        let nextUrl = item["next"].stringValue
+                        for itemIn in arrayItems.enumerated() {
+                            let retreived = self.parsePollComment(item: itemIn.element.1)
+                            comments.append(retreived)
+                        }
+                        completion(.SUCCESS, comments, "Data retrieved successfully", nextUrl)
+                    case 301...499:
+                        let item = JSON(data: response.data!)
+                        let detail = item["detail"].stringValue
+                        completion(.DETAIL,nil,detail,nil)
+                    default:
+                        completion(.FAILED,nil,self.interntConnectionStatus,nil)
+                    }
+                }
+        }
+    }
+    
+    //MARK: - Add Comment
+    func commentOnPoll(pollId: String,comment:String,completion: @escaping (ApiCallStatus,PollComment?,String?) -> ()){
+        let params = ["user_comment":comment]
+        let url =  "\(ApiUrl().activeBaseUrl())polls/\(pollId)/comment/"
+        print("URL \(url) \(params)")
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default,headers: headerAuth())
+            .responseJSON { response in
+                if response.error != nil {
+                    completion(.FAILED,nil,self.interntConnectionStatus)
+                    return
+                }
+                if let status = response.response?.statusCode {
+                    print("Status \(status)")
+                    switch(status){
+                    case 200...300:
+                        if let dataIn =  response.data {
+                            let item = JSON(data: dataIn)
+                            let comment = self.parsePollComment(item: item["detail"])
+                            completion(.SUCCESS,comment,item["message"].stringValue)
+                        } else {
+                            completion(.DETAIL,nil,"")
+                        }
+                    case 300...499:
+                        let item = JSON(data: response.data!)
+                        let detail = item["detail"].stringValue
+                        completion(.DETAIL,nil,detail)
+                    default:
+                        completion(.FAILED,nil,self.interntConnectionStatus)
+                    }
+                }
+        }
+    }
     
     //MARK: - update user interests
     func updateUserInterest(ids: String, completion: @escaping (ApiCallStatus) -> ()){
@@ -1032,6 +1376,70 @@ class ApiService {
         }
     }
     
+    //MARK:- data. FAQ, PRIVACY, ETC
+    func getMessages(url:String,completion: @escaping (String?,ApiCallStatus,String?) -> ()){
+        let realUrl = "\(ApiUrl().activeBaseUrl())\(url)/"
+        print("URL \(realUrl)")
+        Alamofire.request(realUrl, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: headerAuth())
+            .responseJSON { response in
+                if response.error != nil {
+                 completion(nil,.FAILED,self.interntConnectionStatus)
+                 return
+                }
+                if let status = response.response?.statusCode {
+                    print("Status \(status)")
+                    switch(status){
+                    case 200...300:
+                        var content = ""
+                        let item = JSON(data: response.data!)
+                        let results = item["results"]
+                        for itemIn in results.enumerated() {
+                            content = itemIn.element.1["content"].stringValue
+                        }
+                        completion(content, .SUCCESS, nil)
+                    case 401...499:
+                        completion(nil,.FAILED,self.interntConnectionStatus)
+                    default:
+                        completion(nil,.FAILED,self.interntConnectionStatus)
+                    }
+                }
+                
+        }
+    }
+    
+    //MARK:- data. FAQ, PRIVACY, ETC
+    func getFaqMessages(url:String,completion: @escaping ([FAQItem]?,ApiCallStatus,String?) -> ()){
+        let realUrl = "\(ApiUrl().activeBaseUrl())\(url)/"
+        print("URL \(realUrl)")
+        Alamofire.request(realUrl, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: headerAuth())
+            .responseJSON { response in
+                if response.error != nil {
+                    completion(nil,.FAILED,self.interntConnectionStatus)
+                    return
+                }
+                if let status = response.response?.statusCode {
+                    print("Status \(status)")
+                    switch(status){
+                    case 200...300:
+                        var content = [FAQItem]()
+                        let item = JSON(data: response.data!)
+                        let results = item["results"]
+                        for itemIn in results.enumerated() {
+                            let question = itemIn.element.1["question"].stringValue.htmlToString
+                            let answer = itemIn.element.1["answer"].stringValue.htmlToString
+                            content.append(FAQItem(question: question, answer: answer))
+                        }
+                        completion(content, .SUCCESS, nil)
+                    case 401...499:
+                        completion(nil,.FAILED,self.interntConnectionStatus)
+                    default:
+                        completion(nil,.FAILED,self.interntConnectionStatus)
+                    }
+                }
+                
+        }
+    }
+    
     func parseCredentail(item: JSON) -> AWSCredentails  {
         let AWS_ACCESS_KEY_ID = item["AWS_ACCESS_KEY_ID"].stringValue
         let AWS_BUCKET_NAME = item["AWS_BUCKET_NAME"].stringValue
@@ -1064,7 +1472,6 @@ class ApiService {
         let path = (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString).appendingPathComponent("\(NSUUID().uuidString).jpeg")
         let imageData = UIImageJPEGRepresentation(image, 0.99)
         fileManager.createFile(atPath: path as String, contents: imageData, attributes: nil)
-        
         return NSURL(fileURLWithPath: path)
     }
     
@@ -1073,9 +1480,7 @@ class ApiService {
     func startUpload(file:UIImage,nameOfFolder:String,completion: @escaping (ApiCallStatus,String?,String?) -> ()) {
         let url = getImage(image: file)
         if let awsCredentials = AWSCredentails.getUser() {
-            print("CREDENTIALS \(awsCredentials)")
             let remoteName = self.getRemoteName(nameOfFolder: nameOfFolder)
-            print("REMOTE \(remoteName)")
             let S3BucketName = awsCredentials.bucketName
             let uploadRequest = AWSS3TransferManagerUploadRequest()!
             uploadRequest.body = url as URL
@@ -1085,7 +1490,7 @@ class ApiService {
             uploadRequest.acl = .publicRead
             
             let credentialsProvider = AWSStaticCredentialsProvider(accessKey: awsCredentials.accessKey, secretKey: awsCredentials.secretKey)
-            let configuration = AWSServiceConfiguration(region: AWSRegionType.USWest1, credentialsProvider: credentialsProvider)
+            let configuration = AWSServiceConfiguration(region: AWSRegionType.USEast1, credentialsProvider: credentialsProvider)
             AWSServiceManager.default().defaultServiceConfiguration = configuration
             
             let transferManager = AWSS3TransferManager.default()
@@ -1112,6 +1517,38 @@ class ApiService {
             completion(.DETAIL, nil, "AWS Credentails not provided")
         }
         
+    }
+    
+    //MARK: - update user token
+    func updateUserToken(completion: @escaping (ApiCallStatus) -> ()){
+        let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
+        let userID = status.subscriptionStatus.userId
+        guard let playerId = userID else {return}
+        let params = ["player_id":playerId]
+        let url =  "\(ApiUrl().activeBaseUrl())users/save_player_id/"
+        print("URL \(url) \(params)")
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default,headers: headerAuth())
+            .responseJSON { response in
+                if response.error != nil {
+                    completion(.FAILED)
+                    return
+                }
+                if let status = response.response?.statusCode {
+                    print("Status \(status)")
+                    switch(status){
+                    case 200...300:
+                        if let _ =  response.data {
+                            completion(.SUCCESS)
+                        } else {
+                            completion(.DETAIL)
+                        }
+                    case 300...499:
+                        completion(.DETAIL)
+                    default:
+                        completion(.FAILED)
+                    }
+                }
+        }
     }
 
 

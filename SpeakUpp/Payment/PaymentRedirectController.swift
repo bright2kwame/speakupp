@@ -13,7 +13,11 @@ class PaymentRedirectController: UIViewController,UIWebViewDelegate {
     
     var url = ""
     var homeCell: HomeCell?
+    var pollsController: PollsController?
+    var searchController: SearchController?
+    var eventDetailController: EventDetailController?
     private var hasFinishedLoading = false
+    var eventCell: EventCell?
     var timer: Timer!
     
     let progressUIView: UIProgressView = {
@@ -91,7 +95,12 @@ class PaymentRedirectController: UIViewController,UIWebViewDelegate {
         if let link = webView.request?.url! {
             let check:String = link.relativeString
             if (check.contains(ApiUrl().callBack())){
+                //MARK - send calls to all handler
                 self.homeCell?.callRefresh()
+                self.pollsController?.callRefresh()
+                self.eventCell?.callRefresh()
+                self.eventDetailController?.callRefresh()
+                self.searchController?.setSearchType(type: SearchType.poll)
                 self.dismiss(animated: true, completion: nil)
             }
         }
@@ -99,9 +108,7 @@ class PaymentRedirectController: UIViewController,UIWebViewDelegate {
     
     
     func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        if let link = webView.request?.url! {
-            let check:String = link.relativeString
-            print("START FINISH \(check)")
+        if let _ = webView.request?.url! {
         }
         return true
     }

@@ -40,8 +40,8 @@ class PollImageChoiceCell: BaseCell {
     
     override var isSelected: Bool {
         didSet {
-           self.voteCoverView.isHidden = isSelected ? false: true
-           self.voteStackView.isHidden = isSelected ? false: true
+            self.voteCoverView.isHidden = isSelected ? false: true
+            self.voteStackView.isHidden = isSelected ? false: true
         }
     }
     
@@ -102,11 +102,10 @@ class PollImageChoiceCell: BaseCell {
     
     let acceptImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .center
-        imageView.image = UIImage(named: "VoteThumbsUp")
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = UIImage(named: "Accept")
         imageView.layer.masksToBounds = true
-        imageView.layer.cornerRadius = 4
-        imageView.backgroundColor = UIColor(red:0.23, green:0.60, blue:0.85, alpha:1.0)
+        imageView.layer.cornerRadius = 0
         imageView.layer.borderWidth = 0
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -114,11 +113,10 @@ class PollImageChoiceCell: BaseCell {
     
     let rejectImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .center
-        imageView.image = UIImage(named: "VoteThumbsDown")
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = UIImage(named: "Deny")
         imageView.layer.masksToBounds = true
-        imageView.layer.cornerRadius = 4
-        imageView.backgroundColor = UIColor.white
+        imageView.layer.cornerRadius = 0
         imageView.layer.borderWidth = 0
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView

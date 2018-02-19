@@ -12,8 +12,14 @@ class PayVottingController: UIViewController {
     var poll: Poll?
     var choiceId = ""
     var homeCell: HomeCell?
+    var pollsController: PollsController?
+    var searchController: SearchController?
+    var eventDetailController: EventDetailController?
     let utilController = ViewControllerHelper()
     let apiService = ApiService()
+    var isEvent = false
+    var eventCell: EventCell?
+    
     
     let descriptionTextLabel: UILabel = {
         let textView = ViewControllerHelper.baseLabel()
@@ -58,8 +64,7 @@ class PayVottingController: UIViewController {
     override func viewDidLoad() {
         self.view.backgroundColor = UIColor.white
         self.setUpNavigationBar()
-        //self.navigationController?.interactivePopGestureRecognizer?.delegate = self
-        
+       
         
         self.view.addSubview(descriptionTextLabel)
         self.view.addSubview(numberOfVoteTextField)
@@ -80,32 +85,38 @@ class PayVottingController: UIViewController {
         self.amountToPayTextLabel.topAnchor.constraint(equalTo: numberOfVoteTextField.bottomAnchor, constant: 16).isActive = true
         self.amountToPayTextLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
         
-        
         self.updateUI()
         
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        //self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }
     
     func updateUI()  {
         guard let unwrapedItem = self.poll else {return}
         let attributes = [NSAttributedStringKey.foregroundColor: UIColor.gray, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]
         let termsAttributes = [NSAttributedStringKey.foregroundColor: UIColor.darkGray, NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 20)]
-        
-        let header = NSMutableAttributedString(string: "\(unwrapedItem.question)\n\n", attributes: attributes)
-        let terms = NSMutableAttributedString(string: "A vote cost GHS \(unwrapedItem.pricePerSMS)", attributes: termsAttributes)
-        
         let combinedText = NSMutableAttributedString()
-        combinedText.append(header)
-        combinedText.append(terms)
+        if !self.isEvent {
+            let header = NSMutableAttributedString(string: "\(unwrapedItem.question)\n\n", attributes: attributes)
+            let terms = NSMutableAttributedString(string: "A vote cost GHS \(unwrapedItem.pricePerSMS)", attributes: termsAttributes)
+            combinedText.append(header)
+            combinedText.append(terms)
+            
+        } else {
+            let header = NSMutableAttributedString(string: "\(unwrapedItem.eventTitle)\n\n", attributes: attributes)
+            let terms = NSMutableAttributedString(string: "A ticket cost \(unwrapedItem.price)", attributes: termsAttributes)
+            combinedText.append(header)
+            combinedText.append(terms)
+            
+            self.numberOfVoteTextField.attributedPlaceholder =  NSAttributedString(string: "Enter number of ticket",
+                                                                  attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
+        }
         
         self.descriptionTextLabel.attributedText = combinedText
+       
     }
     
     private func setUpNavigationBar()  {
-        navigationItem.title = "Voting"
+        let heading = self.isEvent ? "Buying Ticket" : "Voting"
+        navigationItem.title = heading
         navigationController?.navigationBar.isTranslucent = false
         
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
@@ -115,7 +126,8 @@ class PayVottingController: UIViewController {
         let menuBack = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(handleCancel))
         navigationItem.leftBarButtonItem = menuBack
         
-        let menuVote = UIBarButtonItem(title: "Vote", style: .done, target: self, action: #selector(handleSave))
+        let action = self.isEvent ? "Buy" : "Vote"
+        let menuVote = UIBarButtonItem(title: action, style: .done, target: self, action: #selector(handleSave))
         navigationItem.rightBarButtonItem = menuVote
     }
     
@@ -124,13 +136,33 @@ class PayVottingController: UIViewController {
     }
     
     @objc func handleSave()  {
-        print("CLICKED")
         let number = self.numberOfVoteTextField.text!
         if number.isEmpty {
             ViewControllerHelper.showAlert(vc: self, message: "Provide quantity of vote to cast", type: .warning)
             return
         }
-
+        if self.isEvent {
+            if let poll = self.poll {
+                self.utilController.showActivityIndicator()
+                self.apiService.buyTicket(pollId: poll.id, quantity: number,completion: { (status, url) in
+                    self.utilController.hideActivityIndicator()
+                    if let redirectUrl = url {
+                        self.navigationController?.popViewController(animated: true)
+                        self.eventCell?.continuePayment(url: redirectUrl)
+                        self.searchController?.continuePayment(url: redirectUrl)
+                        self.eventDetailController?.continuePayment(url: redirectUrl)
+                    }
+                    if (status == ApiCallStatus.DETAIL || status == ApiCallStatus.FAILED ){
+                        ViewControllerHelper.showAlert(vc: self, message: "Failed to initialise payment.", type: .failed)
+                        self.navigationController?.popViewController(animated: true)
+                    }
+                })
+                
+            } else {
+                ViewControllerHelper.showAlert(vc: self, message: "Attempt to buy ticket for undentifiable event.", type: .failed)
+            }
+            return
+        }
         if let poll = self.poll {
             self.utilController.showActivityIndicator()
             let total = Double(poll.pricePerSMS)! * Double(number)!
@@ -139,6 +171,8 @@ class PayVottingController: UIViewController {
                 if let redirectUrl = url {
                     self.navigationController?.popViewController(animated: true)
                     self.homeCell?.continuePayment(url: redirectUrl)
+                    self.pollsController?.continuePayment(url: redirectUrl)
+                    self.searchController?.continuePayment(url: redirectUrl)
                 }
                 if (status == ApiCallStatus.DETAIL || status == ApiCallStatus.FAILED ){
                     ViewControllerHelper.showAlert(vc: self, message: "Failed to initialise payment.", type: .failed)
@@ -158,6 +192,18 @@ class PayVottingController: UIViewController {
     func updateAmout()  {
         let number = self.numberOfVoteTextField.text!
         if let poll = self.poll {
+            if self.isEvent {
+                let price = poll.price.split(separator: " ")[1]
+                if (!number.isEmpty){
+                    let total = Double(price)! * Double(number)!
+                    self.amountToPayTextLabel.text = "TOTAL AMOUNT GHS \(total)"
+                } else {
+                    let total = Double(price)! * Double("1")!
+                    self.amountToPayTextLabel.text = "TOTAL AMOUNT GHS \(total)"
+                }
+                return
+            }
+            
             if (!number.isEmpty){
                 let total = Double(poll.pricePerSMS)! * Double(number)!
                 self.amountToPayTextLabel.text = "TOTAL AMOUNT GHS \(total)"

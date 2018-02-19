@@ -16,6 +16,8 @@ class SearchController: UIViewController {
     let brandCellId = "brandCellId"
     let baseRatingCellId = "baseRatingCell"
     let eventCellId = "eventCellId"
+    let peopleCellId = "peopleCellId"
+    let pollAudioCell = "pollAudioCell"
     var nextPageUrl = ""
     var loadedPages = [String]()
     var feed = [Any]()
@@ -87,6 +89,7 @@ class SearchController: UIViewController {
         self.feedCollectionView.register(BaseRatingCell.self, forCellWithReuseIdentifier: baseRatingCellId)
         self.feedCollectionView.register(BrandCell.self, forCellWithReuseIdentifier: brandCellId)
         self.feedCollectionView.register(EventItemCell.self, forCellWithReuseIdentifier: eventCellId)
+        self.feedCollectionView.register(PeopleCell.self, forCellWithReuseIdentifier: peopleCellId)
         
         
         if let flowLayout = feedCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
@@ -95,6 +98,14 @@ class SearchController: UIViewController {
         }
         
         self.setUpUniversalIndication()
+        
+        //MARK - notfication center
+        NotificationCenter.default.addObserver(self, selector: #selector(self.receivedPaymentDoneNotification(notification:)), name: Notification.Name(Key.PAYMENT_DONE), object: nil)
+    }
+    
+    //MARK - receiving notification
+    @objc func receivedPaymentDoneNotification(notification: Notification){
+        self.setSearchType(type: SearchType.poll)
     }
     
     func setUpUniversalIndication()   {
@@ -132,7 +143,6 @@ class SearchController: UIViewController {
         self.searchType = type
         let searchText = self.searchBar.text!
         if searchText.count < 3 {
-            print("COUNT LESS")
             return
         }
         var url = self.searchUrl
@@ -152,6 +162,31 @@ class SearchController: UIViewController {
         self.getData(url: url, text: searchText)
     }
     
+    
+    //MARK- stay buying ticket
+    @objc func startEventPayment(_ sender: UIButton) {
+        let event = self.feed[sender.tag] as! Poll
+        if event.hasPurchased {
+            let ticketVc = EventTicketController()
+            ticketVc.eventId = event.id
+            self.navigationController?.pushViewController(ticketVc, animated: true)
+            return
+        }
+        let destination = PayVottingController()
+        destination.poll = event
+        destination.isEvent = true
+        destination.searchController = self
+        self.navigationController?.pushViewController(destination, animated: true)
+    }
+    
+    //MARK - continue paymemt
+    func continuePayment(url:String)  {
+        let vc = PaymentRedirectController()
+        vc.searchController = self
+        vc.url = url
+        self.present(UINavigationController(rootViewController: vc), animated: true, completion: nil)
+    }
+    
     func getData(url:String,text:String)  {
         self.apiService.searchPoll(url: url, serchText: text,type: self.searchType) { (result, status, messsage, nextUrl) in
             self.stopProgress()
@@ -163,6 +198,57 @@ class SearchController: UIViewController {
             }
         }
     }
+    
+    //MARK: -- cast vote here
+    func castVote(pollId:String,choiceId:String)  {
+        for (index, item) in self.feed.enumerated() {
+            if item is Poll {
+                let pollIntended = item as! Poll
+                if (pollIntended.id == pollId) {
+                    //if the poll is a paid type
+                    if (pollIntended.pollType == "paid_poll"){
+                        let payVottingController = PayVottingController()
+                        payVottingController.poll = pollIntended
+                        payVottingController.choiceId = choiceId
+                        payVottingController.searchController = self
+                        self.navigationController?.pushViewController(payVottingController, animated: true)
+                        return
+                    }
+                    pollIntended.hasVoted = true
+                    pollIntended.totalVotes += 1
+                    for itemsChoice in pollIntended.pollChoice.enumerated() {
+                        let element = itemsChoice.element
+                        if (element.id == choiceId){
+                            element.numOfVotes += 1
+                        }
+                    }
+                    let selectedIndexPath = IndexPath(item: index, section: 0)
+                    self.feedCollectionView.reloadItems(at: [selectedIndexPath])
+                    self.apiService.voteForPoll(pollId: pollId, choiceId: choiceId, completion: { (status,message) in
+                            if status == ApiCallStatus.FAILED {
+                                ViewControllerHelper.showAlert(vc: self, message: message, type: MessageType.failed)
+                            }
+                        
+                    })
+                    
+                    break
+                }
+            }
+        }
+    }
+    
+    //MARK- rejeect and reset
+    func rejectVote(pollId:String)  {
+        for (index, item) in self.feed.enumerated() {
+            if item is Poll {
+                let pollIntended = item as! Poll
+                if (pollIntended.id == pollId) {
+                    let selectedIndexPath = IndexPath(item: index, section: 0)
+                    self.feedCollectionView.reloadItems(at: [selectedIndexPath])
+                }
+            }
+        }
+    }
 }
 
 extension SearchController: UISearchBarDelegate {
@@ -170,6 +256,9 @@ extension SearchController: UISearchBarDelegate {
     // called whenever text is changed.
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.count >= 3 {
+           self.feed.removeAll()
+           self.feedCollectionView.reloadData()
+           self.startProgress()
            self.getData(url: self.searchUrl, text: searchText)
         }
     }
@@ -204,7 +293,6 @@ extension SearchController: UICollectionViewDataSource,UICollectionViewDelegateF
                 cell.ratingView.tag = indexPath.row
                 cell.ratingView.addGestureRecognizer(tappedRatingView)
             
-            
                 //trigger imageView
                 let tappedImageView = UITapGestureRecognizer(target: self, action: #selector(self.previewImage(_:)))
                 cell.questionImageView.isUserInteractionEnabled = true
@@ -220,6 +308,11 @@ extension SearchController: UICollectionViewDataSource,UICollectionViewDelegateF
             if !feedItem.eventTitle.isEmpty {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: eventCellId, for: indexPath) as! EventItemCell
                 cell.feed = feedItem
+                
+                cell.actionButton.tag = indexPath.row
+                cell.actionButton.addTarget(self, action: #selector(self.startEventPayment(_:)), for: .touchUpInside)
+                
+                
                 return cell
             }
             
@@ -236,7 +329,15 @@ extension SearchController: UICollectionViewDataSource,UICollectionViewDelegateF
             cell.shareButton.addTarget(self, action: #selector(self.share(_:)), for: .touchUpInside)
         
             return cell
-        }  else {
+            
+        }  else if (feed is PollAuthor) {
+            let feedItem = feed as! PollAuthor
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: peopleCellId, for: indexPath) as! PeopleCell
+            cell.feed = feedItem
+            cell.tag = indexPath.row
+            //cell.followingButton.addTarget(self, action: #selector(followAction), for: .touchUpInside)
+            return cell
+        } else {
             let feedItem = feed as! Brand
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: brandCellId, for: indexPath) as! BrandCell
             cell.feed = feedItem
@@ -248,7 +349,7 @@ extension SearchController: UICollectionViewDataSource,UICollectionViewDelegateF
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let feed = self.feed[indexPath.row]
-        return CellHelper.configureCellHeight(collectionView: collectionView, feed: feed)
+        return CellHelper.configureCellHeight(collectionView: collectionView, collectionViewLayout: collectionViewLayout, feed: feed)
     }
     
     @objc func share(_ sender: UIButton) {
@@ -284,6 +385,7 @@ extension SearchController: UICollectionViewDataSource,UICollectionViewDelegateF
         }
     }
     
+    //MARK -- present image
     @objc func previewImage(_ sender: UITapGestureRecognizer) {
         let view = sender.view as! UIImageView
         let poll = self.feed[view.tag] as! Poll

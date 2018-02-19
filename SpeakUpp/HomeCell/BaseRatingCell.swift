@@ -56,15 +56,11 @@ class BaseRatingCell: BaseCell {
                 self.ratingView.rating = Double(unwrapedItem.totalAverageRating)
                 self.ratesLabel.text = "\(Mics.formatNumber(number: unwrapedItem.totalRatingVotes,text: "Rating"))\n\(unwrapedItem.totalAverageRating)"
                 self.ratingView.settings.updateOnTouch = false
-                
-                self.ratesLabel.isHidden = false
             } else {
-                self.ratingView.settings.updateOnTouch = false
+                self.ratingView.settings.updateOnTouch = true
                 self.ratingView.rating = Double(5.0)
                 self.ratesLabel.text = ""
-                self.ratesLabel.isHidden = true
                
-                
             }
         }
     }
@@ -232,15 +228,15 @@ class BaseRatingCell: BaseCell {
         self.questionImageView.heightAnchor.constraint(equalToConstant: 200).isActive = true
         self.questionImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16).isActive = true
         
-        
-        self.ratingView.topAnchor.constraint(equalTo: questionImageView.bottomAnchor, constant: 16).isActive = true
-        self.ratingView.bottomAnchor.constraint(equalTo: ratesLabel.topAnchor, constant: -16).isActive = true
+        self.ratingView.topAnchor.constraint(equalTo: questionImageView.bottomAnchor, constant: 8).isActive = true
+        self.ratingView.bottomAnchor.constraint(equalTo: ratesLabel.topAnchor, constant: -8).isActive = true
         self.ratingView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        
-        self.ratesLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 50).isActive = true
-        self.ratesLabel.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        self.ratesLabel.bottomAnchor.constraint(equalTo: dividerView.topAnchor, constant: -16).isActive = true
-        self.ratesLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -50).isActive = true
+       
+        self.ratesLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16).isActive = true
+        self.ratesLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        self.ratesLabel.bottomAnchor.constraint(equalTo: dividerView.topAnchor, constant: -8).isActive = true
+        self.ratesLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16).isActive = true
+       
        
         let container = UIStackView(arrangedSubviews: [likeButton,commentButton,shareButton])
         container.distribution = .fillEqually
@@ -252,7 +248,6 @@ class BaseRatingCell: BaseCell {
         container.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16).isActive = true
         container.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16).isActive = true
         container.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        
         
         self.dividerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0).isActive = true
         self.dividerView.bottomAnchor.constraint(equalTo: container.topAnchor, constant: -8).isActive = true

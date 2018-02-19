@@ -66,7 +66,7 @@ class ViewControllerHelper {
    
     static func baseField() -> UITextField {
         let textField = UITextField()
-        textField.font = UIFont.systemFont(ofSize: 14)
+        textField.font = UIFont.systemFont(ofSize: 16)
         textField.textAlignment = .left
         textField.textColor = UIColor.white
         textField.layer.borderColor = UIColor.clear.cgColor
@@ -81,7 +81,7 @@ class ViewControllerHelper {
     
     static func mainBaseField(placeHolder:String) -> UITextField {
         let textField = UITextField()
-        textField.font = UIFont.systemFont(ofSize: 14)
+        textField.font = UIFont.systemFont(ofSize: 16)
         textField.textAlignment = .center
         textField.textColor = UIColor.white
         textField.layer.borderColor = UIColor.white.cgColor
@@ -104,7 +104,7 @@ class ViewControllerHelper {
         label.backgroundColor = UIColor.clear
         label.text = ""
         label.minimumScaleFactor = 0.2
-        label.lineBreakMode = .byCharWrapping
+        label.lineBreakMode = .byClipping
         label.adjustsFontSizeToFitWidth = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -153,6 +153,24 @@ class ViewControllerHelper {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }
+    
+    static func whiteBaseButton() -> UIButton {
+        let button = UIButton()
+        let color = UIColor.white
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+        button.backgroundColor = UIColor.white
+        button.layer.cornerRadius = 2
+        button.layer.borderWidth = 1
+        button.layer.borderColor = color.cgColor
+        button.setTitleColor(UIColor.darkGray, for: .normal)
+        let spacing = CGFloat(10)
+        button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, spacing)
+        button.titleEdgeInsets = UIEdgeInsetsMake(0, spacing, 0, spacing)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }
+    
+    
     
     static func plainButton() -> UIButton {
         let button = UIButton()
@@ -252,7 +270,7 @@ class ViewControllerHelper {
         case .warning:
             view.dodo.warning(message)
         }
-        let when = DispatchTime.now() + 1
+        let when = DispatchTime.now() + 2
         DispatchQueue.main.asyncAfter(deadline: when) {
             view.dodo.hide()
         }
@@ -296,6 +314,7 @@ class ViewControllerHelper {
         activityViewController.excludedActivityTypes = [ UIActivityType.airDrop, UIActivityType.postToFacebook ]
         targetVC.present(activityViewController, animated: true, completion: nil)
     }
+    
     
 
 }

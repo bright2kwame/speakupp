@@ -7,8 +7,6 @@
 //
 
 
-
-
 enum MessageType {
     case failed
     case success
@@ -21,6 +19,18 @@ enum SearchType {
     case people
     case brands
     case events
+}
+
+enum SettingType {
+    case sound
+    case notification
+    case log
+    case profile
+    case faq
+    case privacy
+    case contact
+    case friend
+    case about
 }
 
 

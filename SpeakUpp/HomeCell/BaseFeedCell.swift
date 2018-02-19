@@ -8,6 +8,8 @@
 
 import UIKit
 import AlamofireImage
+import AHAudioPlayer
+
 
 class BaseFeedCell: BaseCell {
     var choices = [PollChoice]()
@@ -18,6 +20,8 @@ class BaseFeedCell: BaseCell {
     let pollAudioCell = "pollAudioCell"
     var choiceCollectionTopConsraint: NSLayoutConstraint?
     var homeCell: HomeCell?
+    var searchController: SearchController?
+    var pollsController: PollsController?
     
     
     var feed: Poll? {
@@ -32,11 +36,14 @@ class BaseFeedCell: BaseCell {
             let numberFormatter = NumberFormatter()
             numberFormatter.numberStyle = .decimal
             let nsNumber = NSNumber(value: unwrapedItem.totalVotes)
-            self.allVotesCountLabel.text = "\(numberFormatter.string(from: nsNumber)!) Votes cast."
+            let message = (unwrapedItem.totalVotes == 1) ? "vote cast." : "votes cast."
+            self.allVotesCountLabel.text = "\(numberFormatter.string(from: nsNumber)!) \(message)"
             //MARK- like configuration
             if unwrapedItem.hasLiked {
+                self.likeButton.setImage(UIImage(named: "LikeActive"), for: .normal)
                 self.likeButton.setTitleColor(UIColor.hex(hex: Key.primaryHexCode), for: .normal)
             }   else {
+                self.likeButton.setImage(UIImage(named: "Like"), for: .normal)
                 self.likeButton.setTitleColor(UIColor.darkGray, for: .normal)
             }
             if let author = unwrapedItem.author {
@@ -93,11 +100,10 @@ class BaseFeedCell: BaseCell {
                 }
             }
             self.choiceCollectionView.reloadData()
-    
         }
     }
     
-    
+
     let shareButton: UIButton = {
         let button = ViewControllerHelper.plainImageButton()
         button.tintColor = UIColor.hex(hex: Key.primaryHexCode)
@@ -144,7 +150,7 @@ class BaseFeedCell: BaseCell {
     
     let imageQuestionLabel: UILabel = {
         let textView = ViewControllerHelper.baseLabel()
-        textView.textAlignment = .center
+        textView.textAlignment = .left
         textView.text = ""
         textView.font = UIFont.systemFont(ofSize: 20)
         textView.textColor = UIColor.white
@@ -277,14 +283,14 @@ class BaseFeedCell: BaseCell {
         
         self.imageQuestionLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 25).isActive = true
         self.imageQuestionLabel.centerXAnchor.constraint(equalTo: questionImageView.centerXAnchor).isActive = true
-        self.imageQuestionLabel.centerYAnchor.constraint(equalTo: questionImageView.centerYAnchor).isActive = true
-        self.imageQuestionLabel.heightAnchor.constraint(equalToConstant: 150).isActive = true
+        self.imageQuestionLabel.bottomAnchor.constraint(equalTo: questionImageView.bottomAnchor, constant: 0).isActive = true
+        self.imageQuestionLabel.heightAnchor.constraint(equalToConstant: 100).isActive = true
         self.imageQuestionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -25).isActive = true
         
         self.questionCoverView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20).isActive = true
         self.questionCoverView.centerXAnchor.constraint(equalTo: questionImageView.centerXAnchor).isActive = true
-        self.questionCoverView.centerYAnchor.constraint(equalTo: questionImageView.centerYAnchor).isActive = true
-        self.questionCoverView.heightAnchor.constraint(equalToConstant: 150).isActive = true
+        self.questionCoverView.bottomAnchor.constraint(equalTo: questionImageView.bottomAnchor).isActive = true
+        self.questionCoverView.heightAnchor.constraint(equalToConstant: 100).isActive = true
         self.questionCoverView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20).isActive = true
         
         self.noImageQuestionLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16).isActive = true
@@ -382,7 +388,7 @@ extension BaseFeedCell: UICollectionViewDataSource,UICollectionViewDelegateFlowL
             cell.rejectImageView.addGestureRecognizer(tappedRejectContent)
             
             return cell
-        } else if !feed.audio.isEmpty {
+        }/** else if !feed.audio.isEmpty {
             //MARK - audio cell section
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: pollAudioCell, for: indexPath) as! PollAudioChoiceCell
             cell.feed = feed
@@ -393,8 +399,14 @@ extension BaseFeedCell: UICollectionViewDataSource,UICollectionViewDelegateFlowL
             cell.optionImageView.tag = indexPath.row
             cell.optionImageView.addGestureRecognizer(tappedContent)
             
+            //play answer audio here
+            let playContent = UITapGestureRecognizer(target: self, action: #selector(self.playAudio(_:)))
+            cell.playImageView.isUserInteractionEnabled = true
+            cell.playImageView.tag = indexPath.row
+            cell.playImageView.addGestureRecognizer(playContent)
+            
             return cell
-        }else {
+        }**/else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: radioCellId, for: indexPath) as! PollNoImageChoiceCell
             cell.feed = feed
             
@@ -407,15 +419,27 @@ extension BaseFeedCell: UICollectionViewDataSource,UICollectionViewDelegateFlowL
         }
     }
     
+    @objc func playAudio(_ sender: UITapGestureRecognizer) {
+        let feed = self.choices[(sender.view?.tag)!]
+        print("AUDIO \(feed.audio)")
+        AHAudioPlayerManager.shared.stop()
+        let url = URL(string: feed.audio)
+        AHAudioPlayerManager.shared.play(trackId: 0, trackURL: url!)
+      
+    }
     
     @objc func vote(_ sender: UITapGestureRecognizer) {
         let feed = self.choices[(sender.view?.tag)!]
         self.homeCell?.castVote(pollId: (feed.poll?.id)!, choiceId: feed.id)
+        self.searchController?.castVote(pollId: (feed.poll?.id)!, choiceId: feed.id)
+        self.pollsController?.castVote(pollId: (feed.poll?.id)!, choiceId: feed.id)
     }
     
     @objc func rejectVote(_ sender: UITapGestureRecognizer) {
         let feed = self.choices[(sender.view?.tag)!]
         self.homeCell?.rejectVote(pollId: (feed.poll?.id)!)
+        self.searchController?.rejectVote(pollId: (feed.poll?.id)!)
+        self.pollsController?.rejectVote(pollId: (feed.poll?.id)!)
     }
     
     

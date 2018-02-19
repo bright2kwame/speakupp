@@ -16,7 +16,7 @@ class BrandsController: UIViewController {
     var feed = [Brand]()
     let apiService = ApiService()
     var indicator: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
-
+    var isOnboard = true
     
     //MARK - register collection view here
     lazy var feedCollectionView: UICollectionView = {
@@ -33,7 +33,6 @@ class BrandsController: UIViewController {
     override func viewDidLoad() {
        self.view.backgroundColor = UIColor.groupTableViewBackground
        self.setUpNavigationBar()
-        
         
         self.view.addSubview(feedCollectionView)
         
@@ -96,23 +95,34 @@ class BrandsController: UIViewController {
         navigationController?.navigationBar.shadowImage = UIImage()
         
         
-        let image = UIImage(named: "BackArrow")?.withRenderingMode(.alwaysOriginal)
-        let menuBack = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(handleCancel))
-        navigationItem.leftBarButtonItem = menuBack
+        //MARK - toggling the onbarding status
+        if isOnboard {
+            let menuSave = UIBarButtonItem(title: "Next", style: .done, target: self, action: #selector(handleNext))
+            navigationItem.rightBarButtonItem = menuSave
+        } else {
+            let image = UIImage(named: "BackArrow")?.withRenderingMode(.alwaysOriginal)
+            let menuBack = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(handleCancel))
+            navigationItem.leftBarButtonItem = menuBack
+        }
+
     }
     
     @objc func handleCancel()  {
         dismiss(animated: true, completion: nil)
     }
     
-    @objc func followAction(sender: UIButton)  {
-        self.followBrand(brandId: self.feed[sender.tag].id)
+    //MARK - go to the home screen now
+    @objc func handleNext()  {
+        let vc = GetStartedController()
+        self.present(vc, animated: true, completion: nil)
     }
     
-    func followBrand(brandId:String)  {
-        for (index, item) in self.feed.enumerated() {
-            if item.id == brandId {
-                if (item.isFriend){
+    
+    @objc  func followBrand(sender: UIButton)  {
+        let position = sender.tag
+        let item = self.feed[position]
+        let brandId = item.id
+        if (item.isFriend){
                    item.isFriend = false
                     self.apiService.unFollowUser(otherUserId: brandId,completion: { (status) in
                         if status == ApiCallStatus.FAILED {
@@ -127,14 +137,11 @@ class BrandsController: UIViewController {
                             let message = "Failed to follow brand"
                             ViewControllerHelper.showPrompt(vc: self, message: message)
                         }
-                        
-                    })
-                }
-                let selectedIndexPath = IndexPath(item: index, section: 0)
-                self.feedCollectionView.reloadItems(at: [selectedIndexPath])
-                
-            }
+
+            })
         }
+        let selectedIndexPath = IndexPath(item: position, section: 0)
+        self.feedCollectionView.reloadItems(at: [selectedIndexPath])
     }
 }
 
@@ -149,8 +156,8 @@ extension BrandsController: UICollectionViewDataSource,UICollectionViewDelegateF
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: feedCellId, for: indexPath) as! BrandCell
         cell.feed = feed
         
-        cell.tag = indexPath.row
-        cell.followingButton.addTarget(self, action: #selector(followAction), for: .touchUpInside)
+        cell.followingButton.tag = indexPath.row
+        cell.followingButton.addTarget(self, action: #selector(followBrand(sender:)), for: .touchUpInside)
         
         return cell
     }

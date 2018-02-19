@@ -10,161 +10,24 @@ import UIKit
 
 class SettingController: UIViewController {
     
-    let buttonHeight = CGFloat(30.0)
+    let user = User.getUser()!
+    let profileCell = "profileCell"
+    let nonSwitchTableCell = "nonSwitchTableCell"
+    let switchTableCell = "switchTableCell"
     
-    lazy var scrollView: UIScrollView = {
-        let scrollView = UIScrollView(frame: self.view.bounds)
-        scrollView.alwaysBounceVertical = true
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        return scrollView
-    }()
-
+    let items = [SettingItem(title:"Profile",isSelectable: false,type: SettingType.profile),SettingItem(title:"Activity Log",isSelectable: false, type: SettingType.log),SettingItem(title:"Notifications",isSelectable: true,type: SettingType.notification),SettingItem(title:"Sound",isSelectable: true,type: SettingType.sound),SettingItem(title:"Privacy",isSelectable: false,type: SettingType.privacy),SettingItem(title:"Tell a Friend",isSelectable: false,type: SettingType.friend),SettingItem(title:"Contact Us",isSelectable: false,type: SettingType.contact),SettingItem(title:"FAQs",isSelectable: false,type: SettingType.faq),SettingItem(title:"About",isSelectable: false,type: SettingType.about)]
     
-    let profileImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
-        imageView.image = UIImage(named: "UserIcon")
-        imageView.layer.masksToBounds = true
-        imageView.layer.cornerRadius = 50
-        imageView.layer.borderColor = UIColor.white.cgColor
-        imageView.layer.borderWidth = 2
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }()
-    
-    let nameLabel: UILabel = {
-        let textView = ViewControllerHelper.baseLabel()
-        textView.textAlignment = .left
-        textView.text = "*****"
-        textView.font = UIFont.systemFont(ofSize: 16)
-        textView.textColor = UIColor.darkGray
-        return textView
-    }()
-    
-    lazy var profileView: UIView = {
-        let uiView = basicView()
-        return uiView
-    }()
-    
-    let activityLogButton: UIButton = {
-        let button = ViewControllerHelper.plainButton()
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-        button.setTitle("Activity Log", for: .normal)
-        button.setTitleColor(UIColor.darkGray, for: .normal)
-        button.contentHorizontalAlignment = .left
-        button.addTarget(self, action: #selector(handleActivityLog), for: .touchUpInside)
-        return button
-    }()
-    
-    lazy var activityView: UIView = {
-        let uiView = basicView()
-        return uiView
-    }()
-    
-    let notificationButton: UIButton = {
-        let button = ViewControllerHelper.plainButton()
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-        button.setTitle("Notifications", for: .normal)
-        button.layer.cornerRadius = 0
-        button.setTitleColor(UIColor.darkGray, for: .normal)
-        button.contentHorizontalAlignment = .left
-        button.addTarget(self, action: #selector(handleActivityLog), for: .touchUpInside)
-        return button
-    }()
-    
-    lazy var notificationView: UIView = {
-        let uiView = basicView()
-        return uiView
-    }()
-    
-    
-    let soundButton: UIButton = {
-        let button = ViewControllerHelper.plainButton()
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-        button.setTitle("Sound", for: .normal)
-        button.setTitleColor(UIColor.darkGray, for: .normal)
-        button.contentHorizontalAlignment = .left
-        button.addTarget(self, action: #selector(handleActivityLog), for: .touchUpInside)
-        return button
-    }()
-    
-    lazy var soundView: UIView = {
-        let uiView = basicView()
-        return uiView
-    }()
-    
-    let privacyButton: UIButton = {
-        let button = ViewControllerHelper.plainButton()
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-        button.setTitle("Privacy", for: .normal)
-        button.layer.cornerRadius = 0
-        button.setTitleColor(UIColor.darkGray, for: .normal)
-        button.contentHorizontalAlignment = .left
-        button.addTarget(self, action: #selector(handleActivityLog), for: .touchUpInside)
-        return button
-    }()
-    
-    lazy var privacyView: UIView = {
-        let uiView = basicView()
-        return uiView
-    }()
-    
-    let shareButton: UIButton = {
-        let button = ViewControllerHelper.plainButton()
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-        button.setTitle("Tell a Friend", for: .normal)
-        button.layer.cornerRadius = 0
-        button.setTitleColor(UIColor.darkGray, for: .normal)
-        button.contentHorizontalAlignment = .left
-        button.addTarget(self, action: #selector(handleActivityLog), for: .touchUpInside)
-        return button
-    }()
-    
-    lazy var shareView: UIView = {
-        let uiView = basicView()
-        return uiView
-    }()
-    
-    let contactButton: UIButton = {
-        let button = ViewControllerHelper.plainButton()
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-        button.setTitle("Contact Us", for: .normal)
-        button.layer.cornerRadius = 0
-        button.setTitleColor(UIColor.darkGray, for: .normal)
-        button.contentHorizontalAlignment = .left
-        button.addTarget(self, action: #selector(handleActivityLog), for: .touchUpInside)
-        return button
-    }()
-    
-    lazy var contactView: UIView = {
-        let uiView = basicView()
-        return uiView
-    }()
-    
-    let faqButton: UIButton = {
-        let button = ViewControllerHelper.plainButton()
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-        button.setTitle("FAQs", for: .normal)
-        button.layer.cornerRadius = 0
-        button.setTitleColor(UIColor.darkGray, for: .normal)
-        button.contentHorizontalAlignment = .left
-        button.addTarget(self, action: #selector(handleActivityLog), for: .touchUpInside)
-        return button
-    }()
-    
-    lazy var faqView: UIView = {
-        let uiView = basicView()
-        return uiView
+    //MARK - register collection view here
+    lazy var settingTableView: UITableView = {
+        let tableView = UITableView()
+        tableView.backgroundColor = UIColor.clear
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        return tableView
     }()
     
 
-    func basicView() -> UIView {
-        let uiView = UIView()
-        uiView.backgroundColor = UIColor.gray
-        uiView.translatesAutoresizingMaskIntoConstraints = false
-        return uiView
-    }
-    
     override func viewDidLoad() {
         self.setUpView()
     }
@@ -173,132 +36,19 @@ class SettingController: UIViewController {
         self.setUpNavigationBar()
         
         self.view.backgroundColor = UIColor.white
-        self.view.addSubview(scrollView)
-        self.scrollView.addSubview(profileImageView)
-        self.scrollView.addSubview(nameLabel)
-        self.scrollView.addSubview(profileView)
-        self.scrollView.addSubview(activityLogButton)
-        self.scrollView.addSubview(activityView)
-        self.scrollView.addSubview(notificationButton)
-        self.scrollView.addSubview(notificationView)
-        self.scrollView.addSubview(soundButton)
-        self.scrollView.addSubview(soundView)
-        self.scrollView.addSubview(privacyButton)
-        self.scrollView.addSubview(privacyView)
-        self.scrollView.addSubview(shareButton)
-        self.scrollView.addSubview(shareView)
-        self.scrollView.addSubview(contactButton)
-        self.scrollView.addSubview(contactView)
-        self.scrollView.addSubview(faqButton)
-        self.scrollView.addSubview(faqView)
+        self.view.addSubview(settingTableView)
         
-        let width = self.scrollView.frame.width
-        self.scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,constant: 0).isActive = true
-        self.scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0).isActive = true
-        self.scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0).isActive = true
-        self.scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,constant: 0).isActive = true
+        self.settingTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+        self.settingTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        self.settingTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
+        self.settingTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
+        self.settingTableView.register(ProfileTableCell.self, forCellReuseIdentifier: profileCell)
+        self.settingTableView.register(NonSwitchTableCell.self, forCellReuseIdentifier: nonSwitchTableCell)
+        self.settingTableView.register(SwitchTableCell.self, forCellReuseIdentifier: switchTableCell)
         
-        self.profileImageView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16).isActive = true
-        self.profileImageView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 16).isActive = true
-        self.profileImageView.heightAnchor.constraint(equalToConstant: 100).isActive = true
-        self.profileImageView.widthAnchor.constraint(equalToConstant: 100).isActive = true
         
-        self.nameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 16).isActive = true
-        self.nameLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 50).isActive = true
-        self.nameLabel.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16).isActive = true
-        self.nameLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
-       
-        self.profileView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 0).isActive = true
-        self.profileView.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
-        self.profileView.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 16).isActive = true
-        self.profileView.widthAnchor.constraint(equalToConstant: width).isActive = true
-        
-        self.activityLogButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 8).isActive = true
-        //self.activityLogButton.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16).isActive = true
-        self.activityLogButton.topAnchor.constraint(equalTo: profileView.bottomAnchor, constant: 16).isActive = true
-        self.activityLogButton.heightAnchor.constraint(equalToConstant: buttonHeight).isActive = true
-        self.activityLogButton.widthAnchor.constraint(equalToConstant: width-32).isActive = true
-        
-        self.activityView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 0).isActive = true
-        self.activityView.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
-        self.activityView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: 0).isActive = true
-        self.activityView.topAnchor.constraint(equalTo: activityLogButton.bottomAnchor, constant: 16).isActive = true
-        self.activityView.widthAnchor.constraint(equalToConstant: width).isActive = true
-        
-        self.notificationButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 8).isActive = true
-        //self.notificationButton.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16).isActive = true
-        self.notificationButton.topAnchor.constraint(equalTo: activityView.bottomAnchor, constant: 16).isActive = true
-        self.notificationButton.heightAnchor.constraint(equalToConstant: buttonHeight).isActive = true
-        self.notificationButton.widthAnchor.constraint(equalToConstant: width-32).isActive = true
-        
-        self.notificationView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 0).isActive = true
-        self.notificationView.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
-        self.notificationView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: 0).isActive = true
-        self.notificationView.topAnchor.constraint(equalTo: notificationButton.bottomAnchor, constant: 16).isActive = true
-        
-        self.soundButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 8).isActive = true
-        self.soundButton.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16).isActive = true
-        self.soundButton.topAnchor.constraint(equalTo: notificationView.bottomAnchor, constant: 16).isActive = true
-        self.soundButton.heightAnchor.constraint(equalToConstant: buttonHeight).isActive = true
-        
-        self.soundView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 0).isActive = true
-        self.soundView.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
-        self.soundView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: 0).isActive = true
-        self.soundView.topAnchor.constraint(equalTo: soundButton.bottomAnchor, constant: 16).isActive = true
-        
-        self.privacyButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 8).isActive = true
-        self.privacyButton.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16).isActive = true
-        self.privacyButton.topAnchor.constraint(equalTo: soundView.bottomAnchor, constant: 16).isActive = true
-        self.privacyButton.heightAnchor.constraint(equalToConstant: buttonHeight).isActive = true
-        
-        self.privacyView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 0).isActive = true
-        self.privacyView.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
-        self.privacyView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: 0).isActive = true
-        self.privacyView.topAnchor.constraint(equalTo: privacyButton.bottomAnchor, constant: 16).isActive = true
-        
-        self.shareButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 8).isActive = true
-        self.shareButton.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16).isActive = true
-        self.shareButton.topAnchor.constraint(equalTo: privacyView.bottomAnchor, constant: 16).isActive = true
-        self.shareButton.heightAnchor.constraint(equalToConstant: buttonHeight).isActive = true
-        
-        self.shareView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 0).isActive = true
-        self.shareView.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
-        self.shareView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: 0).isActive = true
-        self.shareView.topAnchor.constraint(equalTo: shareButton.bottomAnchor, constant: 16).isActive = true
-        
-        self.contactButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 8).isActive = true
-        self.contactButton.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16).isActive = true
-        self.contactButton.topAnchor.constraint(equalTo: shareView.bottomAnchor, constant: 16).isActive = true
-        self.contactButton.heightAnchor.constraint(equalToConstant: buttonHeight).isActive = true
-        
-        self.contactView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 0).isActive = true
-        self.contactView.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
-        self.contactView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: 0).isActive = true
-        self.contactView.topAnchor.constraint(equalTo: contactButton.bottomAnchor, constant: 16).isActive = true
-        
-        self.faqButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 8).isActive = true
-        self.faqButton.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16).isActive = true
-        self.faqButton.topAnchor.constraint(equalTo: contactView.bottomAnchor, constant: 16).isActive = true
-        self.faqButton.heightAnchor.constraint(equalToConstant: buttonHeight).isActive = true
-        
-        self.faqView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 0).isActive = true
-        self.faqView.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
-        self.faqView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: 0).isActive = true
-        self.faqView.topAnchor.constraint(equalTo: faqButton.bottomAnchor, constant: 16).isActive = true
-        
-        self.setUpUIElements()
     }
     
-    func setUpUIElements()  {
-        if let user = User.getUser() {
-            self.profileImageView.af_setImage(
-                withURL: URL(string: (user.profile))!,
-                placeholderImage: Mics.userPlaceHolder(),
-                imageTransition: .crossDissolve(0.2)
-            )
-            self.nameLabel.text = user.fullName
-        }
-    }
     
     private func setUpNavigationBar()  {
         navigationItem.title = "Settings"
@@ -319,5 +69,232 @@ class SettingController: UIViewController {
     
     @objc func handleActivityLog()  {
         dismiss(animated: true, completion: nil)
+    }
+}
+
+extension SettingController: UITableViewDelegate,UITableViewDataSource{
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return items.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.row == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: profileCell, for: indexPath) as! ProfileTableCell
+            cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
+            cell.user = self.user
+            return cell
+        }
+        
+        let feed = self.items[indexPath.row]
+        if feed.isSelectable {
+            let cell = tableView.dequeueReusableCell(withIdentifier: switchTableCell, for: indexPath) as! SwitchTableCell
+            cell.item = feed
+            return cell
+        }  else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: nonSwitchTableCell, for: indexPath) as! NonSwitchTableCell
+            cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
+            cell.item = feed
+            return cell
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row == 0 {
+            return CGFloat(100)
+        }
+        return CGFloat(50)
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let item = self.items[indexPath.row].type
+        if indexPath.row == 0 {
+           self.startEditPage()
+        } else if (item == SettingType.privacy)  {
+            startPage(type: item)
+        } else if (item == SettingType.about)  {
+            startPage(type: item)
+        } else if (item == SettingType.faq){
+            startFAQPage()
+        } else if (item == SettingType.friend){
+            let user = User.getUser()!
+            ViewControllerHelper.presentSharer(targetVC: self, message: "This is \(user.username), Check out and download the SpeakUPP App.")
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
+        let cell  = tableView.cellForRow(at: indexPath)
+        cell!.contentView.backgroundColor = UIColor.clear
+        cell!.selectionStyle = .none
+    }
+    
+    func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
+        let cell  = tableView.cellForRow(at: indexPath as IndexPath)
+        cell!.contentView.backgroundColor = UIColor.clear
+        cell!.selectionStyle = .none
+    }
+    
+    func startFAQPage()  {
+        let destination = FaqController()
+        let vc = UINavigationController(rootViewController: destination)
+        self.present(vc, animated: true, completion: nil)
+    }
+    
+    //MARK- start the privacy and about
+    func startPage(type: SettingType)  {
+        let destination = SettingPageController()
+        let header = (type == SettingType.about) ? "About" : "Privacy"
+        destination.header = header
+        destination.type = type
+        let vc = UINavigationController(rootViewController: destination)
+        self.present(vc, animated: true, completion: nil)
+    }
+    
+    //MARK- start to edit page
+    func startEditPage()  {
+        let vc = UINavigationController(rootViewController: EditProfileController())
+        self.present(vc, animated: true, completion: nil)
+    }
+
+}
+
+class ProfileTableCell: BaseTableCell {
+    
+    var user: User! {
+        didSet{
+            guard let unwrapedItem = user else {return}
+            if !unwrapedItem.profile.isEmpty {
+                self.profileImageView.af_setImage(
+                    withURL: URL(string: (unwrapedItem.profile))!,
+                    placeholderImage: Mics.userPlaceHolder(),
+                    imageTransition: .crossDissolve(0.2)
+                )
+            }
+            self.nameLabel.text = user.fullName
+        }
+    }
+    
+    
+    let profileImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.image = UIImage(named: "UserIcon")
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderColor = UIColor.white.cgColor
+        imageView.layer.borderWidth = 0
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    let nameLabel: UILabel = {
+        let textView = ViewControllerHelper.baseLabel()
+        textView.textAlignment = .left
+        textView.text = ""
+        textView.numberOfLines = 0
+        textView.font = UIFont.systemFont(ofSize: 16)
+        textView.textColor = UIColor.darkText
+        return textView
+    }()
+    
+    
+    override func setUpView() {
+        addSubview(profileImageView)
+        addSubview(nameLabel)
+       
+        self.profileImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8).isActive = true
+        self.profileImageView.topAnchor.constraint(equalTo: topAnchor, constant: 8).isActive = true
+        self.profileImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8).isActive = true
+        self.profileImageView.widthAnchor.constraint(equalToConstant: 84).isActive = true
+        self.profileImageView.layer.cornerRadius = 42
+
+        self.nameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 16).isActive = true
+        self.nameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 8).isActive = true
+        self.nameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8).isActive = true
+        self.nameLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8).isActive = true
+
+    }
+}
+
+class NonSwitchTableCell: BaseTableCell {
+    
+    var item: SettingItem! {
+        didSet{
+            guard let unwrapedItem = item else {return}
+            self.nameLabel.text = unwrapedItem.title
+        }
+    }
+    
+
+    let nameLabel: UILabel = {
+        let textView = ViewControllerHelper.baseLabel()
+        textView.textAlignment = .left
+        textView.text = ""
+        textView.numberOfLines = 0
+        textView.font = UIFont.systemFont(ofSize: 16)
+        textView.textColor = UIColor.darkText
+        return textView
+    }()
+    
+    
+    override func setUpView() {
+        addSubview(nameLabel)
+    
+        self.nameLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8).isActive = true
+        self.nameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 8).isActive = true
+        self.nameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8).isActive = true
+        self.nameLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8).isActive = true
+        
+    }
+}
+
+class SwitchTableCell: BaseTableCell {
+    
+    var item: SettingItem! {
+        didSet{
+            guard let unwrapedItem = item else {return}
+            self.nameLabel.text = unwrapedItem.title
+        }
+    }
+    
+    
+    let nameLabel: UILabel = {
+        let textView = ViewControllerHelper.baseLabel()
+        textView.textAlignment = .left
+        textView.text = ""
+        textView.numberOfLines = 0
+        textView.font = UIFont.systemFont(ofSize: 16)
+        textView.textColor = UIColor.darkText
+        return textView
+    }()
+    
+    lazy var switchLabel: UISwitch = {
+        let switchDemo = UISwitch()
+        switchDemo.isOn = true
+        switchDemo.setOn(true, animated: false)
+        switchDemo.addTarget(self, action: #selector(switchValueDidChange(_:)), for: .valueChanged)
+        switchDemo.translatesAutoresizingMaskIntoConstraints = false
+        return switchDemo
+    }()
+    
+    
+  
+    
+    override func setUpView() {
+        addSubview(nameLabel)
+        addSubview(switchLabel)
+        
+        self.nameLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8).isActive = true
+        self.nameLabel.trailingAnchor.constraint(equalTo: switchLabel.leadingAnchor, constant: 8).isActive = true
+        self.nameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8).isActive = true
+        self.nameLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8).isActive = true
+        
+        self.switchLabel.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        self.switchLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8).isActive = true
+        self.switchLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8).isActive = true
+        self.switchLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 0).isActive = true
+        
+    }
+    
+    @objc func switchValueDidChange(_ sender: UISwitch) {
+       
     }
 }

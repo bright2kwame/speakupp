@@ -20,6 +20,9 @@ class HomeMenuBar: BaseUIView {
         collectionView.backgroundColor = UIColor.clear
         collectionView.dataSource = self
         collectionView.delegate = self
+        collectionView.alwaysBounceHorizontal = false
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.showsHorizontalScrollIndicator = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
@@ -64,9 +67,12 @@ extension HomeMenuBar: UICollectionViewDataSource,UICollectionViewDelegateFlowLa
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let contentInset = collectionView.contentInset.left * 2
-        let itemWidth = collectionView.frame.width / 4
-        return CGSize(width: itemWidth - contentInset, height: collectionView.frame.height)
+        
+        let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
+        let totalSpace = flowLayout.sectionInset.left + flowLayout.sectionInset.right + (flowLayout.minimumInteritemSpacing * CGFloat(2 - 1))
+        let size = Int((collectionView.bounds.width - totalSpace) / CGFloat(1))
+        
+        return CGSize(width: CGFloat(size/4), height: collectionView.frame.height)
     }
     
     

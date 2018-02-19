@@ -16,7 +16,7 @@ class InterestController: UIViewController {
     let apiService = ApiService()
     var interestIds = [String]()
     var indicator: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
-
+    var isOnboard = true
     
     //MARK - register collection view here
     lazy var feedCollectionView: UICollectionView = {
@@ -94,10 +94,13 @@ class InterestController: UIViewController {
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         navigationController?.navigationBar.shadowImage = UIImage()
         
-        
-        let image = UIImage(named: "BackArrow")?.withRenderingMode(.alwaysOriginal)
-        let menuBack = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(handleCancel))
-        navigationItem.leftBarButtonItem = menuBack
+       
+        //MARK - indicate back for non onbaording experience
+        if !isOnboard {
+            let image = UIImage(named: "BackArrow")?.withRenderingMode(.alwaysOriginal)
+            let menuBack = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(handleCancel))
+            navigationItem.leftBarButtonItem = menuBack
+        }
         
         let menuSave = UIBarButtonItem(title: "Save Interests", style: .done, target: self, action: #selector(saveInterest))
         navigationItem.rightBarButtonItem = menuSave
@@ -114,7 +117,16 @@ class InterestController: UIViewController {
                 
             })
         }
+        
+        //MARK- cases of onboarding
+        if  isOnboard {
+            let brands = BrandsController()
+            brands.isOnboard = self.isOnboard
+            self.present(UINavigationController(rootViewController: brands), animated: true, completion: nil)
+            return
+        }
         dismiss(animated: true, completion: nil)
+        
     }
     
     func addInterest(brandId:String)  {

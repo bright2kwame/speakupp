@@ -38,6 +38,7 @@ class PollAudioChoiceCell: BaseCell {
     
     let optionTextLabel: EFAutoScrollLabel = {
         let label = ViewControllerHelper.baseScrollingLabel()
+        label.font = UIFont.systemFont(ofSize: 14)
         return label
     }()
 
@@ -56,6 +57,7 @@ class PollAudioChoiceCell: BaseCell {
         let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.frame = bounds
+        blurEffectView.alpha = 0.5
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         blurEffectView.translatesAutoresizingMaskIntoConstraints = false
         return blurEffectView
@@ -63,7 +65,7 @@ class PollAudioChoiceCell: BaseCell {
     
     let bgImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 0
         imageView.layer.borderWidth = 0
@@ -102,8 +104,9 @@ class PollAudioChoiceCell: BaseCell {
         self.optionTextLabel.leadingAnchor.constraint(equalTo: optionImageView.trailingAnchor, constant: 5).isActive = true
         self.optionTextLabel.trailingAnchor.constraint(equalTo: playImageView.leadingAnchor, constant: -5).isActive = true
         
-        self.playImageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        self.playImageView.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        let height = frame.height - 5
+        self.playImageView.heightAnchor.constraint(equalToConstant: height).isActive = true
+        self.playImageView.widthAnchor.constraint(equalToConstant: height).isActive = true
         self.playImageView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 0).isActive = true
         self.playImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5).isActive = true
     }

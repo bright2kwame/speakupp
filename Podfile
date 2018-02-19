@@ -24,7 +24,11 @@ target 'SpeakUpp' do
   pod 'Cosmos', '~> 14.0'
   pod 'AWSS3'
   pod 'EFAutoScrollLabel'
+  pod 'AHAudioPlayer'
+  pod 'OneSignal', '>= 2.6.2', '< 3.0'
  
- 
+end
 
+target 'OneSignalNotificationServiceExtension' do
+    pod 'OneSignal', '>= 2.6.2', '< 3.0'
 end

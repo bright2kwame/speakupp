@@ -28,6 +28,8 @@ class Poll: Object {
     @objc dynamic var isShared = false
     @objc dynamic var isBinary = false
     @objc dynamic var hasVoted = false
+    @objc dynamic var hasTicket = false
+    @objc dynamic var hasPurchased = false
     @objc dynamic var totalVotes = 0
     @objc dynamic var totalRatingVotes = 0
     @objc dynamic var numOfComments = 0
@@ -44,6 +46,7 @@ class Poll: Object {
     @objc dynamic var shortCode = ""
     @objc dynamic var elapsedTime = ""
     @objc dynamic var question = ""
+    @objc dynamic var price = ""
     
 
     override class func primaryKey() -> String? {

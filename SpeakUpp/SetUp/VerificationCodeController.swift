@@ -14,6 +14,7 @@ class VerificationCodeController: UIViewController {
     let phoneNumber = User.getUser()!.number
     let utilController = ViewControllerHelper()
     
+    
     lazy var firstCodeTextField: UITextField = {
         return baseInnerField()
     }()
@@ -47,6 +48,7 @@ class VerificationCodeController: UIViewController {
         textField.keyboardType = UIKeyboardType.numberPad
         textField.setBottomBorder()
         textField.textAlignment = .center
+        textField.addTarget(self, action: #selector(self.textFieldDidChange(textField:)), for: UIControlEvents.editingChanged)
         return textField
     }
     
@@ -121,6 +123,32 @@ class VerificationCodeController: UIViewController {
         resendCodeButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
     
+    //MARK - auto advance input fields
+    @objc func textFieldDidChange(textField: UITextField){
+        let text = textField.text
+        if text?.utf16.count==1{
+            switch textField{
+            case firstCodeTextField:
+                secondCodeTextField.becomeFirstResponder()
+            case secondCodeTextField:
+                thirdCodeTextField.becomeFirstResponder()
+            case thirdCodeTextField:
+                fourthCodeTextField.becomeFirstResponder()
+            case fourthCodeTextField:
+                fithCodeTextField.becomeFirstResponder()
+            case fithCodeTextField:
+                sixCodeTextField.becomeFirstResponder()
+            case sixCodeTextField:
+                sixCodeTextField.resignFirstResponder()
+                self.startVerification()
+            default:
+                break
+            }
+        }else{
+            
+        }
+    }
+    
     @objc private func resendCode() {
         self.apiService.resendVerificationCode() { (status, message) in
             self.utilController.hideActivityIndicator()
@@ -146,7 +174,7 @@ extension VerificationCodeController : UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        self.startVerification()
+        //self.startVerification()
     }
     
     func startVerification()  {
@@ -159,10 +187,9 @@ extension VerificationCodeController : UITextFieldDelegate {
                     let appearance = SCLAlertView.SCLAppearance(dynamicAnimatorActive: true)
                     SCLAlertView(appearance: appearance).showError("SpeakUpp Error", subTitle: message)
                 }  else {
-                    let home = HomeController()
-                    let drawer = ViewControllerHelper.startHome(controller: home)
-                    home.homeDrawerController = drawer
-                    self.present(drawer, animated: true, completion: nil)
+                    let vc = InterestController()
+                    vc.isOnboard = true
+                    self.present(UINavigationController(rootViewController: vc), animated: true, completion: nil)
                 }
             })
         }

@@ -48,8 +48,8 @@ class PollAnsweredCell: BaseCell {
         progressBar.trackTintColor = UIColor.white
         progressBar.tintColor = UIColor(red:0.23, green:0.60, blue:0.85, alpha:1.0)
         progressBar.backgroundColor = UIColor.white
-        progressBar.layer.borderWidth = 0.3
-        progressBar.layer.borderColor = UIColor.gray.cgColor
+        progressBar.layer.borderWidth = 0.4
+        progressBar.layer.borderColor = UIColor.lightGray.cgColor
         progressBar.translatesAutoresizingMaskIntoConstraints = false
         return progressBar
     }()

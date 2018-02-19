@@ -11,9 +11,9 @@ import UIKit
 class OnboardViewController: UIViewController,UICollectionViewDelegateFlowLayout,UICollectionViewDataSource,UICollectionViewDelegate {
 
     let pages = [
-        Page(imageName:"SampleTutor",title: "Discover\nInteresting\nThings",message: "Create polls and rate anything you want"),
-        Page(imageName:"SampleTutor",title: "Be\nHeard",message: "Our mission is to give people this platform to connect and be heard"),
-        Page(imageName:"SampleTutor",title: "Ready To\nExplore?",message: "Our app provides and extensive and accurate guide to events and activities.")
+        Page(imageName:"TutorialOne",title: "Discover\nInteresting\nThings",message: "Create polls and rate anything you want."),
+        Page(imageName:"TutorialTwo",title: "Be\nHeard",message: "Our mission is to give people this platform to connect and be heard."),
+        Page(imageName:"TutorialThree",title: "Ready To\nExplore?",message: "Our app provides and extensive and accurate guide to events and activities.")
     ]
     
     let pagerCellId = "SwipingPageCellId"
@@ -114,8 +114,7 @@ class OnboardViewController: UIViewController,UICollectionViewDelegateFlowLayout
         self.profileImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50).isActive = true
         self.profileImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50).isActive = true
         self.profileImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 50).isActive = true
-        self.profileImageView.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        
+        self.profileImageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         pageControl.heightAnchor.constraint(equalToConstant: 40).isActive = true
@@ -193,6 +192,10 @@ class OnboardViewController: UIViewController,UICollectionViewDelegateFlowLayout
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0.0
+    }
+    
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
     }
 }
 

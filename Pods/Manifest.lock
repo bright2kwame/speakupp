@@ -1,6 +1,7 @@
 PODS:
   - ActionSheetPicker-3.0 (2.3.0)
   - ADCountryPicker (2.0.0)
+  - AHAudioPlayer (0.1.71)
   - Alamofire (4.5.1)
   - AlamofireImage (3.3.0):
     - Alamofire (~> 4.5)
@@ -56,6 +57,7 @@ PODS:
     - nanopb/encode (= 0.3.8)
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
+  - OneSignal (2.6.2)
   - Protobuf (3.4.0)
   - Realm (2.10.2):
     - Realm/Headers (= 2.10.2)
@@ -70,6 +72,7 @@ PODS:
 DEPENDENCIES:
   - ActionSheetPicker-3.0 (~> 2.3.0)
   - ADCountryPicker (~> 2.0.0)
+  - AHAudioPlayer
   - Alamofire (~> 4.0)
   - AlamofireImage (~> 3.1)
   - AWSS3
@@ -83,6 +86,7 @@ DEPENDENCIES:
   - IQKeyboardManagerSwift
   - Lightbox
   - LinearProgressBarMaterial
+  - OneSignal (< 3.0, >= 2.6.2)
   - RealmSwift
   - SwiftyJSON
   - ZKDrawerController
@@ -90,6 +94,7 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   ActionSheetPicker-3.0: eef157d75e151f255c5333d26656c7fbfe905a51
   ADCountryPicker: afe39f43a1606e82d66fad809374602a6cc74088
+  AHAudioPlayer: 6ad8f9342116c9f4ecc0198b549e9d1d57c9d119
   Alamofire: 2d95912bf4c34f164fdfc335872e8c312acaea4a
   AlamofireImage: 2e784dc5d00f04903a52c1d169181469c805c3df
   AWSCore: d0d6e4f6831754aaf98058d2306a016ae71510fe
@@ -112,6 +117,7 @@ SPEC CHECKSUMS:
   Lightbox: 2dc267df8be2285bc7724cb11cbbf4aaaf59dced
   LinearProgressBarMaterial: f025b1ec6ecd08bcd4dfc6fecba4fb263d8a545b
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
+  OneSignal: 95127bce89b9e495079e7205e3d47c88590b5750
   Protobuf: 03eef2ee0b674770735cf79d9c4d3659cf6908e8
   Realm: 0ef72b837fb67e9f4b098bac771ddd72c7fdbb69
   RealmSwift: 07a9ae0505091eda6b2ee7c190c3786d6e90a7b0
@@ -119,6 +125,6 @@ SPEC CHECKSUMS:
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
   ZKDrawerController: d407465173b79b0fa7002fdf9e85685a6c667a39
 
-PODFILE CHECKSUM: bd7ff683d12e8a9167a8af6f537b607a5d24f9aa
+PODFILE CHECKSUM: 59deb7d790e2644eb79a0a6245e31d5edfc9539d
 
 COCOAPODS: 1.2.0.beta.3

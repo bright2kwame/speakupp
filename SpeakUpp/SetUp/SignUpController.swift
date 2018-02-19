@@ -243,7 +243,7 @@ class SignUpController: BaseScrollViewController {
     
     
     let signUpButton: UIButton = {
-        let button = ViewControllerHelper.baseButton()
+        let button = ViewControllerHelper.whiteBaseButton()
         let color = UIColor.white
         button.setTitle("Sign Up", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18)
@@ -603,6 +603,10 @@ extension SignUpController : UITextFieldDelegate,ADCountryPickerDelegate {
         let text = Mics.flag(country: code) + dialCode
         self.countryButton.setTitle(text, for: .normal)
         picker.dismiss(animated: true, completion: nil)
+    }
+    
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
     }
 }
 

@@ -87,6 +87,22 @@ extension String {
         return htmlToAttributedString?.string ?? ""
     }
     
+    
+    func formateEventDate() -> String  {
+        // MARK: Date from string with custom format
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US")
+        dateFormatter.dateStyle = .medium
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        let date = dateFormatter.date(from: self)!
+        
+        //local readable time
+        dateFormatter.dateFormat = "EEE, MMM d, yyyy - h:mm a"
+        dateFormatter.timeZone = NSTimeZone.local
+        let timeStamp = dateFormatter.string(from: date)
+        return timeStamp
+    }
+    
     func formateAsDate() -> String  {
         // MARK: Date from string with custom format
         let dateFormatter = DateFormatter()

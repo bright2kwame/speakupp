@@ -50,7 +50,7 @@ class LoginController: UIViewController {
         let textView = ViewControllerHelper.baseLabel()
         textView.textAlignment = .center
         textView.text = "Hello again,\nWelcome back."
-        textView.font = UIFont(name: "RobotoLight", size: 14)
+        textView.font = UIFont(name: "RobotoLight", size: 16)
         textView.textColor = UIColor.white
         return textView
     }()
@@ -344,6 +344,9 @@ extension LoginController : UITextFieldDelegate,ADCountryPickerDelegate {
         picker.dismiss(animated: true, completion: nil)
     }
     
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+    }
 }
 
 

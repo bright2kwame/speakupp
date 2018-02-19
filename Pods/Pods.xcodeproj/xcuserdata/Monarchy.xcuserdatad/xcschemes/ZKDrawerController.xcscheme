@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '99CA74BEFE1A5FC0AF9740D81AA454D7'
+               BlueprintIdentifier = '30025D8E8B311A85BF893FF48BD7E5B7'
                BlueprintName = 'ZKDrawerController'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'ZKDrawerController.framework'>
