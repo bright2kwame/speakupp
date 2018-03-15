@@ -18,6 +18,13 @@ class PollsController: UIViewController {
     var categoryId: String?
     var indicator: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
     
+    lazy var playerView: PlayerView = {
+        let player = PlayerView()
+        player.delegate = self
+        player.translatesAutoresizingMaskIntoConstraints = false
+        return player
+    }()
+    
     //MARK - register collection view here
     lazy var feedCollectionView: UICollectionView = {
         let flow = UICollectionViewFlowLayout()
@@ -105,7 +112,29 @@ class PollsController: UIViewController {
             flowLayout.scrollDirection = .vertical
             flowLayout.minimumLineSpacing = 5
         }
+        
+        //MARK - audio notfication center
+        NotificationCenter.default.addObserver(self, selector: #selector(self.receivedAudioNotification(notification:)), name: Notification.Name(Key.PLAY_AUDIO), object: nil)
 
+    }
+    
+    //MARK - receiving notification
+    @objc func receivedAudioNotification(notification: Notification){
+        if let audio = notification.userInfo?["audio"] as? PlayerItem {
+            self.setUpAudioPlayer(player: audio)
+        }
+    }
+    
+    
+    func setUpAudioPlayer(player: PlayerItem)  {
+        self.view.addSubview(self.playerView)
+        self.playerView.playerItem = player
+        self.playerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
+        self.playerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+        self.playerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        self.playerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        self.playerView.playAudio()
     }
     
     func getData(id: String)  {
@@ -336,4 +365,12 @@ extension PollsController: UICollectionViewDataSource,UICollectionViewDelegateFl
         return UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
     }
  
+}
+
+extension PollsController : PlayerDelegate {
+    
+    func closePlayer() {
+        self.playerView.removeFromSuperview()
+    }
+    
 }

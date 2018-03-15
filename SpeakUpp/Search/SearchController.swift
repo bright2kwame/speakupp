@@ -109,7 +109,7 @@ class SearchController: UIViewController {
         //MARK - notfication center
         NotificationCenter.default.addObserver(self, selector: #selector(self.receivedPaymentDoneNotification(notification:)), name: Notification.Name(Key.PAYMENT_DONE), object: nil)
         
-        //MARK - notfication center
+        //MARK - audio notfication center
         NotificationCenter.default.addObserver(self, selector: #selector(self.receivedAudioNotification(notification:)), name: Notification.Name(Key.PLAY_AUDIO), object: nil)
     }
     

@@ -15,7 +15,7 @@ import OneSignal
 
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate,OSSubscriptionObserver {
+class AppDelegate: UIResponder, UIApplicationDelegate,OSPermissionObserver, OSSubscriptionObserver  {
 
     var window: UIWindow?
 
@@ -49,12 +49,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate,OSSubscriptionObserver {
                 }
         })
         
-        //MARK:-  one signal section
-        OneSignal.add(self as OSSubscriptionObserver)
-        self.configureOneSignal(launchOptions: launchOptions)
-        
+       
         Realm.Configuration.defaultConfiguration = config
         IQKeyboardManager.sharedManager().enable = true
+        
+        self.registerNotification()
+        
+        let notificationReceivedBlock: OSHandleNotificationReceivedBlock = { notification in
+            print("Received Notification: \(notification!.payload.notificationID)")
+            print("launchURL = \(notification?.payload.launchURL ?? "None")")
+            print("content_available = \(notification?.payload.contentAvailable ?? false)")
+        }
         
         let user = User.getUser()
         if (user == nil){
@@ -62,21 +67,69 @@ class AppDelegate: UIResponder, UIApplicationDelegate,OSSubscriptionObserver {
         } else if (!(user?.isVerified)!){
              window?.rootViewController = VerificationCodeController()
         } else {
-            let home = HomeController()
-            let drawer = ViewControllerHelper.startHome(controller: home)
             
-            window?.rootViewController = drawer
-            home.homeDrawerController = drawer
+            let notification: [AnyHashable: Any]? = (launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification] as? [AnyHashable: Any])
+            if notification == nil {
+                
+                let home = HomeController()
+                let drawer = ViewControllerHelper.startHome(controller: home)
+                
+                window?.rootViewController = drawer
+                home.homeDrawerController = drawer
+            }
         }
         
+        let notificationOpenedBlock: OSHandleNotificationActionBlock = { result in
+            // This block gets called when the user reacts to a notification received
+            let payload: OSNotificationPayload? = result?.notification.payload
+            print("Message = \(payload!.body)")
+            print("badge number = \(payload?.badge ?? 0)")
+            print("notification sound = \(payload?.sound ?? "None")")
+        
+            self.hadleNotificationClick()
+            
+        }
+        
+        
+        let onesignalInitSettings = [kOSSettingsKeyAutoPrompt: true,
+                                     kOSSettingsKeyInAppLaunchURL: true]
+        
+        OneSignal.initWithLaunchOptions(launchOptions,
+                                        appId: Key.oneSignalKey,
+                                        handleNotificationReceived: notificationReceivedBlock,
+                                        handleNotificationAction: notificationOpenedBlock,
+                                        settings: onesignalInitSettings)
+       
         return true
+    }
+    
+    // Add this new method
+    func onOSPermissionChanged(_ stateChanges: OSPermissionStateChanges!) {
+        // Example of detecting answering the permission prompt
+        if stateChanges.from.status == OSNotificationPermission.notDetermined {
+            if stateChanges.to.status == OSNotificationPermission.authorized {
+                print("Thanks for accepting notifications!")
+            } else if stateChanges.to.status == OSNotificationPermission.denied {
+                print("Notifications not accepted. You can turn them on later under your iOS settings.")
+            }
+        }
+    }
+    
+    
+    func registerNotification()  {
+        OneSignal.inFocusDisplayType = OSNotificationDisplayType.notification
+        OneSignal.promptForPushNotifications(userResponse: { accepted in
+            print("User accepted notifications: \(accepted)")
+        })
+        // Add your AppDelegate as an obsserver
+        OneSignal.add(self as OSPermissionObserver)
+        OneSignal.add(self as OSSubscriptionObserver)
     }
     
     // Add this new method
     func onOSSubscriptionChanged(_ stateChanges: OSSubscriptionStateChanges!) {
         if !stateChanges.from.subscribed && stateChanges.to.subscribed {
             print("Subscribed for OneSignal push notifications!")
-            // get player ID
             let _ = stateChanges.to.userId
             let user = User.getUser()
             if user == nil {
@@ -88,46 +141,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate,OSSubscriptionObserver {
         }
     }
     
-    func configureOneSignal(launchOptions: [UIApplicationLaunchOptionsKey: Any]?) {
-        //MARK:- NOTIFICATION SECTION
-        let notificationReceivedBlock: OSHandleNotificationReceivedBlock = { notification in
-            print("Received Notification: \(notification!.payload.notificationID)")
-        }
-        
-        let notificationOpenedBlock: OSHandleNotificationActionBlock = { result in
-            // This block gets called when the user reacts to a notification received
-            let payload: OSNotificationPayload = result!.notification.payload
-            var fullMessage = payload.body
-            print("Message = \(fullMessage)")
+
+    func hadleNotificationClick()  {
+        let user = User.getUser()
+        if user == nil {
+            window?.rootViewController = WelcomeController()
+        } else {
+            let home = HomeController()
+            let drawer = ViewControllerHelper.startHome(controller: home)
             
-            if payload.additionalData != nil {
-                if payload.title != nil {
-                    let messageTitle = payload.title
-                    print("Message Title = \(messageTitle!)")
-                }
-                
-                let additionalData = payload.additionalData
-                if additionalData?["actionSelected"] != nil {
-                    fullMessage = fullMessage! + "\nPressed ButtonID: \(additionalData!["actionSelected"])"
-                }
-            }
+            self.window?.rootViewController = drawer
+            home.homeDrawerController = drawer
         }
-        
-        let onesignalInitSettings = [kOSSettingsKeyAutoPrompt: true,
-                                     kOSSettingsKeyInAppLaunchURL: true]
-        
-        OneSignal.initWithLaunchOptions(launchOptions,
-                                        appId: Key.oneSignalKey,
-                                        handleNotificationReceived: notificationReceivedBlock,
-                                        handleNotificationAction: notificationOpenedBlock,
-                                        settings: onesignalInitSettings)
-        OneSignal.inFocusDisplayType = OSNotificationDisplayType.notification
-        
-        //Recommend moving the below line to prompt for push after informing the user about
-        OneSignal.promptForPushNotifications(userResponse: { accepted in
-            print("User accepted notifications: \(accepted)")
-        })
-        //END
     }
     
     func applicationWillResignActive(_ application: UIApplication) {

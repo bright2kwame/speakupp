@@ -358,7 +358,6 @@ extension BaseFeedCell: UICollectionViewDataSource,UICollectionViewDelegateFlowL
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let feed = self.choices[indexPath.row]
         if  (feed.poll?.hasVoted)! {
-            
             if (feed.poll?.hasImages)! {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: pollAnsweredWithImageCell, for: indexPath) as! PollAnsweredWithImageCell
                 cell.feed = feed
