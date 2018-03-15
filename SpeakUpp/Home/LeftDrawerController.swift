@@ -229,6 +229,8 @@ class LeftDrawerController: UIViewController {
         self.settingButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8).isActive = true
         
         self.updateUI()
+        
+        ViewControllerHelper.trackUsage(id: nil, title: "DRAWER", data: nil)
     }
     
     

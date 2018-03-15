@@ -10,6 +10,7 @@ import UIKit
 import ZKDrawerController
 import LinearProgressBarMaterial
 
+
 class HomeController: UIViewController {
     
     let homeCellId = "homeCellId"
@@ -62,7 +63,10 @@ class HomeController: UIViewController {
         self.setUpMenu()
         
         self.setUpLayouts()
+        
+        ViewControllerHelper.trackUsage(id: nil, title: "HOME", data: nil)
     }
+    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)

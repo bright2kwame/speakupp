@@ -174,13 +174,13 @@ class ProfileCell: BaseCell {
         
         let height = frame.height/3
         self.avatarImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0).isActive = true
-        self.avatarImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -0).isActive = true
-        self.avatarImageView.topAnchor.constraint(equalTo: topAnchor, constant: 8).isActive = true
+        self.avatarImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0).isActive = true
+        self.avatarImageView.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
         self.avatarImageView.heightAnchor.constraint(equalToConstant: height).isActive = true
         
         self.coverView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0).isActive = true
-        self.coverView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -0).isActive = true
-        self.coverView.topAnchor.constraint(equalTo: topAnchor, constant: 8).isActive = true
+        self.coverView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0).isActive = true
+        self.coverView.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
         self.coverView.heightAnchor.constraint(equalToConstant: height).isActive = true
         
         self.profileImageView.widthAnchor.constraint(equalToConstant: 100).isActive = true

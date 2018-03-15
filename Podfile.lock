@@ -5,6 +5,8 @@ PODS:
   - Alamofire (4.5.1)
   - AlamofireImage (3.3.0):
     - Alamofire (~> 4.5)
+  - Answers (1.0.0):
+    - Fabric
   - AWSCore (2.6.12)
   - AWSS3 (2.6.12):
     - AWSCore (= 2.6.12)
@@ -18,6 +20,7 @@ PODS:
   - DLRadioButton (1.4.11)
   - Dodo (11.0.2)
   - EFAutoScrollLabel (4.0.2)
+  - Fabric (1.7.3)
   - Firebase/Core (4.3.0):
     - FirebaseAnalytics (= 4.0.4)
     - FirebaseCore (= 4.0.8)
@@ -75,12 +78,14 @@ DEPENDENCIES:
   - AHAudioPlayer
   - Alamofire (~> 4.0)
   - AlamofireImage (~> 3.1)
+  - Answers
   - AWSS3
   - Cosmos (~> 14.0)
   - DKImagePickerController
   - DLRadioButton (~> 1.4)
   - Dodo (~> 11.0)
   - EFAutoScrollLabel
+  - Fabric
   - Firebase/Core
   - Firebase/Messaging
   - IQKeyboardManagerSwift
@@ -97,6 +102,7 @@ SPEC CHECKSUMS:
   AHAudioPlayer: 6ad8f9342116c9f4ecc0198b549e9d1d57c9d119
   Alamofire: 2d95912bf4c34f164fdfc335872e8c312acaea4a
   AlamofireImage: 2e784dc5d00f04903a52c1d169181469c805c3df
+  Answers: 25f0d740e3e4384ed0d97a8bda6b5eea1842c3d3
   AWSCore: d0d6e4f6831754aaf98058d2306a016ae71510fe
   AWSS3: c35608e0cdd5172f9e1d943221fd5fde01c5f749
   Cache: bd0233fc688b5e83a27bcd87807db7e6f23adcc5
@@ -105,6 +111,7 @@ SPEC CHECKSUMS:
   DLRadioButton: 0d04b8259e7bfd886571a1e9173c73fee7118f50
   Dodo: d7e393c79aaaf3c51ed1311933493b6f1ccdde62
   EFAutoScrollLabel: 0534a0535b5ab9131c939dcf45aaa9f398156e97
+  Fabric: bb495bb9a7a7677c6d03a1f8b83d95bc49b47e41
   Firebase: 83283761a1ef6dc9846e03d08059f51421afbd65
   FirebaseAnalytics: 722b53c7b32bfc7806b06e0093a2f5180d4f2c5a
   FirebaseCore: 69b1a5ac5f857ba6d5fd9d5fe794f4786dd5e579
@@ -125,6 +132,6 @@ SPEC CHECKSUMS:
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
   ZKDrawerController: d407465173b79b0fa7002fdf9e85685a6c667a39
 
-PODFILE CHECKSUM: 59deb7d790e2644eb79a0a6245e31d5edfc9539d
+PODFILE CHECKSUM: 2cacd60ed755b142914c00f179b057b4127f34a6
 
 COCOAPODS: 1.2.0.beta.3

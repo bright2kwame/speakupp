@@ -12,6 +12,8 @@ import UserNotifications
 import IQKeyboardManagerSwift
 import ZKDrawerController
 import OneSignal
+import Fabric
+import Answers
 
 
 @UIApplicationMain
@@ -53,13 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,OSPermissionObserver, OSSu
         Realm.Configuration.defaultConfiguration = config
         IQKeyboardManager.sharedManager().enable = true
         
-        self.registerNotification()
         
-        let notificationReceivedBlock: OSHandleNotificationReceivedBlock = { notification in
-            print("Received Notification: \(notification!.payload.notificationID)")
-            print("launchURL = \(notification?.payload.launchURL ?? "None")")
-            print("content_available = \(notification?.payload.contentAvailable ?? false)")
-        }
         
         let user = User.getUser()
         if (user == nil){
@@ -67,7 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,OSPermissionObserver, OSSu
         } else if (!(user?.isVerified)!){
              window?.rootViewController = VerificationCodeController()
         } else {
-            
+           
             let notification: [AnyHashable: Any]? = (launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification] as? [AnyHashable: Any])
             if notification == nil {
                 
@@ -77,6 +73,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate,OSPermissionObserver, OSSu
                 window?.rootViewController = drawer
                 home.homeDrawerController = drawer
             }
+        }
+        
+        
+        
+        //MARK:- configure oneSignal notification
+        self.registerNotification()
+        
+        let notificationReceivedBlock: OSHandleNotificationReceivedBlock = { notification in
+            print("Received Notification: \(notification!.payload.notificationID)")
+            print("launchURL = \(notification?.payload.launchURL ?? "None")")
+            print("content_available = \(notification?.payload.contentAvailable ?? false)")
         }
         
         let notificationOpenedBlock: OSHandleNotificationActionBlock = { result in
@@ -100,8 +107,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate,OSPermissionObserver, OSSu
                                         handleNotificationAction: notificationOpenedBlock,
                                         settings: onesignalInitSettings)
        
+        Fabric.with([Answers.self])
         return true
     }
+
     
     // Add this new method
     func onOSPermissionChanged(_ stateChanges: OSPermissionStateChanges!) {

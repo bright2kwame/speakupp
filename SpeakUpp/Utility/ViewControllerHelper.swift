@@ -12,6 +12,8 @@ import ZKDrawerController
 import Lightbox
 import Alamofire
 import EFAutoScrollLabel
+import Answers
+
 
 
 class ViewControllerHelper {
@@ -324,6 +326,13 @@ class ViewControllerHelper {
         activityViewController.popoverPresentationController?.sourceView = targetVC.view
         activityViewController.excludedActivityTypes = [ UIActivityType.airDrop, UIActivityType.postToFacebook ]
         targetVC.present(activityViewController, animated: true, completion: nil)
+    }
+    
+    static func trackUsage(id:String?,title:String,data:[String:Any]?,type: String = "Text")  {
+        Answers.logCustomEvent(withName: title, customAttributes: data)
+        if let itemId = id {
+            Answers.logContentView(withName: title, contentType: type, contentId: itemId, customAttributes: data)
+        }
     }
     
 }

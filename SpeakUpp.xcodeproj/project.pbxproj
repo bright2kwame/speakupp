@@ -564,6 +564,7 @@
 				0B2F665411E18B86379F40F4 /* [CP] Embed Pods Frameworks */,
 				B40E2C9DB66723CEFFAB414F /* [CP] Copy Pods Resources */,
 				EDEA35F3203AD92400330608 /* Embed App Extensions */,
+				ED4BC509205AF7530030FF11 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -744,6 +745,19 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SpeakUpp/Pods-SpeakUpp-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		ED4BC509205AF7530030FF11 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" 0f4a34c12c3d1ad051eba1e270f26fadc868f63b ac3df93452783e5aa63237797aaaf7a01a69a343fb620c3e54e3b33fee6d4046";
 		};
 /* End PBXShellScriptBuildPhase section */
 

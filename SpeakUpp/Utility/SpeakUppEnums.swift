@@ -32,3 +32,9 @@ enum SettingType {
     case friend
     case about
 }
+
+enum TrackType {
+    case video
+    case audio
+    case text
+}

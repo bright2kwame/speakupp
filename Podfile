@@ -26,7 +26,9 @@ target 'SpeakUpp' do
   pod 'EFAutoScrollLabel'
   pod 'AHAudioPlayer'
   pod 'OneSignal', '>= 2.6.2', '< 3.0'
- 
+  pod 'Fabric'
+  pod 'Answers'
+
 end
 
 target 'OneSignalNotificationServiceExtension' do
