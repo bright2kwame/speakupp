@@ -42,10 +42,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate,OSSubscriptionObserver {
         
         //realm migration
         let config = Realm.Configuration(
-            schemaVersion: 2,
+            schemaVersion: 3,
             migrationBlock: { migration, oldSchemaVersion in
                 if (oldSchemaVersion < 1) {
-                    
+                   
                 }
         })
         
@@ -59,8 +59,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,OSSubscriptionObserver {
         let user = User.getUser()
         if (user == nil){
            window?.rootViewController = WelcomeController()
-        } else if (user?.isVerified == false){
-            //MARK - check the logic before
+        } else if (!(user?.isVerified)!){
              window?.rootViewController = VerificationCodeController()
         } else {
             let home = HomeController()
@@ -124,7 +123,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,OSSubscriptionObserver {
                                         settings: onesignalInitSettings)
         OneSignal.inFocusDisplayType = OSNotificationDisplayType.notification
         
-        // Recommend moving the below line to prompt for push after informing the user about
+        //Recommend moving the below line to prompt for push after informing the user about
         OneSignal.promptForPushNotifications(userResponse: { accepted in
             print("User accepted notifications: \(accepted)")
         })

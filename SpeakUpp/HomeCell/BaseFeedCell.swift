@@ -388,7 +388,7 @@ extension BaseFeedCell: UICollectionViewDataSource,UICollectionViewDelegateFlowL
             cell.rejectImageView.addGestureRecognizer(tappedRejectContent)
             
             return cell
-        }/** else if !feed.audio.isEmpty {
+        } else if !feed.audio.isEmpty {
             //MARK - audio cell section
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: pollAudioCell, for: indexPath) as! PollAudioChoiceCell
             cell.feed = feed
@@ -401,12 +401,12 @@ extension BaseFeedCell: UICollectionViewDataSource,UICollectionViewDelegateFlowL
             
             //play answer audio here
             let playContent = UITapGestureRecognizer(target: self, action: #selector(self.playAudio(_:)))
-            cell.playImageView.isUserInteractionEnabled = true
-            cell.playImageView.tag = indexPath.row
-            cell.playImageView.addGestureRecognizer(playContent)
+            cell.bgCoverView.isUserInteractionEnabled = true
+            cell.bgCoverView.tag = indexPath.row
+            cell.bgCoverView.addGestureRecognizer(playContent)
             
             return cell
-        }**/else {
+        } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: radioCellId, for: indexPath) as! PollNoImageChoiceCell
             cell.feed = feed
             
@@ -421,11 +421,9 @@ extension BaseFeedCell: UICollectionViewDataSource,UICollectionViewDelegateFlowL
     
     @objc func playAudio(_ sender: UITapGestureRecognizer) {
         let feed = self.choices[(sender.view?.tag)!]
-        print("AUDIO \(feed.audio)")
-        AHAudioPlayerManager.shared.stop()
-        let url = URL(string: feed.audio)
-        AHAudioPlayerManager.shared.play(trackId: 0, trackURL: url!)
-      
+        let audio = PlayerItem(audioId: 100, audioTitle: feed.choiceText, audioUrl: feed.audio, audioArt: (feed.poll?.image)!)
+        NotificationCenter.default.post(name: Notification.Name(Key.PLAY_AUDIO), object: audio, userInfo: ["audio" : audio])
+       
     }
     
     @objc func vote(_ sender: UITapGestureRecognizer) {

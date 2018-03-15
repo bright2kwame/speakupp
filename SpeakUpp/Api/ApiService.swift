@@ -56,8 +56,10 @@ class ApiService {
                         } else {
                             completion(nil, detail,ApiCallStatus.DETAIL)
                         }
-                    case 401...499:
-                        completion(nil, self.failureStatus,.DETAIL)
+                    case 301...499:
+                        let item = JSON(data: response.data!)
+                        let detail = item["message"].stringValue
+                        completion(nil,detail,.DETAIL)
                     default:
                         completion(nil, self.failureStatus,.DETAIL)
                     }
@@ -174,6 +176,65 @@ class ApiService {
                 }
         }
     }
+    
+    
+    typealias StatusMessageCompletionHandler = (_ status:ApiCallStatus,String) -> Void
+    
+    //MARK: - reset pin
+    func initReset(number: String, completion: @escaping (ApiCallStatus,String) -> ()){
+        // this is where the completion handler code goes
+        let params = ["phone_number":number]
+        let url =  "\(ApiUrl().activeBaseUrl())users/reset_password/"
+        print("URL \(url) \(params)")
+        self.baseApiCall(url: url, params: params, completion: completion)
+    }
+    
+    //MARK: -  confirm reset pin
+    func confirmReset(number: String,code:String,completion: @escaping (ApiCallStatus,String) -> ()){
+        // this is where the completion handler code goes
+        let params = ["phone_number":number,"code":code]
+        let url =  "\(ApiUrl().activeBaseUrl())users/reset_password_confirm/"
+        print("URL \(url) \(params)")
+        self.baseApiCall(url: url, params: params, completion: completion)
+    }
+    
+    //MARK: -  complete reset pin
+    func completeReset(number: String,password:String,completion: @escaping (ApiCallStatus,String) -> ()){
+        // this is where the completion handler code goes
+        let params = ["phone_number":number,"password":password]
+        let url =  "\(ApiUrl().activeBaseUrl())users/change_password/"
+        print("URL \(url) \(params)")
+        self.baseApiCall(url: url, params: params, completion: completion)
+    }
+    
+    
+    func baseApiCall(url:String,params: [String:String],completion: @escaping StatusMessageCompletionHandler)  {
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default,headers: nil)
+            .responseJSON { response in
+                if response.error != nil {
+                    completion(.FAILED,self.interntConnectionStatus)
+                    return
+                }
+                if let status = response.response?.statusCode {
+                    print("Status \(status)")
+                    switch(status){
+                    case 200...300:
+                        //parse data
+                        let item = JSON(data: response.data!)
+                        let detail = item["detail"].stringValue
+                        completion(.SUCCESS,detail)
+                    case 301...499:
+                        let item = JSON(data: response.data!)
+                        let detail = item["message"].stringValue
+                        completion(.DETAIL, detail)
+                    default:
+                        completion(.FAILED,self.failureStatus)
+                    }
+                }
+        }
+    }
+    
+ 
     
     
     //MARK: - get user
@@ -761,6 +822,7 @@ class ApiService {
         let audio = item["audio"].stringValue
         let shortCode = item["short_code"].stringValue
         let elapsedTime = item["elapsed_time"].stringValue
+        let votedOption = item["voted_option"].stringValue
         
         let poll = Poll()
         poll.id = id
@@ -800,6 +862,7 @@ class ApiService {
         poll.price = price
         poll.hasTicket = hasTicket
         poll.hasPurchased = hasPurchased
+        poll.votedOption = votedOption
         
         let pollChoices = List<PollChoice>()
         for pollChoice in item["poll_choices"].arrayValue {
@@ -830,6 +893,7 @@ class ApiService {
         itemParsed.image = image
         itemParsed.choiceDescription = description
         itemParsed.audio = audio
+        itemParsed.isSelectedOption = poll.votedOption == id
         return itemParsed
     }
     
@@ -984,7 +1048,7 @@ class ApiService {
                         } else {
                             completion(.DETAIL,"Unable to cast vote")
                         }
-                    case 300...499:
+                    case 301...499:
                         completion(.DETAIL,self.defaultStatus)
                     default:
                         completion(.FAILED,self.failureStatus)
@@ -1380,7 +1444,7 @@ class ApiService {
     func getMessages(url:String,completion: @escaping (String?,ApiCallStatus,String?) -> ()){
         let realUrl = "\(ApiUrl().activeBaseUrl())\(url)/"
         print("URL \(realUrl)")
-        Alamofire.request(realUrl, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: headerAuth())
+        Alamofire.request(realUrl, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: nil)
             .responseJSON { response in
                 if response.error != nil {
                  completion(nil,.FAILED,self.interntConnectionStatus)

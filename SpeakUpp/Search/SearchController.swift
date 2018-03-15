@@ -57,6 +57,13 @@ class SearchController: UIViewController {
       return menubar
     }()
     
+    lazy var playerView: PlayerView = {
+        let player = PlayerView()
+        player.delegate = self
+        player.translatesAutoresizingMaskIntoConstraints = false
+        return player
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
@@ -101,11 +108,21 @@ class SearchController: UIViewController {
         
         //MARK - notfication center
         NotificationCenter.default.addObserver(self, selector: #selector(self.receivedPaymentDoneNotification(notification:)), name: Notification.Name(Key.PAYMENT_DONE), object: nil)
+        
+        //MARK - notfication center
+        NotificationCenter.default.addObserver(self, selector: #selector(self.receivedAudioNotification(notification:)), name: Notification.Name(Key.PLAY_AUDIO), object: nil)
     }
     
     //MARK - receiving notification
     @objc func receivedPaymentDoneNotification(notification: Notification){
         self.setSearchType(type: SearchType.poll)
+    }
+    
+    //MARK - receiving notification
+    @objc func receivedAudioNotification(notification: Notification){
+        if let audio = notification.userInfo?["audio"] as? PlayerItem {
+             self.setUpAudioPlayer(player: audio)
+        }
     }
     
     func setUpUniversalIndication()   {
@@ -162,6 +179,17 @@ class SearchController: UIViewController {
         self.getData(url: url, text: searchText)
     }
     
+    func setUpAudioPlayer(player: PlayerItem)  {
+        self.view.addSubview(self.playerView)
+        self.playerView.playerItem = player
+        self.playerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
+        self.playerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+        self.playerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        self.playerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        self.playerView.playAudio()
+    }
+    
     
     //MARK- stay buying ticket
     @objc func startEventPayment(_ sender: UIButton) {
@@ -215,11 +243,13 @@ class SearchController: UIViewController {
                         return
                     }
                     pollIntended.hasVoted = true
+                    pollIntended.votedOption = choiceId
                     pollIntended.totalVotes += 1
                     for itemsChoice in pollIntended.pollChoice.enumerated() {
                         let element = itemsChoice.element
                         if (element.id == choiceId){
                             element.numOfVotes += 1
+                            element.isSelectedOption = true
                         }
                     }
                     let selectedIndexPath = IndexPath(item: index, section: 0)
@@ -317,6 +347,7 @@ extension SearchController: UICollectionViewDataSource,UICollectionViewDelegateF
             }
             
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: feedCellId, for: indexPath) as! BaseFeedCell
+            cell.searchController = self
             cell.feed = feedItem
        
             //trigger imageView
@@ -418,4 +449,12 @@ extension SearchController: UICollectionViewDataSource,UICollectionViewDelegateF
         }
         
     }
+}
+
+extension SearchController : PlayerDelegate {
+    
+    func closePlayer() {
+        self.playerView.removeFromSuperview()
+    }
+    
 }

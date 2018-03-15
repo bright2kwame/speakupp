@@ -20,7 +20,6 @@ class ViewControllerHelper {
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     
 
-    
     func showActivityIndicator() {
         if let window = UIApplication.shared.keyWindow {
             container.frame = window.frame
@@ -218,6 +217,16 @@ class ViewControllerHelper {
         return button
     }
     
+    static func baseImageView() -> UIImageView {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = 0
+        imageView.layer.borderWidth = 0
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }
+    
     
     static func placeCall(phone:String){
         let formatedNumber = phone.components(separatedBy: NSCharacterSet.decimalDigits.inverted).joined(separator: "")
@@ -274,7 +283,6 @@ class ViewControllerHelper {
         DispatchQueue.main.asyncAfter(deadline: when) {
             view.dodo.hide()
         }
-        
     }
     
     
@@ -293,6 +301,9 @@ class ViewControllerHelper {
     }
     
     static func presentSingleImage(targetVC: UIViewController,url:String)  {
+        if url.isEmpty {
+            return
+        }
         let images = [
             LightboxImage(imageURL: URL(string: url)!)
         ]
@@ -315,6 +326,4 @@ class ViewControllerHelper {
         targetVC.present(activityViewController, animated: true, completion: nil)
     }
     
-    
-
 }

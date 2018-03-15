@@ -47,6 +47,13 @@ class HomeController: UIViewController {
         return menuBar
     }()
     
+    lazy var playerView: PlayerView = {
+        let player = PlayerView()
+        player.delegate = self
+        player.translatesAutoresizingMaskIntoConstraints = false
+        return player
+    }()
+    
     var homeDrawerController: ZKDrawerController!
     var homeController: HomeController?
     
@@ -102,6 +109,28 @@ class HomeController: UIViewController {
         self.setUpUniversalIndication()
         
         self.updateUtil()
+        
+        //MARK - notfication center
+        NotificationCenter.default.addObserver(self, selector: #selector(self.receivedAudioNotification(notification:)), name: Notification.Name(Key.PLAY_AUDIO), object: nil)
+        
+    }
+    
+    //MARK - receiving notification
+    @objc func receivedAudioNotification(notification: Notification){
+        if let audio = notification.userInfo?["audio"] as? PlayerItem {
+            self.setUpAudioPlayer(player: audio)
+        }
+    }
+    
+    func setUpAudioPlayer(player: PlayerItem)  {
+        self.view.addSubview(self.playerView)
+        self.playerView.playerItem = player
+        self.playerView.bottomAnchor.constraint(equalTo: menuBar.topAnchor, constant: 0).isActive = true
+        self.playerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+        self.playerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        self.playerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        self.playerView.playAudio()
     }
     
     
@@ -239,6 +268,16 @@ extension HomeController: UICollectionViewDataSource,UICollectionViewDelegateFlo
         }, completion: {(bear_) in
             
         })
+    }
+    
+}
+
+
+//MARK:- player section here
+extension HomeController : PlayerDelegate {
+    
+    func closePlayer() {
+        self.playerView.removeFromSuperview()
     }
     
 }

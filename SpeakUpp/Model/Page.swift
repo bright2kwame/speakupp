@@ -41,6 +41,13 @@ struct FAQItem {
     let answer: String
 }
 
+struct PlayerItem {
+    let audioId:Int
+    let audioTitle: String
+    let audioUrl: String
+    let audioArt: String
+}
+
 class Contact: NSObject {
     
     init(contact: CNContact,isInvite:Bool) {

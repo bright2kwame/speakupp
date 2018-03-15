@@ -176,11 +176,13 @@ class PollsController: UIViewController {
                         return
                     }
                     pollIntended.hasVoted = true
+                    pollIntended.votedOption = choiceId
                     pollIntended.totalVotes += 1
                     for itemsChoice in pollIntended.pollChoice.enumerated() {
                         let element = itemsChoice.element
                         if (element.id == choiceId){
                             element.numOfVotes += 1
+                            element.isSelectedOption = true
                         }
                     }
                     let selectedIndexPath = IndexPath(item: index, section: 0)

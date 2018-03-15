@@ -12,11 +12,11 @@ import Dodo
 
 
 
-
 class LoginController: UIViewController {
     
     let apiService = ApiService()
     let utilController = ViewControllerHelper()
+    var realNumber = ""
     
     let imageView: UIImageView = {
         let imageView = UIImageView()
@@ -92,10 +92,6 @@ class LoginController: UIViewController {
         textView.textAlignment = .center
         textView.attributedText = combinedText
         textView.textColor = UIColor.white
-        textView.isUserInteractionEnabled = true
-        
-        let tappedName = UITapGestureRecognizer(target: self, action: #selector(tapLabel(gesture:)))
-        textView.addGestureRecognizer(tappedName)
         return textView
     }()
     
@@ -166,6 +162,16 @@ class LoginController: UIViewController {
         return button
     }()
     
+    let forgotButton: UIButton = {
+        let button = ViewControllerHelper.plainButton()
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        button.setTitle("Forgot PIN?", for: .normal)
+        button.layer.cornerRadius = 0
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.addTarget(self, action: #selector(resetPassword), for: .touchUpInside)
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setUpViews()
@@ -188,6 +194,7 @@ class LoginController: UIViewController {
         self.view.addSubview(pinNumberLabel)
         self.view.addSubview(pinDividerView)
         self.view.addSubview(pinTextField)
+        self.view.addSubview(forgotButton)
         self.view.addSubview(loginButton)
         
         self.imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
@@ -253,7 +260,12 @@ class LoginController: UIViewController {
         self.pinDividerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
         self.pinDividerView.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
-        self.loginButton.topAnchor.constraint(equalTo: pinDividerView.bottomAnchor, constant: 50).isActive = true
+        self.forgotButton.topAnchor.constraint(equalTo: pinDividerView.bottomAnchor, constant: 4).isActive = true
+        self.forgotButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
+        self.forgotButton.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        self.forgotButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
+        self.loginButton.topAnchor.constraint(equalTo: forgotButton.bottomAnchor, constant: 50).isActive = true
         self.loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         self.loginButton.widthAnchor.constraint(equalToConstant: 200).isActive = true
         self.loginButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
@@ -262,9 +274,82 @@ class LoginController: UIViewController {
         self.privacyLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
         self.privacyLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         self.privacyLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -32).isActive = true
+        
+        
+        self.privacyLabel.isUserInteractionEnabled = true
+        let tappedName = UITapGestureRecognizer(target: self, action: #selector(tapLabel(gesture:)))
+        self.privacyLabel.addGestureRecognizer(tappedName)
+        
+        
+        //MARK- set default country here
+        if let locale = Locale.current.regionCode {
+            let localCountryCode = Mics.getCountryCallingCode(countryRegionCode: locale)
+            let text = Mics.flag(country: locale.uppercased())
+            self.countryButton.setTitle("\(text) +\(localCountryCode)", for: .normal)
+        }
 
     }
     
+    
+    
+    @objc private func resetPassword() {
+        let numberCode = countryButton.currentTitle!.split(separator: " ")[1]
+        let number =  numberTextField.text!
+ 
+        if (number.isEmpty) {
+            ViewControllerHelper.showAlert(vc: self, message: "Phone Number is required", type: .failed)
+            return
+        }
+        
+        self.realNumber = "\(numberCode)\(number)"
+        self.utilController.showActivityIndicator()
+        self.apiService.initReset(number: realNumber) { (status, message) in
+            self.utilController.hideActivityIndicator()
+            if status != ApiCallStatus.SUCCESS {
+                let appearance = SCLAlertView.SCLAppearance(dynamicAnimatorActive: true)
+                SCLAlertView(appearance: appearance).showError("SpeakUpp Error", subTitle: message)
+            }  else {
+                self.allowCode()
+            }
+        }
+    }
+    
+    func allowCode() {
+        let alertController = UIAlertController(title: "Verify Number", message: "", preferredStyle: UIAlertControllerStyle.alert)
+        let saveAction = UIAlertAction(title: "Verify", style: UIAlertActionStyle.default, handler: {
+            alert -> Void in
+            let codeTextField = alertController.textFields![0] as UITextField
+            let code = codeTextField.text!
+            self.initRest(code: code)
+        })
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: {
+            (action : UIAlertAction!) -> Void in
+        })
+        
+        alertController.addTextField { (textField : UITextField!) -> Void in
+            textField.placeholder = "Enter Veriification Code"
+        }
+        alertController.addAction(saveAction)
+        alertController.addAction(cancelAction)
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func initRest(code: String)  {
+        self.utilController.showActivityIndicator()
+        self.apiService.initReset(number: self.realNumber) { (status, message) in
+            self.utilController.hideActivityIndicator()
+            if status == ApiCallStatus.SUCCESS {
+               let destination = ResetPinController()
+               destination.number = self.realNumber
+               destination.loginController = self
+               self.present(destination, animated: true, completion: nil)
+            } else {
+                let appearance = SCLAlertView.SCLAppearance(dynamicAnimatorActive: true)
+                SCLAlertView(appearance: appearance).showError("SpeakUpp Error", subTitle: message)
+            }
+        }
+    }
     
     @objc private func login() {
        let numberCode = countryButton.currentTitle!.split(separator: " ")[1]
@@ -272,7 +357,7 @@ class LoginController: UIViewController {
        let pin = pinTextField.text!
         
         if (number.isEmpty) {
-            ViewControllerHelper.showAlert(vc: self, message: "Number is required", type: .failed)
+            ViewControllerHelper.showAlert(vc: self, message: "Phone Number is required", type: .failed)
             return
         }
     
@@ -282,7 +367,6 @@ class LoginController: UIViewController {
         }
         
         let realNumber = "\(numberCode)\(number)"
-        print("\(realNumber)")
         self.utilController.showActivityIndicator()
         self.apiService.login(number: realNumber, pin: pin) { (status, message) in
             self.utilController.hideActivityIndicator()
@@ -299,6 +383,11 @@ class LoginController: UIViewController {
     }
     
     
+    func resetDone(message: String) {
+        let appearance = SCLAlertView.SCLAppearance(dynamicAnimatorActive: true)
+        SCLAlertView(appearance: appearance).showSuccess("Password Reset Done", subTitle: message)
+    }
+    
     @objc private func pickCountry() {
         let picker = ADCountryPicker()
         picker.delegate = self
@@ -312,14 +401,21 @@ class LoginController: UIViewController {
         picker.font = UIFont(name: "RobotoLight", size: 14)
         picker.flagHeight = 40
         picker.hidesNavigationBarWhenPresentingSearch = true
-        picker.searchBarBackgroundColor = UIColor.hex(hex: Key.primaryHexCode)
+        picker.searchBarBackgroundColor = UIColor.white
         let pickerNavigationController = UINavigationController(rootViewController: picker)
         self.present(pickerNavigationController, animated: true, completion: nil)
     }
     
     @objc private func tapLabel(gesture: UITapGestureRecognizer) {
-        print("Tapped")
+        let destination = SettingPageController()
+        let header = "Privacy"
+        destination.header = header
+        destination.type = SettingType.privacy
+        let vc = UINavigationController(rootViewController: destination)
+        self.present(vc, animated: true, completion: nil)
     }
+    
+    
     
     @objc private func closeAction(gesture: UITapGestureRecognizer) {
         self.dismiss(animated: true, completion: nil)
@@ -331,6 +427,11 @@ extension LoginController : UITextFieldDelegate,ADCountryPickerDelegate {
         guard CharacterSet(charactersIn: "0123456789").isSuperset(of: CharacterSet(charactersIn: string)) else {
             return false
         }
+        if textField == self.pinTextField {
+            guard let text = textField.text else { return true }
+            let newLength = text.count + string.count - range.length
+            return newLength <= 4
+        }
         return true
     }
     
@@ -339,7 +440,7 @@ extension LoginController : UITextFieldDelegate,ADCountryPickerDelegate {
     }
     
     func countryPicker(_ picker: ADCountryPicker, didSelectCountryWithName name: String, code: String, dialCode: String) {
-        let text = Mics.flag(country: code) + dialCode
+        let text = Mics.flag(country: code) + " " + dialCode
         self.countryButton.setTitle(text, for: .normal)
         picker.dismiss(animated: true, completion: nil)
     }

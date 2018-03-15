@@ -18,6 +18,8 @@ class PollChoice: Object {
     @objc dynamic var image = ""
     @objc dynamic var choiceDescription = ""
     @objc dynamic var audio = ""
+    @objc dynamic var isSelectedOption = false
+    
    
     override class func primaryKey() -> String? {
         return "id"

@@ -249,9 +249,9 @@ class EditProfileController: UIViewController {
         self.avatarImageView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 0).isActive = true
         self.avatarImageView.heightAnchor.constraint(equalToConstant: screenWidth - 200).isActive = true
         
-        self.coverView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
-        self.coverView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
-        self.coverView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
+        self.coverView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 0).isActive = true
+        self.coverView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: 0).isActive = true
+        self.coverView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 0).isActive = true
         self.coverView.heightAnchor.constraint(equalToConstant: screenWidth - 200).isActive = true
         
         self.profileImageView.widthAnchor.constraint(equalToConstant: 100).isActive = true
@@ -493,6 +493,10 @@ class EditProfileController: UIViewController {
         }
         alertActionControl.addAction(alertActionGallery)
         alertActionControl.addAction(alertActionCancel)
+        if let presenter = alertActionControl.popoverPresentationController {
+            presenter.sourceView = gesture.view
+            presenter.sourceRect = (gesture.view?.bounds)!
+        }
         self.present(alertActionControl,animated:true,completion:nil)
     }
     
@@ -524,7 +528,7 @@ class EditProfileController: UIViewController {
             let displayDate = dateFormatterPrint.string(from: value! as! Date)
             self.datePickerButton.setTitle(displayDate, for: .normal)
             return
-        }, cancel: { ActionStringCancelBlock in return }, origin: sender.superview!.superview)
+        }, cancel: { ActionStringCancelBlock in return }, origin: sender)
         let secondsInWeek: TimeInterval = NSTimeIntervalSince1970
         datePicker?.minimumDate = Date(timeInterval: -secondsInWeek, since: Date())
         datePicker?.maximumDate = Date(timeInterval: -sixteenInterval, since: Date())

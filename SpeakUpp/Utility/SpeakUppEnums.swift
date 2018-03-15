@@ -32,5 +32,3 @@ enum SettingType {
     case friend
     case about
 }
-
-

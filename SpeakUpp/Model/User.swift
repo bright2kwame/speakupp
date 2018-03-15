@@ -82,8 +82,7 @@ class User: Object {
         }
     }
     
-    
-    
+
     //delete all
     static func delete(){
         let realm = try! Realm()

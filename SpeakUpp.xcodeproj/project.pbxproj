@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0B1C51AA43C69AA5DDD497D4 /* libPods-OneSignalNotificationServiceExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9523630B788BAD90C98AFB6F /* libPods-OneSignalNotificationServiceExtension.a */; };
 		61034065158F824F00FDD139 /* Pods_SpeakUpp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDC8A705F567908CBFC1B8E5 /* Pods_SpeakUpp.framework */; };
+		ED07D2AC2059C836003C3550 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED07D2AB2059C836003C3550 /* PlayerView.swift */; };
 		ED158FBA2020B216000E43BB /* ResetPinController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED158FB92020B216000E43BB /* ResetPinController.swift */; };
 		ED158FBC2020BAA0000E43BB /* LogoOutController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED158FBB2020BAA0000E43BB /* LogoOutController.swift */; };
 		ED158FBF2020E626000E43BB /* SettingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED158FBE2020E626000E43BB /* SettingController.swift */; };
@@ -35,6 +36,7 @@
 		ED46DB982034B32600F6A06E /* PeopleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED46DB972034B32600F6A06E /* PeopleCell.swift */; };
 		ED46DB9A203596FE00F6A06E /* BaseTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED46DB99203596FE00F6A06E /* BaseTableCell.swift */; };
 		ED46DB9C2035A96000F6A06E /* GetStartedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED46DB9B2035A96000F6A06E /* GetStartedController.swift */; };
+		ED4BC508205A99540030FF11 /* SpeakUppProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4BC507205A99540030FF11 /* SpeakUppProtocol.swift */; };
 		ED5679E12016119700F52B89 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5679E02016119700F52B89 /* AppDelegate.swift */; };
 		ED5679E32016119700F52B89 /* OnboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5679E22016119700F52B89 /* OnboardViewController.swift */; };
 		ED5679E82016119700F52B89 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED5679E72016119700F52B89 /* Assets.xcassets */; };
@@ -129,6 +131,7 @@
 		9523630B788BAD90C98AFB6F /* libPods-OneSignalNotificationServiceExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OneSignalNotificationServiceExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9728968BE78037722D55C171 /* Pods-SpeakUpp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpeakUpp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SpeakUpp/Pods-SpeakUpp.debug.xcconfig"; sourceTree = "<group>"; };
 		D823EF2A956CC1347C09DE9F /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		ED07D2AB2059C836003C3550 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 		ED158FB92020B216000E43BB /* ResetPinController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPinController.swift; sourceTree = "<group>"; };
 		ED158FBB2020BAA0000E43BB /* LogoOutController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoOutController.swift; sourceTree = "<group>"; };
 		ED158FBE2020E626000E43BB /* SettingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingController.swift; sourceTree = "<group>"; };
@@ -155,6 +158,7 @@
 		ED46DB972034B32600F6A06E /* PeopleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleCell.swift; sourceTree = "<group>"; };
 		ED46DB99203596FE00F6A06E /* BaseTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableCell.swift; sourceTree = "<group>"; };
 		ED46DB9B2035A96000F6A06E /* GetStartedController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetStartedController.swift; sourceTree = "<group>"; };
+		ED4BC507205A99540030FF11 /* SpeakUppProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakUppProtocol.swift; sourceTree = "<group>"; };
 		ED5679DD2016119700F52B89 /* SpeakUpp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpeakUpp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED5679E02016119700F52B89 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ED5679E22016119700F52B89 /* OnboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardViewController.swift; sourceTree = "<group>"; };
@@ -266,6 +270,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		ED07D2AA2059C7F9003C3550 /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				ED07D2AB2059C836003C3550 /* PlayerView.swift */,
+			);
+			path = Audio;
+			sourceTree = "<group>";
+		};
 		ED158FBD2020BEBD000E43BB /* Setting */ = {
 			isa = PBXGroup;
 			children = (
@@ -330,6 +342,14 @@
 			path = Payment;
 			sourceTree = "<group>";
 		};
+		ED4BC506205A993E0030FF11 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				ED4BC507205A99540030FF11 /* SpeakUppProtocol.swift */,
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
 		ED5679D42016119700F52B89 = {
 			isa = PBXGroup;
 			children = (
@@ -353,7 +373,9 @@
 		ED5679DF2016119700F52B89 /* SpeakUpp */ = {
 			isa = PBXGroup;
 			children = (
+				ED4BC506205A993E0030FF11 /* Protocol */,
 				EDEA35F5203ADB1800330608 /* SpeakUpp.entitlements */,
+				ED07D2AA2059C7F9003C3550 /* Audio */,
 				ED46DB8A203309AF00F6A06E /* Payment */,
 				ED421DDC2032056800D8DF1F /* ProfileCell */,
 				ED421DD3202E4B9600D8DF1F /* Details */,
@@ -774,6 +796,7 @@
 				ED46DB942034161000F6A06E /* CellHelper.swift in Sources */,
 				ED5679FB2016465300F52B89 /* ViewControllerHelper.swift in Sources */,
 				ED6C6E59201FEB9400C15586 /* TrendingCellTopBarCell.swift in Sources */,
+				ED4BC508205A99540030FF11 /* SpeakUppProtocol.swift in Sources */,
 				ED158FC920211639000E43BB /* SearchController.swift in Sources */,
 				ED46DB8E20331D5600F6A06E /* PaymentRedirectController.swift in Sources */,
 				ED7E17AE2019DB1C006DF756 /* SignUpController.swift in Sources */,
@@ -802,6 +825,7 @@
 				EDDE09482028F44E002DF2B4 /* ApiUrl.swift in Sources */,
 				ED7E9744202DD32C00B35E0F /* PollImageChoiceCell.swift in Sources */,
 				EDDE094A2028F66F002DF2B4 /* ApiService.swift in Sources */,
+				ED07D2AC2059C836003C3550 /* PlayerView.swift in Sources */,
 				EDDE094C202902BA002DF2B4 /* ApiCallStatus.swift in Sources */,
 				ED421DDE2032058700D8DF1F /* WordCloudCell.swift in Sources */,
 				EDED9B5520376A2300B072D9 /* FaqController.swift in Sources */,

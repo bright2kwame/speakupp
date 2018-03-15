@@ -19,7 +19,6 @@ class SignUpController: BaseScrollViewController {
     let utilController = ViewControllerHelper()
     let labelWidth = CGFloat(50)
     
-    
     let closeImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "CloseCross")
@@ -461,6 +460,13 @@ class SignUpController: BaseScrollViewController {
         self.privacyLabel.topAnchor.constraint(equalTo: signUpButton.bottomAnchor, constant: 100).isActive = true
         self.privacyLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0).isActive = true
         
+        //MARK- set deafault country here
+        if let locale = Locale.current.regionCode {
+            let localCountryCode = Mics.getCountryCallingCode(countryRegionCode: locale)
+            let text = Mics.flag(country: locale.uppercased())
+            self.countryButton.setTitle("\(text) +\(localCountryCode)", for: .normal)
+        }
+        
     }
     
     @objc private func signUp() {
@@ -529,7 +535,7 @@ class SignUpController: BaseScrollViewController {
     }
     
     @objc private func tapLabel(gesture: UITapGestureRecognizer) {
-       ViewControllerHelper.openLink(url: "www.google.com", vc: self)
+       ViewControllerHelper.openLink(url: "https://www.speakupp.com/", vc: self)
     }
     
     @objc private func pickCountry() {
@@ -545,7 +551,7 @@ class SignUpController: BaseScrollViewController {
         picker.font = UIFont(name: "RobotoLight", size: 14)
         picker.flagHeight = 40
         picker.hidesNavigationBarWhenPresentingSearch = true
-        picker.searchBarBackgroundColor = UIColor.hex(hex: Key.primaryHexCode)
+        picker.searchBarBackgroundColor = UIColor.white
         let pickerNavigationController = UINavigationController(rootViewController: picker)
         self.present(pickerNavigationController, animated: true, completion: nil)
     }
@@ -577,7 +583,7 @@ class SignUpController: BaseScrollViewController {
             let displayDate = dateFormatterPrint.string(from: value! as! Date)
             self.datePickerButton.setTitle(displayDate, for: .normal)
             return
-        }, cancel: { ActionStringCancelBlock in return }, origin: sender.superview!.superview)
+        }, cancel: { ActionStringCancelBlock in return }, origin: sender)
         let secondsInWeek: TimeInterval = NSTimeIntervalSince1970
         datePicker?.minimumDate = Date(timeInterval: -secondsInWeek, since: Date())
         datePicker?.maximumDate = Date(timeInterval: -sixteenInterval, since: Date())
@@ -592,6 +598,13 @@ extension SignUpController : UITextFieldDelegate,ADCountryPickerDelegate {
         guard CharacterSet(charactersIn: "0123456789").isSuperset(of: CharacterSet(charactersIn: string)) else {
             return false
         }
+        
+        if textField == self.pinTextField || textField == self.confirmPinTextField {
+            guard let text = textField.text else { return true }
+            let newLength = text.count + string.count - range.length
+            return newLength <= 4
+        }
+        
         return true
     }
     
@@ -600,7 +613,7 @@ extension SignUpController : UITextFieldDelegate,ADCountryPickerDelegate {
     }
     
     func countryPicker(_ picker: ADCountryPicker, didSelectCountryWithName name: String, code: String, dialCode: String) {
-        let text = Mics.flag(country: code) + dialCode
+        let text = Mics.flag(country: code) + " " + dialCode
         self.countryButton.setTitle(text, for: .normal)
         picker.dismiss(animated: true, completion: nil)
     }

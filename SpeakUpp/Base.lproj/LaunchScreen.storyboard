@@ -4,7 +4,6 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -19,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AppBg" translatesAutoresizingMaskIntoConstraints="NO" id="kIv-4X-4Ax">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LogoImage" translatesAutoresizingMaskIntoConstraints="NO" id="ZKh-Iz-f8h">
                                 <rect key="frame" x="50" y="272" width="275" height="123"/>
@@ -27,14 +26,14 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="kIv-4X-4Ax" secondAttribute="bottom" id="921-Av-iUl"/>
                             <constraint firstItem="ZKh-Iz-f8h" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="50" id="DaO-dQ-OOn"/>
-                            <constraint firstItem="kIv-4X-4Ax" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="IEr-g7-9oH"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ZKh-Iz-f8h" secondAttribute="trailing" constant="50" id="ITo-DA-cT4"/>
                             <constraint firstItem="ZKh-Iz-f8h" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="LcT-9i-wzP"/>
+                            <constraint firstAttribute="trailing" secondItem="kIv-4X-4Ax" secondAttribute="trailing" id="Onx-3J-rWO"/>
                             <constraint firstItem="ZKh-Iz-f8h" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="RSK-EX-dpa"/>
-                            <constraint firstItem="kIv-4X-4Ax" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="cre-Kd-j9t"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="kIv-4X-4Ax" secondAttribute="bottom" id="he7-Ob-bGX"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="kIv-4X-4Ax" secondAttribute="trailing" id="z4Q-bh-utS"/>
+                            <constraint firstItem="kIv-4X-4Ax" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="ZMg-s6-CCt"/>
+                            <constraint firstItem="kIv-4X-4Ax" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="uTG-Qo-8J6"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>

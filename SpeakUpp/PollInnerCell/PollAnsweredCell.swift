@@ -18,6 +18,7 @@ class PollAnsweredCell: BaseCell {
             self.votePercentTextLabel.text = "\(unwrapedItem.resultPercent) %"
             let fraction = Double(unwrapedItem.resultPercent)!/100
             self.progressUIView.progress = Float(fraction)
+            self.indicatorImageView.isHidden = !unwrapedItem.isSelectedOption
         }
     }
     
@@ -54,6 +55,18 @@ class PollAnsweredCell: BaseCell {
         return progressBar
     }()
     
+    let indicatorImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = 0
+        imageView.layer.borderWidth = 0
+        let image = UIImage(named: "Accept")
+        imageView.image = image
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
     
     override func setUpView() {
         super.setUpView()
@@ -61,16 +74,22 @@ class PollAnsweredCell: BaseCell {
         addSubview(progressUIView)
         addSubview(optionTextLabel)
         addSubview(votePercentTextLabel)
+        addSubview(indicatorImageView)
         
         self.progressUIView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0).isActive = true
         self.progressUIView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0).isActive = true
         self.progressUIView.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
         self.progressUIView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
         
-        self.votePercentTextLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8).isActive = true
+        self.votePercentTextLabel.trailingAnchor.constraint(equalTo: indicatorImageView.leadingAnchor, constant: -4).isActive = true
         self.votePercentTextLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8).isActive = true
         self.votePercentTextLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8).isActive = true
         self.votePercentTextLabel.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        self.indicatorImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -4).isActive = true
+        self.indicatorImageView.topAnchor.constraint(equalTo: topAnchor, constant: 8).isActive = true
+        self.indicatorImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8).isActive = true
+        self.indicatorImageView.widthAnchor.constraint(equalToConstant: 20).isActive = true
         
         self.optionTextLabel.trailingAnchor.constraint(equalTo: votePercentTextLabel.leadingAnchor, constant: -8).isActive = true
         self.optionTextLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8).isActive = true

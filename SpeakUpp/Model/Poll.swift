@@ -47,6 +47,8 @@ class Poll: Object {
     @objc dynamic var elapsedTime = ""
     @objc dynamic var question = ""
     @objc dynamic var price = ""
+    @objc dynamic var votedOption = ""
+    
     
 
     override class func primaryKey() -> String? {
