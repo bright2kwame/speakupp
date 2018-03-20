@@ -245,12 +245,12 @@ class EditProfileController: UIViewController {
         self.scrollView.widthAnchor.constraint(equalToConstant: screenWidth).isActive = true
         
         self.avatarImageView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 0).isActive = true
-        self.avatarImageView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: 0).isActive = true
+        self.avatarImageView.widthAnchor.constraint(equalToConstant: screenWidth).isActive = true
         self.avatarImageView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 0).isActive = true
         self.avatarImageView.heightAnchor.constraint(equalToConstant: screenWidth - 200).isActive = true
         
         self.coverView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 0).isActive = true
-        self.coverView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: 0).isActive = true
+        self.coverView.widthAnchor.constraint(equalToConstant: screenWidth).isActive = true
         self.coverView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 0).isActive = true
         self.coverView.heightAnchor.constraint(equalToConstant: screenWidth - 200).isActive = true
         
@@ -272,13 +272,11 @@ class EditProfileController: UIViewController {
         
         self.nameTextField.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 40).isActive = true
         self.nameTextField.leadingAnchor.constraint(equalTo: nameLabel.trailingAnchor, constant: 4).isActive = true
-        //self.nameTextField.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16).isActive = true
         self.nameTextField.heightAnchor.constraint(equalToConstant: 40).isActive = true
         self.nameTextField.widthAnchor.constraint(equalToConstant: screenWidth-32).isActive = true
         
         self.nameUnderlineView.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 4).isActive = true
         self.nameUnderlineView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16).isActive = true
-        //self.nameUnderlineView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16).isActive = true
         self.nameUnderlineView.heightAnchor.constraint(equalToConstant: 1).isActive = true
         self.nameUnderlineView.widthAnchor.constraint(equalToConstant: screenWidth-32).isActive = true
         
@@ -296,7 +294,6 @@ class EditProfileController: UIViewController {
         
         self.numberDividerView.topAnchor.constraint(equalTo: phoneNumberLabel.bottomAnchor, constant: 4).isActive = true
         self.numberDividerView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16).isActive = true
-        //self.numberDividerView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16).isActive = true
         self.numberDividerView.heightAnchor.constraint(equalToConstant: 1).isActive = true
         self.numberDividerView.widthAnchor.constraint(equalToConstant: screenWidth-32).isActive = true
         
