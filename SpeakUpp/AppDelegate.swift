@@ -52,6 +52,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate,OSPermissionObserver, OSSu
         })
         
        
+        //MARK: enable cokies
+        self.loadCookies()
+        
+        //MARK: realm configuration
         Realm.Configuration.defaultConfiguration = config
         IQKeyboardManager.sharedManager().enable = true
         
@@ -172,10 +176,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate,OSPermissionObserver, OSSu
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        self.saveCookies()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        self.loadCookies()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -184,6 +190,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate,OSPermissionObserver, OSSu
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        self.saveCookies()
+    }
+    
+    func saveCookies() {
+        guard let cookies = HTTPCookieStorage.shared.cookies else {
+            return
+        }
+        let array = cookies.flatMap { (cookie) -> [HTTPCookiePropertyKey: Any]? in
+            cookie.properties
+        }
+        UserDefaults.standard.set(array, forKey: "cookies")
+        UserDefaults.standard.synchronize()
+    }
+    
+    func loadCookies() {
+        guard let cookies = UserDefaults.standard.value(forKey: "cookies") as? [[HTTPCookiePropertyKey: Any]] else {
+            return
+        }
+        cookies.forEach { (cookie) in
+            guard let cookie = HTTPCookie.init(properties: cookie) else {
+                return
+            }
+            HTTPCookieStorage.shared.setCookie(cookie)
+        }
     }
 
 }

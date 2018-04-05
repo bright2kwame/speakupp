@@ -171,7 +171,8 @@ class HomeController: UIViewController {
 
     func setUpMenu()  {
         navigationItem.title = ""
-        let titleImageView = UIImageView(image: UIImage(named: "LogoImage"))
+        let logoImage = UIImage(named:"LogoHeader")?.withRenderingMode(.alwaysOriginal)
+        let titleImageView = UIImageView(image: logoImage)
         titleImageView.frame = CGRect(x: 0, y: 0, width: 150, height: 34)
         titleImageView.contentMode = .scaleAspectFit
         titleImageView.layer.masksToBounds = true
@@ -273,7 +274,6 @@ extension HomeController: UICollectionViewDataSource,UICollectionViewDelegateFlo
             
         })
     }
-    
 }
 
 

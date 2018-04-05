@@ -16,6 +16,8 @@ class PollsController: UIViewController {
     var feed = [Poll]()
     let apiService = ApiService()
     var categoryId: String?
+    var corporateId: String?
+    var schoolId: String?
     var indicator: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
     
     lazy var playerView: PlayerView = {
@@ -49,13 +51,11 @@ class PollsController: UIViewController {
         self.setUpNavigationBar()
         self.setUpViews()
         
-        if let id = self.categoryId {
-            self.getData(id: id)
-        }
+        self.callRefresh()
     }
     
     private func setUpNavigationBar()  {
-        navigationItem.title = "Poll"
+        navigationItem.title = "Polls"
         navigationController?.navigationBar.isTranslucent = false
         
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
@@ -86,6 +86,16 @@ class PollsController: UIViewController {
         if let id = self.categoryId {
             self.getData(id: id)
         }
+        
+        if let id = self.corporateId {
+            let url = "\(ApiUrl().corporate())\(id)/get_polls/"
+            self.getAllPolls(url: url)
+        }
+        
+        if let id = self.schoolId {
+            let url = "\(ApiUrl().shools())\(id)/get_polls/"
+            self.getAllPolls(url: url)
+        }
     }
     
     func startProgress() {
@@ -115,6 +125,8 @@ class PollsController: UIViewController {
         
         //MARK - audio notfication center
         NotificationCenter.default.addObserver(self, selector: #selector(self.receivedAudioNotification(notification:)), name: Notification.Name(Key.PLAY_AUDIO), object: nil)
+        
+        self.setUpUniversalIndication()
 
     }
     
@@ -149,6 +161,29 @@ class PollsController: UIViewController {
                 }
             }
         })
+    }
+    
+    func getAllPolls(url: String)  {
+        self.startProgress()
+        self.apiService.allPolls(url: url) { (polls, status, message, nextUrl) in
+            self.handleResult(polls: polls, status: status, message: message, nextUrl: nextUrl)
+        }
+    }
+    
+    func handleResult(polls:[Poll]?, status:ApiCallStatus, message:String?, nextUrl:String?)  {
+        self.refresher.endRefreshing()
+        self.stopProgress()
+        if let pollsIn = polls {
+            self.feed.append(contentsOf: pollsIn)
+            self.feedCollectionView.reloadData()
+        }
+        if let next = nextUrl {
+            self.nextPageUrl = next
+        }
+        if status == ApiCallStatus.FAILED {
+            ViewControllerHelper.showAlert(vc: self, message: message!, type: MessageType.failed)
+        }
+        
     }
     
     //MARK - continue paymemt

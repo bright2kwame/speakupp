@@ -15,11 +15,13 @@ class HomeCell: BaseCell {
     let feedCellId = "feedCellId"
     let menuCellId = "menuCellId"
     let baseRatingCellId = "baseRatingCell"
+    let coporateCellId = "coporateCellId"
+    let schoolCellId = "schoolCellId"
     var nextPageUrl = ""
     var loadedPages = [String]()
     var feed = [Any]()
     let apiService = ApiService()
-    var selctedPoll = "ALL"
+    var selctedPoll = HomeTabsType.CORPORATE.rawValue
     
     var typeOfPoll: String? {
         didSet {
@@ -60,6 +62,8 @@ class HomeCell: BaseCell {
         feedCollectionView.register(HomeCellTopBarCell.self, forCellWithReuseIdentifier: menuCellId)
         feedCollectionView.register(BaseFeedCell.self, forCellWithReuseIdentifier: feedCellId)
         feedCollectionView.register(BaseRatingCell.self, forCellWithReuseIdentifier: baseRatingCellId)
+        feedCollectionView.register(CorporateCell.self, forCellWithReuseIdentifier: coporateCellId)
+        feedCollectionView.register(SchoolCell.self, forCellWithReuseIdentifier: schoolCellId)
         feedCollectionView.addSubview(refresher)
         
         if let flowLayout = feedCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
@@ -71,6 +75,8 @@ class HomeCell: BaseCell {
         
         //MARK - notfication center
          NotificationCenter.default.addObserver(self, selector: #selector(self.receivedLikedNotification(notification:)), name: Notification.Name(Key.POLL_LIKE), object: nil)
+        
+        
     }
     
     
@@ -85,14 +91,14 @@ class HomeCell: BaseCell {
     //MARK - call for refresh from other places
     func callRefresh()  {
         self.loadedPages.removeAll()
-        if selctedPoll == "ALL" {
-            self.setUpAndCall(url: ApiUrl().allNewPolls())
+        if selctedPoll == HomeTabsType.CORPORATE.rawValue {
+            self.setUpAndCall(url: ApiUrl().corporate())
         }
-        if selctedPoll == "POLLS" {
-            self.setUpAndCall(url: ApiUrl().allOnlyPolls())
+        if selctedPoll == HomeTabsType.SCHOOLS.rawValue {
+            self.setUpAndCall(url: ApiUrl().shools())
         }
-        if selctedPoll == "RATINGS" {
-            self.setUpAndCall(url: ApiUrl().allRatingPolls())
+        if selctedPoll == HomeTabsType.TIMELINE.rawValue {
+            self.setUpAndCall(url: ApiUrl().timeline())
         }
     }
     
@@ -113,7 +119,21 @@ class HomeCell: BaseCell {
         feed.append("Header")
         feedCollectionView.reloadData()
         self.homeController?.startProgress()
-        self.getData(url: url)
+        self.callByType(url: url)
+    }
+    
+    func callByType(url:String)  {
+        if selctedPoll == HomeTabsType.CORPORATE.rawValue {
+           self.getCorporateData(url: url)
+        }
+        
+        if selctedPoll == HomeTabsType.SCHOOLS.rawValue {
+            self.getSchoolData(url: url)
+        }
+        
+        if selctedPoll == HomeTabsType.TIMELINE.rawValue {
+            self.getData(url: url)
+        }
     }
     
     func startComment(position: Int)  {
@@ -124,24 +144,45 @@ class HomeCell: BaseCell {
         self.homeController?.present(destination, animated: true, completion: nil)
     }
     
+    //MARK:- corporate call
+    func getCorporateData(url:String)  {
+        self.loadedPages.append(url)
+        self.apiService.allCorporateGroups(url: url) { (polls, status, message, nextUrl) in
+            self.handleResult(polls: polls, status: status, message: message, nextUrl: nextUrl)
+        }
+    }
+    
+    //MARK:- school call
+    func getSchoolData(url:String)  {
+        self.loadedPages.append(url)
+        self.apiService.allSchools(url: url) { (polls, status, message, nextUrl) in
+            self.handleResult(polls: polls, status: status, message: message, nextUrl: nextUrl)
+        }
+    }
+
+    //MARK:- get timeline data
     func getData(url:String)  {
         self.loadedPages.append(url)
         self.apiService.allPolls(url: url) { (polls, status, message, nextUrl) in
-            self.refresher.endRefreshing()
-            self.homeController?.stopProgress()
-            if let pollsIn = polls {
-                for poll in pollsIn {
-                    self.feed.append(poll)
-                }
-                self.feedCollectionView.reloadData()
+           self.handleResult(polls: polls, status: status, message: message, nextUrl: nextUrl)
+        }
+    }
+    
+    func handleResult(polls:[Any]?, status:ApiCallStatus, message:String?, nextUrl:String?)  {
+        self.refresher.endRefreshing()
+        self.homeController?.stopProgress()
+        if let pollsIn = polls {
+            for poll in pollsIn {
+                self.feed.append(poll)
             }
-            if let next = nextUrl {
-               self.nextPageUrl = next
-            }
-            if let vc = self.homeController {
-                if status == ApiCallStatus.FAILED {
-                    ViewControllerHelper.showAlert(vc: vc, message: message!, type: MessageType.failed)
-                }
+            self.feedCollectionView.reloadData()
+        }
+        if let next = nextUrl {
+            self.nextPageUrl = next
+        }
+        if let vc = self.homeController {
+            if status == ApiCallStatus.FAILED {
+                ViewControllerHelper.showAlert(vc: vc, message: message!, type: MessageType.failed)
             }
         }
     }
@@ -261,6 +302,20 @@ extension HomeCell: UICollectionViewDataSource,UICollectionViewDelegateFlowLayou
             return cell
         }
         
+        if feed is CorporateItem {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: coporateCellId, for: indexPath) as! CorporateCell
+            cell.homeCell = self
+            cell.feed = feed as? CorporateItem
+            return cell
+        }
+        
+        if feed is SchoolItem {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: schoolCellId, for: indexPath) as! SchoolCell
+            cell.homeCell = self
+            cell.item = feed as? SchoolItem
+            return cell
+        }
+        
         let feedItem = feed as? Poll
         if feedItem?.pollType == "rating"  {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: baseRatingCellId, for: indexPath) as! BaseRatingCell
@@ -366,16 +421,35 @@ extension HomeCell: UICollectionViewDataSource,UICollectionViewDelegateFlowLayou
         feedCollectionView.selectItem(at: selectedIndexPath, animated: true, scrollPosition: .centeredHorizontally)
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let item = self.feed[indexPath.row]
+        if item is CorporateItem {
+            let corporate = item as? CorporateItem
+            let vc = PollsController()
+            vc.corporateId = corporate?.id
+            self.homeController?.present(UINavigationController(rootViewController: vc), animated: true, completion: nil)
+        }
+        
+        
+        if item is SchoolItem {
+            let school = item as? SchoolItem
+            let vc = PollsController()
+            vc.schoolId = school?.id
+            self.homeController?.present(UINavigationController(rootViewController: vc), animated: true, completion: nil)
+        }
+        
+    }
+    
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let currentOffset = scrollView.contentOffset.y
         let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
         
         if (maximumOffset - currentOffset) <= 400 {
             if !(self.nextPageUrl.isEmpty) && !self.loadedPages.contains(self.nextPageUrl) {
-                self.getData(url: self.nextPageUrl)
+                self.callByType(url: self.nextPageUrl)
             }
         }
-        
     }
     
 }

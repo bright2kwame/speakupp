@@ -105,6 +105,18 @@ class ApiUrl {
         return "\(activeBaseUrl())get_credentials/"
     }
     
+    func corporate() -> String {
+        return "\(activeBaseUrl())corporate_groupings/"
+    }
+    
+    func shools() -> String {
+        return "\(activeBaseUrl())school_groupings/"
+    }
+    
+    func timeline() -> String {
+        return "\(activeBaseUrl())timeline/"
+    }
+    
     func callBack() -> String {
         return "\(callBackUrl)"
     }

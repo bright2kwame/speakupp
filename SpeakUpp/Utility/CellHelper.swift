@@ -23,18 +23,8 @@ class CellHelper {
         }
         
         //MARK - the brand section
-        if feed is Brand  {
+        if feed is Brand || feed is CorporateItem || feed is PollAuthor || feed is PollComment || feed is SchoolItem {
            return CGSize(width: itemWidth, height: 100)
-        }
-        
-        //MARK - the brand section
-        if feed is PollAuthor  {
-            return CGSize(width: itemWidth, height: 100)
-        }
-        
-        //MARK - the comment section
-        if feed is PollComment  {
-            return CGSize(width: itemWidth, height: 100)
         }
         
         let bottomSectionHeight = 62.0

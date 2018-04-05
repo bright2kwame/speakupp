@@ -62,6 +62,10 @@
 		ED6C6E5B202072AF00C15586 /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6C6E5A202072AF00C15586 /* EventCell.swift */; };
 		ED6C6E5D2020734E00C15586 /* EventItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6C6E5C2020734E00C15586 /* EventItemCell.swift */; };
 		ED6C6E5F2020740200C15586 /* ProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6C6E5E2020740200C15586 /* ProfileCell.swift */; };
+		ED7232EC2075926D0079EBD9 /* CorporateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7232EB2075926D0079EBD9 /* CorporateCell.swift */; };
+		ED7232EE207593F60079EBD9 /* CorporateItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7232ED207593F60079EBD9 /* CorporateItem.swift */; };
+		ED7232F020759FD40079EBD9 /* SchoolItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7232EF20759FD40079EBD9 /* SchoolItem.swift */; };
+		ED7232F220761DA20079EBD9 /* SchoolCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7232F120761DA20079EBD9 /* SchoolCell.swift */; };
 		ED777666202CE6720006A8F3 /* BaseRatingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED777665202CE6720006A8F3 /* BaseRatingCell.swift */; };
 		ED7E17992017DB88006DF756 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7E17982017DB88006DF756 /* LoginController.swift */; };
 		ED7E179F20188EEE006DF756 /* RobotoBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ED7E179B20188C25006DF756 /* RobotoBold.ttf */; };
@@ -187,6 +191,10 @@
 		ED6C6E5A202072AF00C15586 /* EventCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
 		ED6C6E5C2020734E00C15586 /* EventItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventItemCell.swift; sourceTree = "<group>"; };
 		ED6C6E5E2020740200C15586 /* ProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCell.swift; sourceTree = "<group>"; };
+		ED7232EB2075926D0079EBD9 /* CorporateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorporateCell.swift; sourceTree = "<group>"; };
+		ED7232ED207593F60079EBD9 /* CorporateItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorporateItem.swift; sourceTree = "<group>"; };
+		ED7232EF20759FD40079EBD9 /* SchoolItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolItem.swift; sourceTree = "<group>"; };
+		ED7232F120761DA20079EBD9 /* SchoolCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolCell.swift; sourceTree = "<group>"; };
 		ED777665202CE6720006A8F3 /* BaseRatingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRatingCell.swift; sourceTree = "<group>"; };
 		ED7E17982017DB88006DF756 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		ED7E179B20188C25006DF756 /* RobotoBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = RobotoBold.ttf; sourceTree = "<group>"; };
@@ -416,6 +424,8 @@
 				ED46DB882032F34600F6A06E /* AWSCredentials.swift */,
 				ED8C23582036E91D0048A7E8 /* PollComment.swift */,
 				EDED9B5C2038C50100B072D9 /* EventTicket.swift */,
+				ED7232ED207593F60079EBD9 /* CorporateItem.swift */,
+				ED7232EF20759FD40079EBD9 /* SchoolItem.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -485,6 +495,8 @@
 				ED6C6E5A202072AF00C15586 /* EventCell.swift */,
 				ED6C6E5C2020734E00C15586 /* EventItemCell.swift */,
 				ED6C6E5E2020740200C15586 /* ProfileCell.swift */,
+				ED7232EB2075926D0079EBD9 /* CorporateCell.swift */,
+				ED7232F120761DA20079EBD9 /* SchoolCell.swift */,
 			);
 			path = HomeCell;
 			sourceTree = "<group>";
@@ -779,6 +791,7 @@
 				ED6C6E4B201F74B900C15586 /* HomeMenuBarCell.swift in Sources */,
 				ED8C23552036E1E90048A7E8 /* PollDetailController.swift in Sources */,
 				ED421DD5202E55C700D8DF1F /* EventDetailController.swift in Sources */,
+				ED7232F220761DA20079EBD9 /* SchoolCell.swift in Sources */,
 				ED421DD9202F8B5F00D8DF1F /* PollAnsweredWithImageCell.swift in Sources */,
 				EDA8D838201CDCB4004F6A8C /* HomeController.swift in Sources */,
 				ED7E17B02019FECB006DF756 /* CheckBox.swift in Sources */,
@@ -814,6 +827,7 @@
 				ED158FC920211639000E43BB /* SearchController.swift in Sources */,
 				ED46DB8E20331D5600F6A06E /* PaymentRedirectController.swift in Sources */,
 				ED7E17AE2019DB1C006DF756 /* SignUpController.swift in Sources */,
+				ED7232EE207593F60079EBD9 /* CorporateItem.swift in Sources */,
 				ED421DE0203211B300D8DF1F /* BrandsController.swift in Sources */,
 				ED567A02201665A700F52B89 /* BaseCell.swift in Sources */,
 				EDED9B512037450100B072D9 /* SettingPageController.swift in Sources */,
@@ -828,6 +842,7 @@
 				ED46DB872032D95C00F6A06E /* EditProfileController.swift in Sources */,
 				ED5679F72016459100F52B89 /* Mics.swift in Sources */,
 				ED46DB922033A8D300F6A06E /* SearchMenuBar.swift in Sources */,
+				ED7232F020759FD40079EBD9 /* SchoolItem.swift in Sources */,
 				ED421DE82032322300D8DF1F /* InterestCell.swift in Sources */,
 				ED7E17B2201B5DF4006DF756 /* SignUpVerificationController.swift in Sources */,
 				ED5679FE20165E9900F52B89 /* Page.swift in Sources */,
@@ -841,6 +856,7 @@
 				EDDE094A2028F66F002DF2B4 /* ApiService.swift in Sources */,
 				ED07D2AC2059C836003C3550 /* PlayerView.swift in Sources */,
 				EDDE094C202902BA002DF2B4 /* ApiCallStatus.swift in Sources */,
+				ED7232EC2075926D0079EBD9 /* CorporateCell.swift in Sources */,
 				ED421DDE2032058700D8DF1F /* WordCloudCell.swift in Sources */,
 				EDED9B5520376A2300B072D9 /* FaqController.swift in Sources */,
 				ED158FCC20211999000E43BB /* InviteController.swift in Sources */,

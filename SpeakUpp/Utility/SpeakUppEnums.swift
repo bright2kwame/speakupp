@@ -38,3 +38,11 @@ enum TrackType {
     case audio
     case text
 }
+
+enum HomeTabsType: String {
+    case CORPORATE = "CORPORATE"
+    case SCHOOLS = "SCHOOLS"
+    case TIMELINE = "TIMELINE"
+}
+
+

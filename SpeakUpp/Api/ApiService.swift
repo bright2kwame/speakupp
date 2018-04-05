@@ -740,7 +740,67 @@ class ApiService {
     
     
     
+    //MARK:- all schools
+    func allSchools(url:String,completion: @escaping ([SchoolItem]?,ApiCallStatus,String?,String?) -> ()){
+        print("URL \(url)")
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: headerAuth())
+            .responseJSON { response in                if response.error != nil {
+                completion(nil,.FAILED,self.interntConnectionStatus,nil)
+                return
+                }
+                if let status = response.response?.statusCode {
+                    print("Status \(status)")
+                    switch(status){
+                    case 200...300:
+                        var labels = [SchoolItem]()
+                        let item = JSON(data: response.data!)
+                        let arrayItems = item["results"]
+                        let nextUrl = item["next"].stringValue
+                        for itemIn in arrayItems.enumerated() {
+                            let retreived = self.parseSchoolItem(item: itemIn.element.1)
+                            labels.append(retreived)
+                        }
+                        completion(labels, .SUCCESS, nil,nextUrl)
+                    case 401...499:
+                        completion(nil,.FAILED,self.interntConnectionStatus,nil)
+                    default:
+                        completion(nil,.FAILED,self.interntConnectionStatus,nil)
+                    }
+                }
+                
+        }
+    }
     
+    //MARK:- all corporate groups
+    func allCorporateGroups(url:String,completion: @escaping ([CorporateItem]?,ApiCallStatus,String?,String?) -> ()){
+        print("URL \(url)")
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: headerAuth())
+            .responseJSON { response in                if response.error != nil {
+                completion(nil,.FAILED,self.interntConnectionStatus,nil)
+                return
+                }
+                if let status = response.response?.statusCode {
+                    print("Status \(status)")
+                    switch(status){
+                    case 200...300:
+                        var labels = [CorporateItem]()
+                        let item = JSON(data: response.data!)
+                        let arrayItems = item["results"]
+                        let nextUrl = item["next"].stringValue
+                        for itemIn in arrayItems.enumerated() {
+                            let retreived = self.parseCorporateItem(item: itemIn.element.1)
+                            labels.append(retreived)
+                        }
+                        completion(labels, .SUCCESS, nil,nextUrl)
+                    case 401...499:
+                        completion(nil,.FAILED,self.interntConnectionStatus,nil)
+                    default:
+                        completion(nil,.FAILED,self.interntConnectionStatus,nil)
+                    }
+                }
+                
+        }
+    }
     
     //MARK:- all trending catergory
     func allPollsCategory(url:String,completion: @escaping ([TrendingMenuLabel]?,ApiCallStatus,String?,String?) -> ()){
@@ -773,11 +833,34 @@ class ApiService {
         }
     }
     
+    //MARK: - parse corporate itme
+    func parseCorporateItem(item: JSON) -> CorporateItem  {
+        let id = item["id"].intValue.description
+        let name = item["name"].stringValue
+        let image = item["image"].stringValue
+        let item = CorporateItem()
+        item.image = image
+        item.id = id
+        item.name = name
+        return item
+    }
+    
+    //MARK: - parse school item
+    func parseSchoolItem(item: JSON) -> SchoolItem  {
+        let id = item["id"].intValue.description
+        let name = item["name"].stringValue
+        let image = item["image"].stringValue
+        let item = SchoolItem()
+        item.image = image
+        item.id = id
+        item.name = name
+        return item
+    }
+    
     //MARK: - parse poll category
     func parseTrendingCategoryItem(item: JSON) -> TrendingMenuLabel  {
         let id = item["id"].intValue.description
         let name = item["name"].stringValue
-    
         return TrendingMenuLabel(title: name, id: id)
     }
     
