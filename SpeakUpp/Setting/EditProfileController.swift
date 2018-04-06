@@ -175,14 +175,15 @@ class EditProfileController: UIViewController {
         return imageView
     }()
     
-    lazy var coverView:  UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
-        let blurEffectView = UIVisualEffectView(effect: blurEffect)
-        blurEffectView.frame = self.view.bounds
-        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        blurEffectView.alpha = 0.7
-        blurEffectView.translatesAutoresizingMaskIntoConstraints = false
-        return blurEffectView
+    let coverView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = 0
+        imageView.backgroundColor = UIColor(white: 0, alpha: 0.5)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
     }()
     
     

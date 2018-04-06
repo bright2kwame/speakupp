@@ -71,12 +71,12 @@ class HomeCell: BaseCell {
             flowLayout.minimumLineSpacing = 5
         }
         
+        self.feed.append("Header")
+        self.feedCollectionView.reloadData()
         self.callRefresh()
         
         //MARK - notfication center
          NotificationCenter.default.addObserver(self, selector: #selector(self.receivedLikedNotification(notification:)), name: Notification.Name(Key.POLL_LIKE), object: nil)
-        
-        
     }
     
     
@@ -90,7 +90,6 @@ class HomeCell: BaseCell {
     
     //MARK - call for refresh from other places
     func callRefresh()  {
-        self.loadedPages.removeAll()
         if selctedPoll == HomeTabsType.CORPORATE.rawValue {
             self.setUpAndCall(url: ApiUrl().corporate())
         }
@@ -115,8 +114,9 @@ class HomeCell: BaseCell {
     }
     
     func setUpAndCall(url: String)  {
-        feed.removeAll()
-        feed.append("Header")
+        let range = 1..<self.feed.count
+        self.feed.removeSubrange(range)
+        self.loadedPages.removeAll()
         feedCollectionView.reloadData()
         self.homeController?.startProgress()
         self.callByType(url: url)
@@ -327,7 +327,6 @@ extension HomeCell: UICollectionViewDataSource,UICollectionViewDelegateFlowLayou
             cell.ratingView.tag = indexPath.row
             cell.ratingView.addGestureRecognizer(tappedRatingView)
             
-            
             //trigger imageView
             let tappedImageView = UITapGestureRecognizer(target: self, action: #selector(self.previewImage(_:)))
             cell.questionImageView.isUserInteractionEnabled = true
@@ -362,7 +361,6 @@ extension HomeCell: UICollectionViewDataSource,UICollectionViewDelegateFlowLayou
         
         cell.commentButton.tag = indexPath.row
         cell.commentButton.addTarget(self, action: #selector(self.startComment(_:)), for: .touchUpInside)
-        
         
         cell.likeButton.tag = indexPath.row
         cell.likeButton.addTarget(self, action: #selector(self.like(_:)), for: .touchUpInside)

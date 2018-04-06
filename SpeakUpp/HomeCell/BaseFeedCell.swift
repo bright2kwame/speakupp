@@ -386,6 +386,9 @@ extension BaseFeedCell: UICollectionViewDataSource,UICollectionViewDelegateFlowL
             cell.rejectImageView.tag = indexPath.row
             cell.rejectImageView.addGestureRecognizer(tappedRejectContent)
             
+            cell.maximizeButton.tag = indexPath.row
+            cell.maximizeButton.addTarget(self, action: #selector(self.previewImage(_:)), for: .touchUpInside)
+            
             return cell
         } else if !feed.audio.isEmpty {
             //MARK - audio cell section
@@ -437,6 +440,17 @@ extension BaseFeedCell: UICollectionViewDataSource,UICollectionViewDelegateFlowL
         self.homeCell?.rejectVote(pollId: (feed.poll?.id)!)
         self.searchController?.rejectVote(pollId: (feed.poll?.id)!)
         self.pollsController?.rejectVote(pollId: (feed.poll?.id)!)
+    }
+    
+    @objc func previewImage(_ sender: UIButton) {
+        let feed = self.choices[(sender.tag)]
+        if let vc = self.homeCell?.homeController {
+           ViewControllerHelper.presentSingleImage(targetVC: vc, url: feed.image)
+        } else if let vc = self.searchController {
+            ViewControllerHelper.presentSingleImage(targetVC: vc, url: feed.image)
+        } else if let vc = self.pollsController {
+            ViewControllerHelper.presentSingleImage(targetVC: vc, url: feed.image)
+        }
     }
     
     

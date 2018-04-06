@@ -45,15 +45,16 @@ class PollImageChoiceCell: BaseCell {
         }
     }
     
-    lazy var voteCoverView:  UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
-        let blurEffectView = UIVisualEffectView(effect: blurEffect)
-        blurEffectView.frame = bounds
-        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        blurEffectView.alpha = 0.8
-        blurEffectView.isHidden = true
-        blurEffectView.translatesAutoresizingMaskIntoConstraints = false
-        return blurEffectView
+    let voteCoverView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = 0
+        imageView.backgroundColor = UIColor(white: 0, alpha: 0.5)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.isHidden = true
+        return imageView
     }()
     
     let optionImageView: UIImageView = {
@@ -81,13 +82,15 @@ class PollImageChoiceCell: BaseCell {
         return textView
     }()
     
-    lazy var coverView:  UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
-        let blurEffectView = UIVisualEffectView(effect: blurEffect)
-        blurEffectView.frame = bounds
-        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        blurEffectView.translatesAutoresizingMaskIntoConstraints = false
-        return blurEffectView
+    let coverView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = 0
+        imageView.backgroundColor = UIColor(white: 0, alpha: 0.5)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
     }()
     
     lazy var voteStackView:  UIStackView = {
@@ -122,6 +125,15 @@ class PollImageChoiceCell: BaseCell {
         return imageView
     }()
     
+    let maximizeButton: UIButton = {
+        let button = ViewControllerHelper.baseButton()
+        button.layer.borderWidth = 0
+        button.backgroundColor = UIColor(white: 0, alpha: 0.5)
+        button.imageEdgeInsets = UIEdgeInsets(top: 5,left: 5,bottom: 5,right: 5)
+        button.setImage(UIImage(named: "Maximize"), for: .normal)
+        return button
+    }()
+    
     override func setUpView() {
         super.setUpView()
         self.backgroundColor = UIColor.white
@@ -131,8 +143,10 @@ class PollImageChoiceCell: BaseCell {
         self.addSubview(coverView)
         self.addSubview(optionTextLabel)
         self.addSubview(voteCountTextLabel)
+        self.addSubview(maximizeButton)
         self.addSubview(voteCoverView)
         self.addSubview(voteStackView)
+        
         
         self.voteCoverView.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
         self.voteCoverView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
@@ -165,6 +179,12 @@ class PollImageChoiceCell: BaseCell {
         self.voteStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -margin).isActive = true
         self.voteStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: margin).isActive = true
         self.voteStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -margin).isActive = true
+        
+        
+        self.maximizeButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        self.maximizeButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        self.maximizeButton.topAnchor.constraint(equalTo: topAnchor, constant: 4).isActive = true
+        self.maximizeButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4).isActive = true
         
     }
     
