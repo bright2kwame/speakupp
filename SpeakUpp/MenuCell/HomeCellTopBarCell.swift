@@ -11,7 +11,7 @@ import UIKit
 class HomeCellTopBarCell: BaseCell {
     
     let menuCellId = "menuCellId"
-    let labels = ["CORPORATE","SCHOOLS","TIMELINE"]
+    let labels = [HomeTabsType.TIMELINE.rawValue,HomeTabsType.CORPORATE.rawValue,HomeTabsType.SCHOOLS.rawValue]
     var homeCell: HomeCell?
     
     lazy var feedCollectionView: UICollectionView = {

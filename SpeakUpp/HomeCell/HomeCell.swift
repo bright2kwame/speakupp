@@ -21,7 +21,7 @@ class HomeCell: BaseCell {
     var loadedPages = [String]()
     var feed = [Any]()
     let apiService = ApiService()
-    var selctedPoll = HomeTabsType.CORPORATE.rawValue
+    var selctedPoll = HomeTabsType.TIMELINE.rawValue
     
     var typeOfPoll: String? {
         didSet {
@@ -49,11 +49,26 @@ class HomeCell: BaseCell {
         return collectionView
     }()
     
+    lazy var bgImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.backgroundColor = UIColor.groupTableViewBackground
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
     override func setUpView() {
         super.setUpView()
         
         backgroundColor = UIColor.groupTableViewBackground
+        addSubview(bgImageView)
         addSubview(feedCollectionView)
+        
+        
+        bgImageView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        bgImageView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        bgImageView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        bgImageView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         
         feedCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0).isActive = true
         feedCollectionView.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
@@ -91,12 +106,15 @@ class HomeCell: BaseCell {
     //MARK - call for refresh from other places
     func callRefresh()  {
         if selctedPoll == HomeTabsType.CORPORATE.rawValue {
+            self.bgImageView.image = UIImage(named: "AppBg")
             self.setUpAndCall(url: ApiUrl().corporate())
         }
         if selctedPoll == HomeTabsType.SCHOOLS.rawValue {
+            self.bgImageView.image = UIImage(named: "AppBg")
             self.setUpAndCall(url: ApiUrl().shools())
         }
         if selctedPoll == HomeTabsType.TIMELINE.rawValue {
+            self.bgImageView.image = nil
             self.setUpAndCall(url: ApiUrl().timeline())
         }
     }

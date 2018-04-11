@@ -41,7 +41,7 @@ enum TrackType {
 
 enum HomeTabsType: String {
     case CORPORATE = "CORPORATE"
-    case SCHOOLS = "SCHOOLS"
+    case SCHOOLS = "NOT FOR PROFIT"
     case TIMELINE = "TIMELINE"
 }
 
