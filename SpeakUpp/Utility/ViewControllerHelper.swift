@@ -105,7 +105,7 @@ class ViewControllerHelper {
         label.textColor = UIColor.gray
         label.backgroundColor = UIColor.clear
         label.text = ""
-        label.minimumScaleFactor = 0.2
+        //label.minimumScaleFactor = 0.2
         label.lineBreakMode = .byClipping
         label.adjustsFontSizeToFitWidth = true
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -270,12 +270,25 @@ class ViewControllerHelper {
         vc.present(alertView, animated: true, completion: nil)
     }
     
-    static func showPrompt(vc: UIViewController,message: String, completion: @escaping (Bool)-> ()) {
+    static func showPrompt(vc: UIViewController, message: String, completion: @escaping (Bool)-> ()) {
         let alertAction = UIAlertAction(title: "Ok", style: .default, handler: {(Alert:UIAlertAction!) -> Void in
             completion(true)
         })
         let alertView = UIAlertController(title: "SpeakUpp", message: message, preferredStyle: .alert)
         alertView.addAction(alertAction)
+        vc.present(alertView, animated: true, completion: nil)
+    }
+    
+    static func showUpdatePrompt(vc: UIViewController, title:String = "SpeakUpp", message: String, completion: @escaping (Bool)-> ()) {
+        let alertAction = UIAlertAction(title: "Ok", style: .default, handler: {(Alert:UIAlertAction!) -> Void in
+            completion(true)
+        })
+        let alertActionCancel = UIAlertAction(title: "Cancel", style: .cancel, handler: {(Alert:UIAlertAction!) -> Void in
+           
+        })
+        let alertView = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alertView.addAction(alertAction)
+        alertView.addAction(alertActionCancel)
         vc.present(alertView, animated: true, completion: nil)
     }
     

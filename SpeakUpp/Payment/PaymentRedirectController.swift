@@ -16,6 +16,7 @@ class PaymentRedirectController: UIViewController,UIWebViewDelegate {
     var pollsController: PollsController?
     var searchController: SearchController?
     var eventDetailController: EventDetailController?
+    var pollVottingOptionController: PollVottingOptionController?
     private var hasFinishedLoading = false
     var eventCell: EventCell?
     var timer: Timer!

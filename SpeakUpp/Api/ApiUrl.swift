@@ -106,11 +106,15 @@ class ApiUrl {
     }
     
     func corporate() -> String {
-        return "\(activeBaseUrl())corporate_groupings/"
+        return "\(activeBaseUrl())all_new_polls/"
     }
     
     func shools() -> String {
         return "\(activeBaseUrl())school_groupings/"
+    }
+    
+    func news() -> String {
+        return "\(activeBaseUrl())news/"
     }
     
     func timeline() -> String {

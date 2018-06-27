@@ -27,9 +27,22 @@ class CellHelper {
            return CGSize(width: itemWidth, height: 100)
         }
         
+        //MARK - the brand section
+        if feed is NewsItem {
+            return CGSize(width: itemWidth, height: 350)
+        }
+        
+     
+        
         let bottomSectionHeight = 62.0
         let profileHeight = 82.0
         var choiceHeight = 166.0
+        
+        //MARK - the option section
+        if feed is PollOption {
+            return CGSize(width: itemWidth, height: itemWidth)
+        }
+        
         let feedItem = feed as? Poll
         //MAKK- rating section
         if feedItem?.pollType == "rating"  {

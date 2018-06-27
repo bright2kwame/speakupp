@@ -9,9 +9,10 @@
 import UIKit
 import ZKDrawerController
 import LinearProgressBarMaterial
+import StoreKit
 
 
-class HomeController: UIViewController {
+class HomeController: UIViewController, SKStoreProductViewControllerDelegate {
     
     let homeCellId = "homeCellId"
     let trendingCellId = "trendingCellId"
@@ -20,6 +21,7 @@ class HomeController: UIViewController {
     let labels = ["Home","Trending","Event","Me"]
     let user = User.getUser()!
     let apiService = ApiService()
+    var storeProductViewController = SKStoreProductViewController()
     
 
     lazy var collectionView: UICollectionView = {
@@ -65,6 +67,8 @@ class HomeController: UIViewController {
         self.setUpLayouts()
         
         ViewControllerHelper.trackUsage(id: nil, title: "HOME", data: nil)
+        
+         storeProductViewController.delegate = self
     }
     
     
@@ -116,6 +120,7 @@ class HomeController: UIViewController {
         
         //MARK - notfication center
         NotificationCenter.default.addObserver(self, selector: #selector(self.receivedAudioNotification(notification:)), name: Notification.Name(Key.PLAY_AUDIO), object: nil)
+    
         
     }
     
@@ -152,6 +157,32 @@ class HomeController: UIViewController {
         self.apiService.updateUserToken { (status) in
              print("PLAYER \(status)")
         }
+        
+        self.apiService.getCurrentVersion { (status, version) in
+            if let versionLocal = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+                if version != versionLocal {
+                    ViewControllerHelper.showUpdatePrompt(vc: self, title: "Update Available", message: "A new version of SpeakUpp is available. Please update to version \(version) now", completion: { (isDone) in
+                        print("VERSION \(version)  \(versionLocal)")
+                        let updateLink = "https://itunes.apple.com/gh/app/speakupp-rate-and-vote/id1350531014?mt=8"
+                        ViewControllerHelper.openLink(url: updateLink, vc: self)
+                        //self.launchStoreProductViewController()
+                    })
+                }
+            }
+            
+        }
+    }
+    
+    func launchStoreProductViewController() {
+        let parametersDict = [SKStoreProductParameterITunesItemIdentifier: 1350531014]
+        storeProductViewController.loadProduct(withParameters: parametersDict, completionBlock: { (status: Bool, error: Error?) -> Void in
+            if status {
+                self.present(self.storeProductViewController, animated: true, completion: nil)
+            }
+            else {
+                if let error = error {
+                    print("Error: \(error.localizedDescription)")
+                }}})
     }
     
     func setUpUniversalIndication()   {
@@ -195,6 +226,11 @@ class HomeController: UIViewController {
     @objc private func startSearch() {
         let nav = UINavigationController(rootViewController: SearchController())
         self.present(nav, animated: true, completion: nil)
+    }
+    
+    // Let's dismiss the presented store product view controller.
+    func productViewControllerDidFinish(_ viewController: SKStoreProductViewController) {
+        viewController.presentingViewController?.dismiss(animated: true, completion: nil)
     }
 }
 

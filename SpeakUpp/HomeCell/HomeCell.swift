@@ -78,7 +78,7 @@ class HomeCell: BaseCell {
         feedCollectionView.register(BaseFeedCell.self, forCellWithReuseIdentifier: feedCellId)
         feedCollectionView.register(BaseRatingCell.self, forCellWithReuseIdentifier: baseRatingCellId)
         feedCollectionView.register(CorporateCell.self, forCellWithReuseIdentifier: coporateCellId)
-        feedCollectionView.register(SchoolCell.self, forCellWithReuseIdentifier: schoolCellId)
+        feedCollectionView.register(NewsCell.self, forCellWithReuseIdentifier: schoolCellId)
         feedCollectionView.addSubview(refresher)
         
         if let flowLayout = feedCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
@@ -105,13 +105,13 @@ class HomeCell: BaseCell {
     
     //MARK - call for refresh from other places
     func callRefresh()  {
-        if selctedPoll == HomeTabsType.CORPORATE.rawValue {
+        if selctedPoll == HomeTabsType.POLLS.rawValue {
             self.bgImageView.image = UIImage(named: "AppBg")
             self.setUpAndCall(url: ApiUrl().corporate())
         }
-        if selctedPoll == HomeTabsType.SCHOOLS.rawValue {
-            self.bgImageView.image = UIImage(named: "AppBg")
-            self.setUpAndCall(url: ApiUrl().shools())
+        if selctedPoll == HomeTabsType.NEWS.rawValue {
+            self.bgImageView.image = nil
+            self.setUpAndCall(url: ApiUrl().news())
         }
         if selctedPoll == HomeTabsType.TIMELINE.rawValue {
             self.bgImageView.image = nil
@@ -141,12 +141,12 @@ class HomeCell: BaseCell {
     }
     
     func callByType(url:String)  {
-        if selctedPoll == HomeTabsType.CORPORATE.rawValue {
+        if selctedPoll == HomeTabsType.POLLS.rawValue {
            self.getCorporateData(url: url)
         }
         
-        if selctedPoll == HomeTabsType.SCHOOLS.rawValue {
-            self.getSchoolData(url: url)
+        if selctedPoll == HomeTabsType.NEWS.rawValue {
+            self.getNewsData(url: url)
         }
         
         if selctedPoll == HomeTabsType.TIMELINE.rawValue {
@@ -170,10 +170,10 @@ class HomeCell: BaseCell {
         }
     }
     
-    //MARK:- school call
-    func getSchoolData(url:String)  {
+    //MARK:- news call
+    func getNewsData(url:String)  {
         self.loadedPages.append(url)
-        self.apiService.allSchools(url: url) { (polls, status, message, nextUrl) in
+        self.apiService.allNews(url: url) { (polls, status, message, nextUrl) in
             self.handleResult(polls: polls, status: status, message: message, nextUrl: nextUrl)
         }
     }
@@ -242,6 +242,17 @@ class HomeCell: BaseCell {
                         self.homeController?.navigationController?.pushViewController(payVottingController, animated: true)
                         return
                     }
+                    
+                    //NEW POLL TYPE
+                    if (pollIntended.pollType == "choices_multiple_rating"){
+                        let payVottingController = PollVottingOptionController()
+                        payVottingController.feed = pollIntended
+                        payVottingController.selectedChoice = choiceId
+                        self.homeController?.navigationController?.pushViewController(payVottingController, animated: true)
+                        return
+                    }
+                    
+                    
                     pollIntended.hasVoted = true
                     pollIntended.votedOption = choiceId
                     pollIntended.totalVotes += 1
@@ -327,10 +338,10 @@ extension HomeCell: UICollectionViewDataSource,UICollectionViewDelegateFlowLayou
             return cell
         }
         
-        if feed is SchoolItem {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: schoolCellId, for: indexPath) as! SchoolCell
+        if feed is NewsItem {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: schoolCellId, for: indexPath) as! NewsCell
             cell.homeCell = self
-            cell.item = feed as? SchoolItem
+            cell.item = feed as? NewsItem
             return cell
         }
         

@@ -233,8 +233,9 @@ class SearchController: UIViewController {
             if item is Poll {
                 let pollIntended = item as! Poll
                 if (pollIntended.id == pollId) {
+                    
                     //if the poll is a paid type
-                    if (pollIntended.pollType == "paid_poll"){
+                    if (pollIntended.pollType == PollType.PAID_POLL.rawValue){
                         let payVottingController = PayVottingController()
                         payVottingController.poll = pollIntended
                         payVottingController.choiceId = choiceId
@@ -242,14 +243,23 @@ class SearchController: UIViewController {
                         self.navigationController?.pushViewController(payVottingController, animated: true)
                         return
                     }
+                    
+                    //NEW POLL TYPE
+                    if (pollIntended.pollType == PollType.MULTIPLE.rawValue){
+                        let destination = PollVottingOptionController()
+                        destination.feed = pollIntended
+                        destination.selectedChoice = choiceId
+                        self.navigationController?.pushViewController(destination, animated: true)
+                        return
+                    }
+                    
                     pollIntended.hasVoted = true
                     pollIntended.votedOption = choiceId
                     pollIntended.totalVotes += 1
                     for itemsChoice in pollIntended.pollChoice.enumerated() {
-                        let element = itemsChoice.element
-                        if (element.id == choiceId){
-                            element.numOfVotes += 1
-                            element.isSelectedOption = true
+                        if (itemsChoice.element.id == choiceId){
+                            itemsChoice.element.numOfVotes += 1
+                            itemsChoice.element.isSelectedOption = true
                         }
                     }
                     let selectedIndexPath = IndexPath(item: index, section: 0)

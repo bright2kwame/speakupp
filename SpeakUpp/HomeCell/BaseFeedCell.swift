@@ -447,9 +447,9 @@ extension BaseFeedCell: UICollectionViewDataSource,UICollectionViewDelegateFlowL
         if let vc = self.homeCell?.homeController {
            ViewControllerHelper.presentSingleImage(targetVC: vc, url: feed.image)
         } else if let vc = self.searchController {
-            ViewControllerHelper.presentSingleImage(targetVC: vc, url: feed.image)
+           ViewControllerHelper.presentSingleImage(targetVC: vc, url: feed.image)
         } else if let vc = self.pollsController {
-            ViewControllerHelper.presentSingleImage(targetVC: vc, url: feed.image)
+           ViewControllerHelper.presentSingleImage(targetVC: vc, url: feed.image)
         }
     }
     

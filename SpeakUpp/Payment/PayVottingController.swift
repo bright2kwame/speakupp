@@ -11,10 +11,12 @@ import UIKit
 class PayVottingController: UIViewController {
     var poll: Poll?
     var choiceId = ""
+    var multipleOptions = ""
     var homeCell: HomeCell?
     var pollsController: PollsController?
     var searchController: SearchController?
     var eventDetailController: EventDetailController?
+    var pollVottingOptionController: PollVottingOptionController?
     let utilController = ViewControllerHelper()
     let apiService = ApiService()
     var isEvent = false
@@ -166,13 +168,21 @@ class PayVottingController: UIViewController {
         if let poll = self.poll {
             self.utilController.showActivityIndicator()
             let total = Double(poll.pricePerSMS)! * Double(number)!
-            self.apiService.payForVote(pollId: poll.id, quantity: number, choiceId: self.choiceId, totalAmount: total, completion: { (status, url) in
+            var params = ["poll_id":poll.id,"quantity":number,"choice_id": choiceId,"total_amount":total] as [String : Any]
+            var url =  "\(ApiUrl().activeBaseUrl())get_paidpoll_url/"
+            if self.poll?.pollType == PollType.MULTIPLE.rawValue {
+                params = ["device_model":UIDevice.current.modelName,"quantity":number,"choice_id": choiceId,"total_amount":total,"parameters": self.multipleOptions] as [String : Any]
+                url =  "\(ApiUrl().activeBaseUrl())polls/\(poll.id)/parameter_voting/"
+            }
+            print("URL \(url) \(params)")
+            self.apiService.payForVote(url: url, params: params,completion: { (status, url) in
                 self.utilController.hideActivityIndicator()
                 if let redirectUrl = url {
                     self.navigationController?.popViewController(animated: true)
                     self.homeCell?.continuePayment(url: redirectUrl)
                     self.pollsController?.continuePayment(url: redirectUrl)
                     self.searchController?.continuePayment(url: redirectUrl)
+                    self.pollVottingOptionController?.continuePayment(url: redirectUrl)
                 }
                 if (status == ApiCallStatus.DETAIL || status == ApiCallStatus.FAILED ){
                     ViewControllerHelper.showAlert(vc: self, message: "Failed to initialise payment.", type: .failed)

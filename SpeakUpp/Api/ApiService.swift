@@ -16,7 +16,7 @@ import OneSignal
 
 
 class ApiService {
-    let interntConnectionStatus = "Your request failed due to lost of internt connection."
+    let interntConnectionStatus = "Your request failed due to lost of internet connection."
     let failureStatus = "Your request failed, try again later."
     let defaultStatus = "Unable to get requested data, try again later."
     
@@ -741,7 +741,7 @@ class ApiService {
     
     
     //MARK:- all schools
-    func allSchools(url:String,completion: @escaping ([SchoolItem]?,ApiCallStatus,String?,String?) -> ()){
+    func allNews(url:String,completion: @escaping ([NewsItem]?,ApiCallStatus,String?,String?) -> ()){
         print("URL \(url)")
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: headerAuth())
             .responseJSON { response in                if response.error != nil {
@@ -752,12 +752,13 @@ class ApiService {
                     print("Status \(status)")
                     switch(status){
                     case 200...300:
-                        var labels = [SchoolItem]()
+                        var labels = [NewsItem]()
                         let item = JSON(data: response.data!)
+                        print("ITEM \(item)")
                         let arrayItems = item["results"]
                         let nextUrl = item["next"].stringValue
                         for itemIn in arrayItems.enumerated() {
-                            let retreived = self.parseSchoolItem(item: itemIn.element.1)
+                            let retreived = self.parseNewsItem(item: itemIn.element.1)
                             labels.append(retreived)
                         }
                         completion(labels, .SUCCESS, nil,nextUrl)
@@ -857,6 +858,25 @@ class ApiService {
         return item
     }
     
+    //MARK: - parse news item
+    func parseNewsItem(item: JSON) -> NewsItem  {
+        print("NEWS \(item)")
+        let id = item["id"].intValue.description
+        let name = item["title"].stringValue
+        let image = item["image"].stringValue
+        let content = item["content"].stringValue
+        _ = item["has_liked"].boolValue
+        _ = item["num_of_comments"].intValue
+        _ = item["num_of_likes"].intValue
+        
+        let item = NewsItem()
+        item.image = image
+        item.content = content
+        item.title = name
+        item.id = id
+        return item
+    }
+    
     //MARK: - parse poll category
     func parseTrendingCategoryItem(item: JSON) -> TrendingMenuLabel  {
         let id = item["id"].intValue.description
@@ -951,11 +971,18 @@ class ApiService {
         for pollChoice in item["poll_choices"].arrayValue {
             pollChoices.append(self.parsePollChoice(item: pollChoice,poll: poll))
         }
+        
+        let pollParams = List<PollOption>()
+        for pollParam in item["parameters"].arrayValue {
+            pollParams.append(self.parsePollParameter(item: pollParam, poll: poll))
+        }
         poll.pollChoice = pollChoices
+        poll.vottingOptions = pollParams
         return poll
     }
     
     
+    //MARK: poll choices
     func parsePollChoice(item: JSON,poll: Poll) -> PollChoice  {
         let id = item["id"].intValue.description
         let shortCodeText = item["short_code_text"].stringValue
@@ -979,6 +1006,21 @@ class ApiService {
         itemParsed.isSelectedOption = poll.votedOption == id
         return itemParsed
     }
+    
+    //MARK: poll parameters
+    func parsePollParameter(item: JSON, poll: Poll) -> PollOption  {
+        let id = item["id"].intValue.description
+        let name = item["name"].stringValue
+        let image = item["image"].stringValue
+        let itemParsed = PollOption()
+        itemParsed.id = id
+        itemParsed.name = name
+        itemParsed.imageUrl = image
+        itemParsed.poll = poll
+        return itemParsed
+    }
+    
+    
     
     //MARK - parse comment
     func parsePollComment(item: JSON) -> PollComment  {
@@ -1066,6 +1108,39 @@ class ApiService {
         return itemParsed
     }
     
+    
+    //MARK: - resending confirmation code
+    func getCurrentVersion(completion: @escaping (ApiCallStatus,String) -> ()){
+        // this is where the completion handler code goes
+        let url =  "\(ApiUrl().activeBaseUrl())check_ios_version/"
+        print("URL \(url)")
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: headerAuth())
+            .responseJSON { response in
+                if response.error != nil {
+                    completion(.FAILED,self.failureStatus)
+                    return
+                }
+                if let status = response.response?.statusCode {
+                    print("Status \(status)")
+                    switch(status){
+                    case 200...300:
+                         print("ITEM \(response.result)")
+                        if let dataIn =  response.data {
+                            let item = JSON(data: dataIn)
+                            let detail = item["app_version"].stringValue
+                            completion(.SUCCESS,detail)
+                        } else {
+                            completion(.DETAIL,"Unable to cast vote")
+                        }
+                    case 300...499:
+                        completion(.DETAIL,self.defaultStatus)
+                    default:
+                        completion(.FAILED,self.failureStatus)
+                    }
+                }
+                
+        }
+    }
     
     //MARK: - resending confirmation code
     func ratePoll(pollId: String,ratingValue:String,completion: @escaping (ApiCallStatus,String) -> ()){
@@ -1230,10 +1305,7 @@ class ApiService {
     }
 
     //MARK: - Paid votting
-    func payForVote(pollId: String,quantity:String,choiceId:String,totalAmount:Double,completion: @escaping (ApiCallStatus,String?) -> ()){
-        let params = ["poll_id":pollId,"quantity":quantity,"choice_id": choiceId,"total_amount":totalAmount] as [String : Any]
-        let url =  "\(ApiUrl().activeBaseUrl())get_paidpoll_url/"
-        print("URL \(url) \(params)")
+    func payForVote(url: String,params:[String:Any],completion: @escaping (ApiCallStatus,String?) -> ()){
         Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default,headers: headerAuth())
             .responseJSON { response in
                 if response.error != nil {

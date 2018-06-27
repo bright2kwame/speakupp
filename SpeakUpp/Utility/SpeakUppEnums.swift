@@ -40,9 +40,15 @@ enum TrackType {
 }
 
 enum HomeTabsType: String {
-    case CORPORATE = "CORPORATE"
-    case SCHOOLS = "NOT FOR PROFIT"
+    case POLLS = "POLLS"
+    case NEWS = "NEWS"
     case TIMELINE = "TIMELINE"
 }
+
+enum PollType: String {
+    case PAID_POLL = "paid_poll"
+    case MULTIPLE = "choices_multiple_rating"
+}
+
 
 

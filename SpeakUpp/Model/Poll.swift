@@ -48,6 +48,7 @@ class Poll: Object {
     @objc dynamic var question = ""
     @objc dynamic var price = ""
     @objc dynamic var votedOption = ""
+    var vottingOptions = List<PollOption>()
     
     
 

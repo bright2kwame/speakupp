@@ -50,6 +50,10 @@
 		ED567A02201665A700F52B89 /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED567A01201665A700F52B89 /* BaseCell.swift */; };
 		ED567A05201665D200F52B89 /* SwipingPageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED567A04201665D200F52B89 /* SwipingPageCell.swift */; };
 		ED567A07201666A400F52B89 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED567A06201666A400F52B89 /* Extension.swift */; };
+		ED5D038220E1503D0017D0B3 /* PollVottingOptionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5D038120E1503D0017D0B3 /* PollVottingOptionController.swift */; };
+		ED5D038420E152EE0017D0B3 /* PollOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5D038320E152EE0017D0B3 /* PollOption.swift */; };
+		ED5D038620E1570F0017D0B3 /* PollOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5D038520E1570F0017D0B3 /* PollOptionCell.swift */; };
+		ED5D038820E164250017D0B3 /* BaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5D038720E164250017D0B3 /* BaseController.swift */; };
 		ED6C6E47201F732600C15586 /* HomeMenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6C6E46201F732600C15586 /* HomeMenuBar.swift */; };
 		ED6C6E49201F739100C15586 /* BaseUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6C6E48201F739100C15586 /* BaseUIView.swift */; };
 		ED6C6E4B201F74B900C15586 /* HomeMenuBarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6C6E4A201F74B900C15586 /* HomeMenuBarCell.swift */; };
@@ -94,6 +98,8 @@
 		EDDE09482028F44E002DF2B4 /* ApiUrl.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDE09472028F44E002DF2B4 /* ApiUrl.swift */; };
 		EDDE094A2028F66F002DF2B4 /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDE09492028F66F002DF2B4 /* ApiService.swift */; };
 		EDDE094C202902BA002DF2B4 /* ApiCallStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDE094B202902BA002DF2B4 /* ApiCallStatus.swift */; };
+		EDE68BA220BEED5D00FCA69C /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE68BA120BEED5D00FCA69C /* NewsCell.swift */; };
+		EDE68BA420BEEE5200FCA69C /* NewsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE68BA320BEEE5200FCA69C /* NewsItem.swift */; };
 		EDEA35EB203AD92400330608 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDEA35EA203AD92400330608 /* NotificationService.swift */; };
 		EDEA35EF203AD92400330608 /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = EDEA35E8203AD92400330608 /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		EDED9B512037450100B072D9 /* SettingPageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDED9B502037450100B072D9 /* SettingPageController.swift */; };
@@ -179,6 +185,10 @@
 		ED567A01201665A700F52B89 /* BaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCell.swift; sourceTree = "<group>"; };
 		ED567A04201665D200F52B89 /* SwipingPageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipingPageCell.swift; sourceTree = "<group>"; };
 		ED567A06201666A400F52B89 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		ED5D038120E1503D0017D0B3 /* PollVottingOptionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollVottingOptionController.swift; sourceTree = "<group>"; };
+		ED5D038320E152EE0017D0B3 /* PollOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollOption.swift; sourceTree = "<group>"; };
+		ED5D038520E1570F0017D0B3 /* PollOptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollOptionCell.swift; sourceTree = "<group>"; };
+		ED5D038720E164250017D0B3 /* BaseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseController.swift; sourceTree = "<group>"; };
 		ED6C6E46201F732600C15586 /* HomeMenuBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMenuBar.swift; sourceTree = "<group>"; };
 		ED6C6E48201F739100C15586 /* BaseUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseUIView.swift; sourceTree = "<group>"; };
 		ED6C6E4A201F74B900C15586 /* HomeMenuBarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMenuBarCell.swift; sourceTree = "<group>"; };
@@ -223,6 +233,8 @@
 		EDDE09472028F44E002DF2B4 /* ApiUrl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiUrl.swift; sourceTree = "<group>"; };
 		EDDE09492028F66F002DF2B4 /* ApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiService.swift; sourceTree = "<group>"; };
 		EDDE094B202902BA002DF2B4 /* ApiCallStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiCallStatus.swift; sourceTree = "<group>"; };
+		EDE68BA120BEED5D00FCA69C /* NewsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
+		EDE68BA320BEEE5200FCA69C /* NewsItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsItem.swift; sourceTree = "<group>"; };
 		EDEA35E8203AD92400330608 /* OneSignalNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OneSignalNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDEA35EA203AD92400330608 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		EDEA35EC203AD92400330608 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -346,6 +358,7 @@
 			children = (
 				ED46DB8B20330A1200F6A06E /* PayVottingController.swift */,
 				ED46DB8D20331D5600F6A06E /* PaymentRedirectController.swift */,
+				ED5D038120E1503D0017D0B3 /* PollVottingOptionController.swift */,
 			);
 			path = Payment;
 			sourceTree = "<group>";
@@ -417,6 +430,7 @@
 				ED5679FD20165E9900F52B89 /* Page.swift */,
 				ED6C6E50201FA35D00C15586 /* PollAuthor.swift */,
 				EDA5E34C202A213B00C0F61B /* Poll.swift */,
+				ED5D038320E152EE0017D0B3 /* PollOption.swift */,
 				EDA5E34E202A26C600C0F61B /* PollCategory.swift */,
 				EDA5E350202A27FE00C0F61B /* PollChoice.swift */,
 				ED421DDA203200C700D8DF1F /* UserWorkCloud.swift */,
@@ -426,6 +440,7 @@
 				EDED9B5C2038C50100B072D9 /* EventTicket.swift */,
 				ED7232ED207593F60079EBD9 /* CorporateItem.swift */,
 				ED7232EF20759FD40079EBD9 /* SchoolItem.swift */,
+				EDE68BA320BEEE5200FCA69C /* NewsItem.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -497,6 +512,8 @@
 				ED6C6E5E2020740200C15586 /* ProfileCell.swift */,
 				ED7232EB2075926D0079EBD9 /* CorporateCell.swift */,
 				ED7232F120761DA20079EBD9 /* SchoolCell.swift */,
+				EDE68BA120BEED5D00FCA69C /* NewsCell.swift */,
+				ED5D038520E1570F0017D0B3 /* PollOptionCell.swift */,
 			);
 			path = HomeCell;
 			sourceTree = "<group>";
@@ -517,6 +534,7 @@
 			children = (
 				ED7E17AA2019D4FB006DF756 /* BaseScrollViewController.swift */,
 				EDED9B522037583000B072D9 /* BaseScrollNoImageController.swift */,
+				ED5D038720E164250017D0B3 /* BaseController.swift */,
 			);
 			path = HelperController;
 			sourceTree = "<group>";
@@ -778,13 +796,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED5D038620E1570F0017D0B3 /* PollOptionCell.swift in Sources */,
 				ED46DB8C20330A1200F6A06E /* PayVottingController.swift in Sources */,
 				ED46DB982034B32600F6A06E /* PeopleCell.swift in Sources */,
 				ED567A05201665D200F52B89 /* SwipingPageCell.swift in Sources */,
 				ED421DE4203214C200D8DF1F /* Brand.swift in Sources */,
+				EDE68BA220BEED5D00FCA69C /* NewsCell.swift in Sources */,
 				ED257C77201CF95A00F1E5F3 /* LeftDrawerController.swift in Sources */,
 				ED46DB892032F34600F6A06E /* AWSCredentials.swift in Sources */,
 				ED421DE22032138300D8DF1F /* BrandCell.swift in Sources */,
+				ED5D038220E1503D0017D0B3 /* PollVottingOptionController.swift in Sources */,
+				ED5D038820E164250017D0B3 /* BaseController.swift in Sources */,
 				ED6C6E57201FE98200C15586 /* TrendingCell.swift in Sources */,
 				ED7E17992017DB88006DF756 /* LoginController.swift in Sources */,
 				ED421DD7202F33CB00D8DF1F /* PollAnsweredCell.swift in Sources */,
@@ -833,6 +855,7 @@
 				EDED9B512037450100B072D9 /* SettingPageController.swift in Sources */,
 				ED8C23572036E4060048A7E8 /* PollCommentCell.swift in Sources */,
 				EDED9B592038AD6F00B072D9 /* ScannerViewController.swift in Sources */,
+				ED5D038420E152EE0017D0B3 /* PollOption.swift in Sources */,
 				ED158FBC2020BAA0000E43BB /* LogoOutController.swift in Sources */,
 				ED7E17A7201921A1006DF756 /* SCLExtensions.swift in Sources */,
 				ED6C6E51201FA35D00C15586 /* PollAuthor.swift in Sources */,
@@ -862,6 +885,7 @@
 				ED158FCC20211999000E43BB /* InviteController.swift in Sources */,
 				EDA5E351202A27FE00C0F61B /* PollChoice.swift in Sources */,
 				ED46DB9A203596FE00F6A06E /* BaseTableCell.swift in Sources */,
+				EDE68BA420BEEE5200FCA69C /* NewsItem.swift in Sources */,
 				ED6C6E49201F739100C15586 /* BaseUIView.swift in Sources */,
 				ED6C6E55201FD8B200C15586 /* BaseFeedCell.swift in Sources */,
 			);
