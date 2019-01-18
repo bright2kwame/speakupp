@@ -68,7 +68,7 @@ class HomeController: UIViewController, SKStoreProductViewControllerDelegate {
         
         ViewControllerHelper.trackUsage(id: nil, title: "HOME", data: nil)
         
-         storeProductViewController.delegate = self
+        storeProductViewController.delegate = self
     }
     
     
@@ -146,23 +146,22 @@ class HomeController: UIViewController, SKStoreProductViewControllerDelegate {
     func updateUtil() {
         let url =  "\(ApiUrl().baseUrl)word_cloud_value/"
         self.apiService.workCloud(url: url) { (words, status, message) in
-           print("CLOUDS \(status)")
+          
         }
-        self.apiService.saveCredentials { (status) in
-            print("CREDENTAILS \(status)")
+        self.apiService.saveCredentials { (_) in
+           
         }
-        self.apiService.getUser(completion: { (status) in
-           print("USER \(status)")
+        self.apiService.getUser(completion: { (_) in
+          
         })
-        self.apiService.updateUserToken { (status) in
-             print("PLAYER \(status)")
+        self.apiService.updateUserToken { (_) in
+      
         }
         
         self.apiService.getCurrentVersion { (status, version) in
             if let versionLocal = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
                 if version != versionLocal {
                     ViewControllerHelper.showUpdatePrompt(vc: self, title: "Update Available", message: "A new version of SpeakUpp is available. Please update to version \(version) now", completion: { (isDone) in
-                        print("VERSION \(version)  \(versionLocal)")
                         let updateLink = "https://itunes.apple.com/gh/app/speakupp-rate-and-vote/id1350531014?mt=8"
                         ViewControllerHelper.openLink(url: updateLink, vc: self)
                         //self.launchStoreProductViewController()
@@ -170,6 +169,10 @@ class HomeController: UIViewController, SKStoreProductViewControllerDelegate {
                 }
             }
             
+        }
+    
+        self.apiService.applePayStatus { (status, message) in
+            print("\(message)")
         }
     }
     

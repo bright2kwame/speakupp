@@ -7,21 +7,31 @@
 //
 
 import UIKit
+import StoreKit
 
-class PayVottingController: UIViewController {
+class PayVottingController: UIViewController,SKProductsRequestDelegate, SKPaymentTransactionObserver {
+   
     var poll: Poll?
     var choiceId = ""
     var multipleOptions = ""
     var homeCell: HomeCell?
     var pollsController: PollsController?
+    var skProduct: SKProduct?
     var searchController: SearchController?
     var eventDetailController: EventDetailController?
     var pollVottingOptionController: PollVottingOptionController?
     let utilController = ViewControllerHelper()
     let apiService = ApiService()
     var isEvent = false
+    var applePayTurnedOff = true
     var eventCell: EventCell?
-    
+    var inAppFeedOptions = [SKProduct]()
+    let productId: NSString = "speakuppTier1"
+    let productTierTwoId: NSString = "speakuppTier2"
+    let productTierThreeId: NSString = "speakuppTier3"
+    let productTierFourId: NSString = "speakuppTier4"
+    let productTierFiveId: NSString = "speakuppTier5"
+    let progressView = ViewControllerHelper()
     
     let descriptionTextLabel: UILabel = {
         let textView = ViewControllerHelper.baseLabel()
@@ -63,14 +73,55 @@ class PayVottingController: UIViewController {
         return textField
     }
     
+    
+    let payButton: UIButton = {
+        let button = ViewControllerHelper.baseButton()
+        let color = UIColor.white
+        button.setTitle("PAY FOR VOTE", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 18)
+        button.backgroundColor = UIColor.hex(hex: Key.primaryHexCode)
+        button.layer.cornerRadius = 20
+        button.layer.borderColor = color.cgColor
+        button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.addTarget(self, action: #selector(pickAmount), for: .touchUpInside)
+        return button
+    }()
+    
+    
+    @objc func pickAmount(_ sender: UIButton)  {
+        if self.inAppFeedOptions.isEmpty {
+            return
+        }
+        self.view.endEditing(true)
+        let actionSheet = UIAlertController(title: "Choose Amount", message: "Choose Amount To Pay For", preferredStyle: .actionSheet)
+        actionSheet.view.tintColor = UIColor.hex(hex: Key.primaryHexCode)
+        for item in self.inAppFeedOptions {
+            actionSheet.addAction(UIAlertAction(title: "\(item.localizedTitle) - USD \(item.price)", style: .default, handler: { (action) -> Void in
+                self.skProduct = item
+                self.payButton.setTitle("USD \(item.price)", for: .normal)
+                self.amountToPayTextLabel.text = item.localizedDescription
+            }))
+        }
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        self.present(actionSheet, animated: true, completion: nil)
+    }
+    
     override func viewDidLoad() {
+        SKPaymentQueue.default().add(self)
         self.view.backgroundColor = UIColor.white
         self.setUpNavigationBar()
        
         
+        self.applePayTurnedOff = UserDefaults.standard.bool(forKey: "APPLE_PAY_STATUS")
+        
         self.view.addSubview(descriptionTextLabel)
         self.view.addSubview(numberOfVoteTextField)
+        self.view.addSubview(payButton)
         self.view.addSubview(amountToPayTextLabel)
+        self.payButton.isHidden = applePayTurnedOff
+        self.numberOfVoteTextField.isHidden = !applePayTurnedOff
+        
         
         self.descriptionTextLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
         self.descriptionTextLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
@@ -82,13 +133,38 @@ class PayVottingController: UIViewController {
         self.numberOfVoteTextField.topAnchor.constraint(equalTo: descriptionTextLabel.bottomAnchor, constant: 16).isActive = true
         self.numberOfVoteTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
         
+        self.payButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
+        self.payButton.topAnchor.constraint(equalTo: descriptionTextLabel.bottomAnchor, constant: 16).isActive = true
+        self.payButton.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
+        self.payButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        
         self.amountToPayTextLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
         self.amountToPayTextLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
-        self.amountToPayTextLabel.topAnchor.constraint(equalTo: numberOfVoteTextField.bottomAnchor, constant: 16).isActive = true
+        self.amountToPayTextLabel.topAnchor.constraint(equalTo: payButton.bottomAnchor, constant: 16).isActive = true
         self.amountToPayTextLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
         
+       
         self.updateUI()
         
+        if (!self.applePayTurnedOff){
+           self.buyInApp()
+        }
+    }
+    
+    func buyInApp()
+    {
+        if (SKPaymentQueue.canMakePayments())
+        {
+            self.utilController.showActivityIndicator()
+            let productID:NSSet = NSSet(array: [self.productId,self.productTierTwoId,self.productTierThreeId,self.productTierFourId,self.productTierFiveId]);
+            let productsRequest:SKProductsRequest = SKProductsRequest(productIdentifiers: productID as! Set<String>);
+            productsRequest.delegate = self;
+            productsRequest.start();
+        }
+        else
+        {
+           ViewControllerHelper.showAlert(vc: self, message: "Failed to initialise payment, this device does not support payment.", type: .failed)
+        }
     }
     
     func updateUI()  {
@@ -113,6 +189,7 @@ class PayVottingController: UIViewController {
         }
         
         self.descriptionTextLabel.attributedText = combinedText
+        
        
     }
     
@@ -138,13 +215,19 @@ class PayVottingController: UIViewController {
     }
     
     @objc func handleSave()  {
+        if !applePayTurnedOff, let product = self.skProduct {
+            let payment = SKPayment(product: product)
+            SKPaymentQueue.default().add(payment)
+            SKPaymentQueue.default().add(self)
+            return
+        }
         let number = self.numberOfVoteTextField.text!
         if number.isEmpty {
             ViewControllerHelper.showAlert(vc: self, message: "Provide quantity of vote to cast", type: .warning)
             return
         }
         if self.isEvent {
-            if let poll = self.poll {
+            if let poll = self.poll  {
                 self.utilController.showActivityIndicator()
                 self.apiService.buyTicket(pollId: poll.id, quantity: number,completion: { (status, url) in
                     self.utilController.hideActivityIndicator()
@@ -195,6 +278,28 @@ class PayVottingController: UIViewController {
         }
     }
     
+    func payWithApplePay()  {
+        guard let poll = self.poll else {
+            self.utilController.hideActivityIndicator()
+            return
+        }
+        var params = ["poll_id":poll.id,"choice_id": choiceId,"total_amount":"\(self.skProduct!.price)"] as [String : Any]
+        let url =  "\(ApiUrl().activeBaseUrl())pay_with_apple_pay/"
+        if self.poll?.pollType == PollType.MULTIPLE.rawValue {
+            params = ["device_model":UIDevice.current.modelName,"choice_id": choiceId,"total_amount":"\(self.skProduct!.price)","parameters": self.multipleOptions] as [String : Any]
+        }
+        print("URL \(url) \(params)")
+        self.apiService.makeApplePayment(url: url, params: params,completion: { (status, message) in
+            self.utilController.hideActivityIndicator()
+             if let content = message, status == ApiCallStatus.SUCCESS {
+                self.navigationController?.popViewController(animated: true)
+                ViewControllerHelper.showPrompt(vc: self, message: content)
+            }  else {
+                ViewControllerHelper.showAlert(vc: self, message: "Failed to initialise payment.", type: .failed)
+            }
+        })
+    }
+    
     @objc func textFieldDidChange(_ textField: UITextField) {
         self.updateAmout()
     }
@@ -223,6 +328,46 @@ class PayVottingController: UIViewController {
             }
         }
     }
+    
+    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
+        self.inAppFeedOptions = response.products
+        self.utilController.hideActivityIndicator()
+        if !self.inAppFeedOptions.isEmpty {
+            self.skProduct = self.inAppFeedOptions[0]
+            self.amountToPayTextLabel.text = self.skProduct!.localizedDescription
+            self.payButton.setTitle("USD \(self.skProduct!.price)", for: .normal)
+        }
+    }
+    
+    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+        for transaction:AnyObject in transactions {
+            if let trans:SKPaymentTransaction = transaction as? SKPaymentTransaction{
+                self.utilController.showActivityIndicator()
+                switch trans.transactionState {
+                case .purchased:
+                    self.payWithApplePay()
+                    SKPaymentQueue.default().finishTransaction(transaction as! SKPaymentTransaction)
+                    break;
+                case .failed:
+                     self.utilController.hideActivityIndicator()
+                     ViewControllerHelper.showPrompt(vc: self, message: "Unable to make payment.")
+                    SKPaymentQueue.default().finishTransaction(transaction as! SKPaymentTransaction)
+                    break;
+                case .restored:
+                    self.utilController.hideActivityIndicator()
+                    SKPaymentQueue.default().finishTransaction(transaction as! SKPaymentTransaction)
+                default:
+                    break;
+                }
+            }
+        }
+    }
+    
+    
+    //If an error occurs, the code will go to this function
+    func paymentQueue(_ queue: SKPaymentQueue, restoreCompletedTransactionsFailedWithError error: Error) {
+        ViewControllerHelper.showPrompt(vc: self, message: error.localizedDescription)
+    }
 }
 
 extension PayVottingController : UITextFieldDelegate {
@@ -233,3 +378,7 @@ extension PayVottingController : UITextFieldDelegate {
         return true
     }
 }
+
+
+
+

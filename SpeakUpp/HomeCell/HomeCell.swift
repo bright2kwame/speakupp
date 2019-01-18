@@ -342,6 +342,13 @@ extension HomeCell: UICollectionViewDataSource,UICollectionViewDelegateFlowLayou
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: schoolCellId, for: indexPath) as! NewsCell
             cell.homeCell = self
             cell.item = feed as? NewsItem
+            
+            
+            let tappedView = UITapGestureRecognizer(target: self, action: #selector(self.newsDetail(_:)))
+            cell.contentView.isUserInteractionEnabled = true
+            cell.contentView.tag = indexPath.row
+            cell.contentView.addGestureRecognizer(tappedView)
+            
             return cell
         }
         
@@ -375,6 +382,8 @@ extension HomeCell: UICollectionViewDataSource,UICollectionViewDelegateFlowLayou
             
             return cell
         }
+        
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: feedCellId, for: indexPath) as! BaseFeedCell
         cell.feed = feed as? Poll
         cell.homeCell = self
@@ -425,6 +434,12 @@ extension HomeCell: UICollectionViewDataSource,UICollectionViewDelegateFlowLayou
             let rate = Int(rating)
             self.ratePoll(pollId: poll.id, ratingValue: "\(rate)")
         }
+    }
+    
+    @objc func newsDetail(_ sender: UITapGestureRecognizer) {
+        let view = sender.view
+        let poll = self.feed[view!.tag] as! NewsItem
+        ViewControllerHelper.showPrompt(vc: self.homeController!, message: poll.content)
     }
     
     @objc func previewImage(_ sender: UITapGestureRecognizer) {

@@ -1124,7 +1124,6 @@ class ApiService {
                     print("Status \(status)")
                     switch(status){
                     case 200...300:
-                         print("ITEM \(response.result)")
                         if let dataIn =  response.data {
                             let item = JSON(data: dataIn)
                             let detail = item["app_version"].stringValue
@@ -1132,6 +1131,37 @@ class ApiService {
                         } else {
                             completion(.DETAIL,"Unable to cast vote")
                         }
+                    case 300...499:
+                        completion(.DETAIL,self.defaultStatus)
+                    default:
+                        completion(.FAILED,self.failureStatus)
+                    }
+                }
+                
+        }
+    }
+    
+    //MARK: - resending confirmation code
+    func applePayStatus(completion: @escaping (ApiCallStatus,String) -> ()){
+        // this is where the completion handler code goes
+        let url =  "\(ApiUrl().activeBaseUrl())turn_off_apple_pay/"
+        print("URL \(url)")
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: headerAuth())
+            .responseJSON { response in
+                if response.error != nil {
+                    completion(.FAILED,self.failureStatus)
+                    return
+                }
+                if let status = response.response?.statusCode {
+                    print("Status \(status)")
+                    switch(status){
+                    case 200...300:
+                        if let dataIn =  response.data {
+                            let item = JSON(data: dataIn).boolValue
+                            UserDefaults.standard.set(item, forKey: "APPLE_PAY_STATUS")
+                            completion(.SUCCESS,"SUCCESS")
+                        }
+                        completion(.DETAIL,"DONE")
                     case 300...499:
                         completion(.DETAIL,self.defaultStatus)
                     default:
@@ -1301,6 +1331,29 @@ class ApiService {
                     }
                 }
                 
+        }
+    }
+    
+    
+    //MARK: - Paid votting
+    func makeApplePayment(url: String,params:[String:Any],completion: @escaping (ApiCallStatus,String?) -> ()){
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default,headers: headerAuth())
+            .responseJSON { response in
+                if response.error != nil {
+                    completion(.FAILED,nil)
+                    return
+                }
+                if let status = response.response?.statusCode {
+                    print("Status \(status)")
+                    switch(status){
+                    case 200...204:
+                        completion(.SUCCESS,"Payment received successfully.")
+                    case 300...499:
+                        completion(.DETAIL,nil)
+                    default:
+                        completion(.FAILED,nil)
+                    }
+                }
         }
     }
 

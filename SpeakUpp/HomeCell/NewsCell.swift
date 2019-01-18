@@ -125,7 +125,6 @@ class NewsCell: BaseCell {
         self.dividerView.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         self.dividerView.bottomAnchor.constraint(equalTo: container.topAnchor, constant: -8).isActive = true
         
-        
     }
     
     override func prepareForReuse() {

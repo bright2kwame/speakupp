@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		0B1C51AA43C69AA5DDD497D4 /* libPods-OneSignalNotificationServiceExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9523630B788BAD90C98AFB6F /* libPods-OneSignalNotificationServiceExtension.a */; };
 		61034065158F824F00FDD139 /* Pods_SpeakUpp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDC8A705F567908CBFC1B8E5 /* Pods_SpeakUpp.framework */; };
+		EC2131DA21F20C5E004962B8 /* InAppPurchase.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2131D921F20C5E004962B8 /* InAppPurchase.swift */; };
+		EC36301721ED214B00641A27 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC36301621ED214B00641A27 /* StoreKit.framework */; };
 		ED07D2AC2059C836003C3550 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED07D2AB2059C836003C3550 /* PlayerView.swift */; };
 		ED158FBA2020B216000E43BB /* ResetPinController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED158FB92020B216000E43BB /* ResetPinController.swift */; };
 		ED158FBC2020BAA0000E43BB /* LogoOutController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED158FBB2020BAA0000E43BB /* LogoOutController.swift */; };
@@ -141,6 +143,8 @@
 		9523630B788BAD90C98AFB6F /* libPods-OneSignalNotificationServiceExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OneSignalNotificationServiceExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9728968BE78037722D55C171 /* Pods-SpeakUpp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpeakUpp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SpeakUpp/Pods-SpeakUpp.debug.xcconfig"; sourceTree = "<group>"; };
 		D823EF2A956CC1347C09DE9F /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		EC2131D921F20C5E004962B8 /* InAppPurchase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppPurchase.swift; sourceTree = "<group>"; };
+		EC36301621ED214B00641A27 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		ED07D2AB2059C836003C3550 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 		ED158FB92020B216000E43BB /* ResetPinController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPinController.swift; sourceTree = "<group>"; };
 		ED158FBB2020BAA0000E43BB /* LogoOutController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoOutController.swift; sourceTree = "<group>"; };
@@ -256,6 +260,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				61034065158F824F00FDD139 /* Pods_SpeakUpp.framework in Frameworks */,
+				EC36301721ED214B00641A27 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,6 +289,7 @@
 		D92D659581D38B2DF7E606AD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EC36301621ED214B00641A27 /* StoreKit.framework */,
 				FDC8A705F567908CBFC1B8E5 /* Pods_SpeakUpp.framework */,
 				9523630B788BAD90C98AFB6F /* libPods-OneSignalNotificationServiceExtension.a */,
 			);
@@ -359,6 +365,7 @@
 				ED46DB8B20330A1200F6A06E /* PayVottingController.swift */,
 				ED46DB8D20331D5600F6A06E /* PaymentRedirectController.swift */,
 				ED5D038120E1503D0017D0B3 /* PollVottingOptionController.swift */,
+				EC2131D921F20C5E004962B8 /* InAppPurchase.swift */,
 			);
 			path = Payment;
 			sourceTree = "<group>";
@@ -642,6 +649,9 @@
 							com.apple.BackgroundModes = {
 								enabled = 1;
 							};
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
 							com.apple.Push = {
 								enabled = 1;
 							};
@@ -882,6 +892,7 @@
 				ED7232EC2075926D0079EBD9 /* CorporateCell.swift in Sources */,
 				ED421DDE2032058700D8DF1F /* WordCloudCell.swift in Sources */,
 				EDED9B5520376A2300B072D9 /* FaqController.swift in Sources */,
+				EC2131DA21F20C5E004962B8 /* InAppPurchase.swift in Sources */,
 				ED158FCC20211999000E43BB /* InviteController.swift in Sources */,
 				EDA5E351202A27FE00C0F61B /* PollChoice.swift in Sources */,
 				ED46DB9A203596FE00F6A06E /* BaseTableCell.swift in Sources */,

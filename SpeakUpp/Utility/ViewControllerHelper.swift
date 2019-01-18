@@ -105,9 +105,7 @@ class ViewControllerHelper {
         label.textColor = UIColor.gray
         label.backgroundColor = UIColor.clear
         label.text = ""
-        //label.minimumScaleFactor = 0.2
-        label.lineBreakMode = .byClipping
-        label.adjustsFontSizeToFitWidth = true
+        label.lineBreakMode = .byTruncatingTail
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }
