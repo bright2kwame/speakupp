@@ -292,8 +292,9 @@ class PayVottingController: UIViewController,SKProductsRequestDelegate, SKPaymen
         self.apiService.makeApplePayment(url: url, params: params,completion: { (status, message) in
             self.utilController.hideActivityIndicator()
              if let content = message, status == ApiCallStatus.SUCCESS {
-                self.navigationController?.popViewController(animated: true)
-                ViewControllerHelper.showPrompt(vc: self, message: content)
+                ViewControllerHelper.showPrompt(vc: self, message: content, completion: { (isDone) in
+                  self.navigationController?.popViewController(animated: true)
+                })
             }  else {
                 ViewControllerHelper.showAlert(vc: self, message: "Failed to initialise payment.", type: .failed)
             }
