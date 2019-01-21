@@ -1143,9 +1143,7 @@ class ApiService {
     
     //MARK: - resending confirmation code
     func applePayStatus(completion: @escaping (ApiCallStatus,String) -> ()){
-        // this is where the completion handler code goes
         let url =  "\(ApiUrl().activeBaseUrl())turn_off_apple_pay/"
-        print("URL \(url)")
         Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default,headers: headerAuth())
             .responseJSON { response in
                 if response.error != nil {
@@ -1157,8 +1155,9 @@ class ApiService {
                     switch(status){
                     case 200...300:
                         if let dataIn =  response.data {
-                            let item = JSON(data: dataIn).boolValue
-                            UserDefaults.standard.set(item, forKey: "APPLE_PAY_STATUS")
+                            let item = JSON(data: dataIn)["result"].boolValue
+                            print("APPLE_PAY_STATUS == \(item)")
+                            UserDefaults.standard.set(!item, forKey: "APPLE_PAY_STATUS")
                             completion(.SUCCESS,"SUCCESS")
                         }
                         completion(.DETAIL,"DONE")

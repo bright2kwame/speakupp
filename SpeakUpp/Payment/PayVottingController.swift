@@ -115,12 +115,13 @@ class PayVottingController: UIViewController,SKProductsRequestDelegate, SKPaymen
         
         self.applePayTurnedOff = UserDefaults.standard.bool(forKey: "APPLE_PAY_STATUS")
         
+        print("STATUS \(self.applePayTurnedOff)")
         self.view.addSubview(descriptionTextLabel)
         self.view.addSubview(numberOfVoteTextField)
         self.view.addSubview(payButton)
         self.view.addSubview(amountToPayTextLabel)
-        self.payButton.isHidden = applePayTurnedOff
-        self.numberOfVoteTextField.isHidden = !applePayTurnedOff
+        self.payButton.isHidden = !applePayTurnedOff
+        self.numberOfVoteTextField.isHidden = applePayTurnedOff
         
         
         self.descriptionTextLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
@@ -146,7 +147,7 @@ class PayVottingController: UIViewController,SKProductsRequestDelegate, SKPaymen
        
         self.updateUI()
         
-        if (!self.applePayTurnedOff){
+        if (self.applePayTurnedOff){
            self.buyInApp()
         }
     }
@@ -215,7 +216,7 @@ class PayVottingController: UIViewController,SKProductsRequestDelegate, SKPaymen
     }
     
     @objc func handleSave()  {
-        if !applePayTurnedOff, let product = self.skProduct {
+        if  applePayTurnedOff, let product = self.skProduct {
             let payment = SKPayment(product: product)
             SKPaymentQueue.default().add(payment)
             SKPaymentQueue.default().add(self)
@@ -272,7 +273,6 @@ class PayVottingController: UIViewController,SKProductsRequestDelegate, SKPaymen
                     self.navigationController?.popViewController(animated: true)
                 }
             })
-            
         } else {
            ViewControllerHelper.showAlert(vc: self, message: "Attempt to vote for undentifiable poll.", type: .failed)
         }
