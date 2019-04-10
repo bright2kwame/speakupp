@@ -27,6 +27,7 @@ class ApiUrl {
     let allTrendingDetail = "polls/trending_detail/"
     let authToken = "9083589085398983053850348053"
     let callBackUrl = "https://www.speakupp.com/slydepay_callback/"
+    let paymentCallBackUrl = "https://www.speakupp.com/quiz_pay/"
     
     func activeBaseUrl() -> String {
         return "\(baseUrl)"
@@ -123,6 +124,10 @@ class ApiUrl {
     
     func callBack() -> String {
         return "\(callBackUrl)"
+    }
+    
+    func speakUppCallBack() -> String {
+        return "\(paymentCallBackUrl)"
     }
     
 }

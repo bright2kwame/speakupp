@@ -584,10 +584,9 @@ class SignUpController: BaseScrollViewController {
             self.datePickerButton.setTitle(displayDate, for: .normal)
             return
         }, cancel: { ActionStringCancelBlock in return }, origin: sender)
-        let secondsInWeek: TimeInterval = NSTimeIntervalSince1970
-        datePicker?.minimumDate = Date(timeInterval: -secondsInWeek, since: Date())
-        datePicker?.maximumDate = Date(timeInterval: -sixteenInterval, since: Date())
-        
+//        let secondsInWeek: TimeInterval = NSTimeIntervalSince1970
+//        datePicker?.minimumDate = Date(timeInterval: -secondsInWeek, since: Date())
+//        datePicker?.maximumDate = Date(timeInterval: -sixteenInterval, since: Date())
         datePicker?.show()
     }
     

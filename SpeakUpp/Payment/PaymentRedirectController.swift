@@ -19,6 +19,7 @@ class PaymentRedirectController: UIViewController,UIWebViewDelegate {
     var pollVottingOptionController: PollVottingOptionController?
     private var hasFinishedLoading = false
     var eventCell: EventCell?
+    var trendingCell: TrendingCell?
     var timer: Timer!
     
     let progressUIView: UIProgressView = {
@@ -95,12 +96,13 @@ class PaymentRedirectController: UIViewController,UIWebViewDelegate {
         self.funcToCallCalledWhenUIWebViewFinishesLoading()
         if let link = webView.request?.url! {
             let check:String = link.relativeString
-            if (check.contains(ApiUrl().callBack())){
+            if (check.contains(ApiUrl().callBack()) || check.contains(ApiUrl().speakUppCallBack())){
                 //MARK - send calls to all handler
                 self.homeCell?.callRefresh()
                 self.pollsController?.callRefresh()
                 self.eventCell?.callRefresh()
                 self.eventDetailController?.callRefresh()
+                self.trendingCell?.callRefresh()
                 self.searchController?.setSearchType(type: SearchType.poll)
                 self.dismiss(animated: true, completion: nil)
             }

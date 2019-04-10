@@ -48,6 +48,15 @@ struct PlayerItem {
     let audioArt: String
 }
 
+struct QuestionItem {
+    let id:String
+    let text: String
+    let option1: String
+    let option2: String
+    let option3: String
+    let option4: String
+}
+
 class Contact: NSObject {
     
     init(contact: CNContact,isInvite:Bool) {

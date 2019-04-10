@@ -235,6 +235,57 @@ class ApiService {
     }
     
  
+    //MARK: a gebneric post callback with data and response
+    func makePostApiCall(url: String,params:[String: Any],completion: @escaping (ApiCallStatus,JSON?) -> ()){
+        print("URL \(url) \(params)")
+        Alamofire.request(url, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headerAuth())
+            .responseJSON { response in
+                if response.error != nil {
+                    completion(.FAILED,nil)
+                    return
+                }
+                if let status = response.response?.statusCode {
+                    print("Status \(status)")
+                    switch(status){
+                    case 200...400:
+                        let item = JSON(data: response.data!)
+                        completion(.SUCCESS, item)
+                    case 401...499:
+                        let data = JSON(data: response.data!)
+                        completion(.DETAIL, data)
+                    default:
+                        completion(.FAILED, nil)
+                    }
+                }
+                
+        }
+    }
+    
+    //MARK: a generic get callback with data and response
+    func makeGetApiCall(url: String,completion: @escaping (ApiCallStatus,JSON?) -> ()){
+        print("URL \(url)")
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headerAuth())
+            .responseJSON { response in
+                if response.error != nil {
+                    completion(.FAILED,nil)
+                    return
+                }
+                if let status = response.response?.statusCode {
+                    print("Status \(status)")
+                    switch(status){
+                    case 200...300:
+                        let item = JSON(data: response.data!)
+                        completion(.SUCCESS, item)
+                    case 300...499:
+                        let data = JSON(data: response.data!)
+                        completion(.DETAIL, data)
+                    default:
+                        completion(.FAILED, nil)
+                    }
+                }
+                
+        }
+    }
     
     
     //MARK: - get user

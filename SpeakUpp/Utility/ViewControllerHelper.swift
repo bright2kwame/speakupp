@@ -97,6 +97,15 @@ class ViewControllerHelper {
         return textField
     }
     
+    static func baseStackView() -> UIStackView {
+        let container = UIStackView()
+        container.distribution = .fillProportionally
+        container.axis = .vertical
+        container.spacing = 10
+        container.backgroundColor = UIColor.clear
+        container.translatesAutoresizingMaskIntoConstraints = false
+        return container
+    }
     
     static func baseLabel() -> UILabel {
         let label = UILabel()

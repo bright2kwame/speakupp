@@ -49,13 +49,33 @@ extension Double {
 extension String {
     
     
+    func formatAsAttributed(font:UIFont,color: UIColor) -> NSAttributedString {
+        let combination = NSMutableAttributedString()
+        let attributes = [NSAttributedString.Key.foregroundColor: color, NSAttributedString.Key.font: font]
+        let partOne = NSMutableAttributedString(string: self, attributes: attributes)
+        combination.append(partOne)
+        
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 2
+        combination.addAttribute(NSAttributedString.Key.paragraphStyle, value:paragraphStyle, range:NSMakeRange(0, combination.length))
+        
+        return combination
+    }
+    
+    func attributeTextWithColor(fontSize:Int,color: UIColor) -> NSAttributedString{
+        let combination = NSMutableAttributedString()
+        let yourAttributes = [NSAttributedStringKey.foregroundColor: color, NSAttributedStringKey.font: UIFont.systemFont(ofSize: CGFloat(fontSize))]
+        let partOne = NSMutableAttributedString(string: self, attributes: yourAttributes)
+        combination.append(partOne)
+        return combination
+    }
+    
     func attributeText(fontSize:Int) -> NSAttributedString{
         let combination = NSMutableAttributedString()
         let yourAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black, NSAttributedStringKey.font: UIFont.systemFont(ofSize: CGFloat(fontSize))]
         let partOne = NSMutableAttributedString(string: self, attributes: yourAttributes)
         combination.append(partOne)
         return combination
-        
     }
     //: ### Base64 encoding a string
     func base64Encoded() -> String? {

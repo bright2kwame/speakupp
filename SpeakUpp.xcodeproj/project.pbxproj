@@ -64,7 +64,6 @@
 		ED6C6E53201FB1F400C15586 /* HomeCellTopBarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6C6E52201FB1F400C15586 /* HomeCellTopBarCell.swift */; };
 		ED6C6E55201FD8B200C15586 /* BaseFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6C6E54201FD8B200C15586 /* BaseFeedCell.swift */; };
 		ED6C6E57201FE98200C15586 /* TrendingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6C6E56201FE98200C15586 /* TrendingCell.swift */; };
-		ED6C6E59201FEB9400C15586 /* TrendingCellTopBarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6C6E58201FEB9400C15586 /* TrendingCellTopBarCell.swift */; };
 		ED6C6E5B202072AF00C15586 /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6C6E5A202072AF00C15586 /* EventCell.swift */; };
 		ED6C6E5D2020734E00C15586 /* EventItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6C6E5C2020734E00C15586 /* EventItemCell.swift */; };
 		ED6C6E5F2020740200C15586 /* ProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6C6E5E2020740200C15586 /* ProfileCell.swift */; };
@@ -87,7 +86,6 @@
 		ED7E17B2201B5DF4006DF756 /* SignUpVerificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7E17B1201B5DF4006DF756 /* SignUpVerificationController.swift */; };
 		ED7E9744202DD32C00B35E0F /* PollImageChoiceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7E9743202DD32C00B35E0F /* PollImageChoiceCell.swift */; };
 		ED7E9746202DD9EF00B35E0F /* PollNoImageChoiceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7E9745202DD9EF00B35E0F /* PollNoImageChoiceCell.swift */; };
-		ED7E9748202E108600B35E0F /* TrendingItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7E9747202E108600B35E0F /* TrendingItemCell.swift */; };
 		ED8C2351203626E50048A7E8 /* InviteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8C2350203626E50048A7E8 /* InviteCell.swift */; };
 		ED8C23552036E1E90048A7E8 /* PollDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8C23542036E1E90048A7E8 /* PollDetailController.swift */; };
 		ED8C23572036E4060048A7E8 /* PollCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8C23562036E4060048A7E8 /* PollCommentCell.swift */; };
@@ -201,7 +199,6 @@
 		ED6C6E52201FB1F400C15586 /* HomeCellTopBarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCellTopBarCell.swift; sourceTree = "<group>"; };
 		ED6C6E54201FD8B200C15586 /* BaseFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseFeedCell.swift; sourceTree = "<group>"; };
 		ED6C6E56201FE98200C15586 /* TrendingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendingCell.swift; sourceTree = "<group>"; };
-		ED6C6E58201FEB9400C15586 /* TrendingCellTopBarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendingCellTopBarCell.swift; sourceTree = "<group>"; };
 		ED6C6E5A202072AF00C15586 /* EventCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
 		ED6C6E5C2020734E00C15586 /* EventItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventItemCell.swift; sourceTree = "<group>"; };
 		ED6C6E5E2020740200C15586 /* ProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCell.swift; sourceTree = "<group>"; };
@@ -224,7 +221,6 @@
 		ED7E17B1201B5DF4006DF756 /* SignUpVerificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVerificationController.swift; sourceTree = "<group>"; };
 		ED7E9743202DD32C00B35E0F /* PollImageChoiceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollImageChoiceCell.swift; sourceTree = "<group>"; };
 		ED7E9745202DD9EF00B35E0F /* PollNoImageChoiceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollNoImageChoiceCell.swift; sourceTree = "<group>"; };
-		ED7E9747202E108600B35E0F /* TrendingItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendingItemCell.swift; sourceTree = "<group>"; };
 		ED8C2350203626E50048A7E8 /* InviteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteCell.swift; sourceTree = "<group>"; };
 		ED8C23542036E1E90048A7E8 /* PollDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollDetailController.swift; sourceTree = "<group>"; };
 		ED8C23562036E4060048A7E8 /* PollCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollCommentCell.swift; sourceTree = "<group>"; };
@@ -498,7 +494,6 @@
 			isa = PBXGroup;
 			children = (
 				ED6C6E52201FB1F400C15586 /* HomeCellTopBarCell.swift */,
-				ED6C6E58201FEB9400C15586 /* TrendingCellTopBarCell.swift */,
 				ED6C6E46201F732600C15586 /* HomeMenuBar.swift */,
 				ED6C6E4A201F74B900C15586 /* HomeMenuBarCell.swift */,
 				ED46DB912033A8D300F6A06E /* SearchMenuBar.swift */,
@@ -513,7 +508,6 @@
 				ED6C6E54201FD8B200C15586 /* BaseFeedCell.swift */,
 				ED777665202CE6720006A8F3 /* BaseRatingCell.swift */,
 				ED6C6E56201FE98200C15586 /* TrendingCell.swift */,
-				ED7E9747202E108600B35E0F /* TrendingItemCell.swift */,
 				ED6C6E5A202072AF00C15586 /* EventCell.swift */,
 				ED6C6E5C2020734E00C15586 /* EventItemCell.swift */,
 				ED6C6E5E2020740200C15586 /* ProfileCell.swift */,
@@ -854,7 +848,6 @@
 				ED567A07201666A400F52B89 /* Extension.swift in Sources */,
 				ED46DB942034161000F6A06E /* CellHelper.swift in Sources */,
 				ED5679FB2016465300F52B89 /* ViewControllerHelper.swift in Sources */,
-				ED6C6E59201FEB9400C15586 /* TrendingCellTopBarCell.swift in Sources */,
 				ED4BC508205A99540030FF11 /* SpeakUppProtocol.swift in Sources */,
 				ED158FC920211639000E43BB /* SearchController.swift in Sources */,
 				ED46DB8E20331D5600F6A06E /* PaymentRedirectController.swift in Sources */,
@@ -871,7 +864,6 @@
 				ED6C6E51201FA35D00C15586 /* PollAuthor.swift in Sources */,
 				ED777666202CE6720006A8F3 /* BaseRatingCell.swift in Sources */,
 				ED6C6E53201FB1F400C15586 /* HomeCellTopBarCell.swift in Sources */,
-				ED7E9748202E108600B35E0F /* TrendingItemCell.swift in Sources */,
 				ED46DB872032D95C00F6A06E /* EditProfileController.swift in Sources */,
 				ED5679F72016459100F52B89 /* Mics.swift in Sources */,
 				ED46DB922033A8D300F6A06E /* SearchMenuBar.swift in Sources */,

@@ -11,7 +11,7 @@ import UIKit
 class HomeMenuBar: BaseUIView {
     var homeController: HomeController?
     let menuCellId = "menuCellId"
-    let labels = [HomeMenuLabel(title: "Home",image: "TabHome"),HomeMenuLabel(title: "Trending",image: "TabTrending"),HomeMenuLabel(title: "Event",image: "TabEvent"),HomeMenuLabel(title: "Me",image: "TabProfile")]
+    let labels = [HomeMenuLabel(title: "Home",image: "TabHome"),HomeMenuLabel(title: "Quiz",image: "TabTrending"),HomeMenuLabel(title: "Event",image: "TabEvent"),HomeMenuLabel(title: "Me",image: "TabProfile")]
 
     lazy var menuCollectionView: UICollectionView = {
         let flow = UICollectionViewFlowLayout()
