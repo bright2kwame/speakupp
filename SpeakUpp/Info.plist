@@ -15,9 +15,9 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>3.0</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
-	<string>16</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -40,6 +40,8 @@
 	<string>$(PRODUCT_NAME) wants to use your camera for photos.</string>
 	<key>NSContactsUsageDescription</key>
 	<string>$(PRODUCT_NAME) wants to access your contact to invite friends.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>$(PRODUCT_NAME) wants access to your locations to help give direction.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>$(PRODUCT_NAME) wants take photo for requests and profile.</string>
 	<key>UIAppFonts</key>

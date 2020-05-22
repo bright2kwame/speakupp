@@ -253,7 +253,7 @@ class TrendingCell: BaseCell {
                     let option2 = dataIn["results"]["option2"].stringValue
                     let option3 = dataIn["results"]["option3"].stringValue
                     let option4 = dataIn["results"]["option4"].stringValue
-                    self.curretnQuestionItem = QuestionItem(id: questionId, text: question, option1: option1, option2: option2, option3: option3,option4: option4)
+                   
                     self.showNextAction(message: message, isStarting: true)
                 }
             }
@@ -291,7 +291,7 @@ class TrendingCell: BaseCell {
                     let option2 = dataIn["results"]["option2"].stringValue
                     let option3 = dataIn["results"]["option3"].stringValue
                     let option4 = dataIn["results"]["option4"].stringValue
-                    self.curretnQuestionItem = QuestionItem(id: questionId, text: question, option1: option1, option2: option2, option3: option3,option4: option4)
+                   
                     self.showNextAction(message: message, isStarting: false)
                 } else {
                    let message = dataIn["message"].stringValue
@@ -305,7 +305,7 @@ class TrendingCell: BaseCell {
     
     func removeQuestionView()  {
         self.questionTextLabel.removeFromSuperview()
-        self.answerStack.removeFromSuperview()
+      
         self.countDownTimeTextLabel.removeFromSuperview()
     }
     
@@ -396,16 +396,6 @@ class TrendingCell: BaseCell {
         self.answerStack.topAnchor.constraint(equalTo: questionTextLabel.bottomAnchor, constant: 32).isActive = true
         self.answerStack.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         
-        self.answerStack.addArrangedSubview(firstAnswerButton)
-        self.answerStack.addArrangedSubview(secondAnswerButton)
-        self.answerStack.addArrangedSubview(thirdAnswerButton)
-        self.answerStack.addArrangedSubview(fouthAnswerButton)
-        
-        self.questionTextLabel.text = questionItem.text
-        self.firstAnswerButton.setTitle(questionItem.option1, for: .normal)
-        self.secondAnswerButton.setTitle(questionItem.option2, for: .normal)
-        self.thirdAnswerButton.setTitle(questionItem.option3, for: .normal)
-        self.fouthAnswerButton.setTitle(questionItem.option4, for: .normal)
         
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TrendingCell.update), userInfo: nil, repeats: true)
     }

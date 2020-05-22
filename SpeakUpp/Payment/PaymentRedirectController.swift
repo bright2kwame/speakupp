@@ -17,6 +17,7 @@ class PaymentRedirectController: UIViewController,UIWebViewDelegate {
     var searchController: SearchController?
     var eventDetailController: EventDetailController?
     var pollVottingOptionController: PollVottingOptionController?
+    var quizController: QuizController?
     private var hasFinishedLoading = false
     var eventCell: EventCell?
     var trendingCell: TrendingCell?
@@ -92,18 +93,22 @@ class PaymentRedirectController: UIViewController,UIWebViewDelegate {
         self.funcToCallWhenStartLoadingYourWebview()
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        self.homeCell?.callRefresh()
+        self.pollsController?.callRefresh()
+        self.eventCell?.callRefresh()
+        self.eventDetailController?.callRefresh()
+        self.trendingCell?.callRefresh()
+        self.searchController?.setSearchType(type: SearchType.poll)
+        self.quizController?.callRefresh()
+    }
+    
     func webViewDidFinishLoad(_ webView: UIWebView) {
         self.funcToCallCalledWhenUIWebViewFinishesLoading()
         if let link = webView.request?.url! {
             let check:String = link.relativeString
             if (check.contains(ApiUrl().callBack()) || check.contains(ApiUrl().speakUppCallBack())){
                 //MARK - send calls to all handler
-                self.homeCell?.callRefresh()
-                self.pollsController?.callRefresh()
-                self.eventCell?.callRefresh()
-                self.eventDetailController?.callRefresh()
-                self.trendingCell?.callRefresh()
-                self.searchController?.setSearchType(type: SearchType.poll)
                 self.dismiss(animated: true, completion: nil)
             }
         }

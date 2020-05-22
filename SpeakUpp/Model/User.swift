@@ -82,7 +82,6 @@ class User: Object {
         }
     }
     
-
     //delete all
     static func delete(){
         let realm = try! Realm()
@@ -92,7 +91,7 @@ class User: Object {
         }
     }
     
-    func print() -> String{
+    func print() -> String {
         return "\(self.firstName)"
     }
     

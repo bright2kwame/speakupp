@@ -29,6 +29,10 @@ class CellHelper {
         
         //MARK - the brand section
         if feed is NewsItem {
+            let newsFeed = feed as! NewsItem
+            if newsFeed.image.isEmpty {
+                return CGSize(width: itemWidth, height: 200)
+            }
             return CGSize(width: itemWidth, height: 350)
         }
         

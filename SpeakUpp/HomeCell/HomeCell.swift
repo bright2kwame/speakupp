@@ -439,7 +439,9 @@ extension HomeCell: UICollectionViewDataSource,UICollectionViewDelegateFlowLayou
     @objc func newsDetail(_ sender: UITapGestureRecognizer) {
         let view = sender.view
         let poll = self.feed[view!.tag] as! NewsItem
-        ViewControllerHelper.showPrompt(vc: self.homeController!, message: poll.content)
+        let newsController = NewsController()
+        newsController.newsItem = poll
+        self.homeController?.navigationController?.pushViewController(newsController, animated: true)
     }
     
     @objc func previewImage(_ sender: UITapGestureRecognizer) {

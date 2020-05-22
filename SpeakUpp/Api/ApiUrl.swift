@@ -130,4 +130,16 @@ class ApiUrl {
         return "\(paymentCallBackUrl)"
     }
     
+    func leaderBoard() -> String {
+       return "\(activeBaseUrl())new_leaderboard/"
+    }
+    
+    func partners() -> String {
+       return "\(activeBaseUrl())partners/"
+    }
+    
+    func quizes() -> String {
+        return "\(activeBaseUrl())quizzes/"
+    }
+    
 }

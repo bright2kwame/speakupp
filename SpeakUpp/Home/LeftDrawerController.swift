@@ -65,39 +65,39 @@ class LeftDrawerController: UIViewController {
         return uiView
     }()
     
-    let homeButton: UIButton = {
-        let button = ViewControllerHelper.plainButton()
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-        button.setTitle("Home", for: .normal)
-        button.layer.cornerRadius = 0
-        button.setTitleColor(UIColor.white, for: .normal)
-        button.contentHorizontalAlignment = .left
-        button.addTarget(self, action: #selector(tappedHome), for: .touchUpInside)
-        return button
-    }()
+//    let homeButton: UIButton = {
+//        let button = ViewControllerHelper.plainButton()
+//        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+//        button.setTitle("Home", for: .normal)
+//        button.layer.cornerRadius = 0
+//        button.setTitleColor(UIColor.white, for: .normal)
+//        button.contentHorizontalAlignment = .left
+//        button.addTarget(self, action: #selector(tappedHome), for: .touchUpInside)
+//        return button
+//    }()
     
-    let trendingButton: UIButton = {
-        let button = ViewControllerHelper.plainButton()
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-        button.setTitle("Trending", for: .normal)
-        button.layer.cornerRadius = 0
-        button.setTitleColor(UIColor.white, for: .normal)
-        button.contentHorizontalAlignment = .left
-        button.addTarget(self, action: #selector(tappedTrending), for: .touchUpInside)
-        return button
-    }()
+//    let trendingButton: UIButton = {
+//        let button = ViewControllerHelper.plainButton()
+//        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+//        button.setTitle("Trending", for: .normal)
+//        button.layer.cornerRadius = 0
+//        button.setTitleColor(UIColor.white, for: .normal)
+//        button.contentHorizontalAlignment = .left
+//        button.addTarget(self, action: #selector(tappedTrending), for: .touchUpInside)
+//        return button
+//    }()
+//
     
-    
-    let eventsButton: UIButton = {
-        let button = ViewControllerHelper.plainButton()
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-        button.setTitle("Events", for: .normal)
-        button.layer.cornerRadius = 0
-        button.setTitleColor(UIColor.white, for: .normal)
-        button.contentHorizontalAlignment = .left
-        button.addTarget(self, action: #selector(tappedEvents), for: .touchUpInside)
-        return button
-    }()
+//    let eventsButton: UIButton = {
+//        let button = ViewControllerHelper.plainButton()
+//        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+//        button.setTitle("Events", for: .normal)
+//        button.layer.cornerRadius = 0
+//        button.setTitleColor(UIColor.white, for: .normal)
+//        button.contentHorizontalAlignment = .left
+//        button.addTarget(self, action: #selector(tappedEvents), for: .touchUpInside)
+//        return button
+//    }()
     
     let qrCodeButton: UIButton = {
         let button = ViewControllerHelper.plainButton()
@@ -110,10 +110,32 @@ class LeftDrawerController: UIViewController {
         return button
     }()
     
+    let partnersButton: UIButton = {
+        let button = ViewControllerHelper.plainButton()
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        button.setTitle("Partners", for: .normal)
+        button.layer.cornerRadius = 0
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.contentHorizontalAlignment = .left
+        button.addTarget(self, action: #selector(tappedPartners), for: .touchUpInside)
+        return button
+    }()
+    
+    let leaderBoardButton: UIButton = {
+        let button = ViewControllerHelper.plainButton()
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        button.setTitle("Leader Board", for: .normal)
+        button.layer.cornerRadius = 0
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.contentHorizontalAlignment = .left
+        button.addTarget(self, action: #selector(tappedLeaderBoard), for: .touchUpInside)
+        return button
+    }()
+    
     let inviteButton: UIButton = {
         let button = ViewControllerHelper.plainButton()
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-        button.setTitle("Invite Friends", for: .normal)
+        button.setTitle("Share the app", for: .normal)
         button.layer.cornerRadius = 0
         button.contentHorizontalAlignment = .left
         button.setTitleColor(UIColor.white, for: .normal)
@@ -152,9 +174,8 @@ class LeftDrawerController: UIViewController {
         self.scrollView.addSubview(profileImageView)
         self.scrollView.addSubview(nameButton)
         self.scrollView.addSubview(profileDividerView)
-        self.scrollView.addSubview(homeButton)
-        self.scrollView.addSubview(trendingButton)
-        self.scrollView.addSubview(eventsButton)
+        self.scrollView.addSubview(partnersButton)
+        self.scrollView.addSubview(leaderBoardButton)
         self.scrollView.addSubview(inviteButton)
         self.scrollView.addSubview(qrCodeButton)
         
@@ -190,23 +211,33 @@ class LeftDrawerController: UIViewController {
         self.profileDividerView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: 0).isActive = true
         
         //MARK - menu sections
-        self.homeButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        self.homeButton.topAnchor.constraint(equalTo: profileDividerView.bottomAnchor, constant: 20).isActive = true
-        self.homeButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16).isActive = true
-        self.homeButton.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16).isActive = true
+//        self.homeButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+//        self.homeButton.topAnchor.constraint(equalTo: profileDividerView.bottomAnchor, constant: 20).isActive = true
+//        self.homeButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16).isActive = true
+//        self.homeButton.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16).isActive = true
+//
+//        self.trendingButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+//        self.trendingButton.topAnchor.constraint(equalTo: homeButton.bottomAnchor, constant: 16).isActive = true
+//        self.trendingButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16).isActive = true
+//        self.trendingButton.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16).isActive = true
+//
+//        self.eventsButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+//        self.eventsButton.topAnchor.constraint(equalTo: trendingButton.bottomAnchor, constant: 16).isActive = true
+//        self.eventsButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16).isActive = true
+//        self.eventsButton.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16).isActive = true
+//
+        self.partnersButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        self.partnersButton.topAnchor.constraint(equalTo: profileDividerView.bottomAnchor, constant: 32).isActive = true
+        self.partnersButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16).isActive = true
+        self.partnersButton.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16).isActive = true
         
-        self.trendingButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        self.trendingButton.topAnchor.constraint(equalTo: homeButton.bottomAnchor, constant: 16).isActive = true
-        self.trendingButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16).isActive = true
-        self.trendingButton.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16).isActive = true
-        
-        self.eventsButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        self.eventsButton.topAnchor.constraint(equalTo: trendingButton.bottomAnchor, constant: 16).isActive = true
-        self.eventsButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16).isActive = true
-        self.eventsButton.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16).isActive = true
+        self.leaderBoardButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        self.leaderBoardButton.topAnchor.constraint(equalTo: partnersButton.bottomAnchor, constant: 16).isActive = true
+        self.leaderBoardButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16).isActive = true
+        self.leaderBoardButton.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16).isActive = true
         
         self.inviteButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        self.inviteButton.topAnchor.constraint(equalTo: eventsButton.bottomAnchor, constant: 16).isActive = true
+        self.inviteButton.topAnchor.constraint(equalTo: leaderBoardButton.bottomAnchor, constant: 16).isActive = true
         self.inviteButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16).isActive = true
         self.inviteButton.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16).isActive = true
         
@@ -249,6 +280,7 @@ class LeftDrawerController: UIViewController {
     
     //MARK - Action on the buttons
     @objc private func tappedTrending() {
+        print("Trending")
         self.homeDrawerController.hide(animated: true)
         self.homeController?.scrollBothToMenuIndex(menuIndex: 1)
     }
@@ -290,5 +322,19 @@ class LeftDrawerController: UIViewController {
     @objc private func logOutSection() {
         self.homeDrawerController.hide(animated: true)
         self.present(LogoOutController(), animated: true, completion: nil)
+    }
+    
+    @objc private func tappedLeaderBoard() {
+        self.homeDrawerController.hide(animated: true)
+        let destinationCt = QuizesController()
+        destinationCt.isLeaderBoard = true
+        let nav = UINavigationController(rootViewController: destinationCt)
+        self.present(nav, animated: true, completion: nil)
+    }
+    
+    @objc private func tappedPartners() {
+        self.homeDrawerController.hide(animated: true)
+        let nav = UINavigationController(rootViewController: PartnersController())
+        self.present(nav, animated: true, completion: nil)
     }
 }

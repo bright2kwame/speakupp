@@ -44,7 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,OSPermissionObserver, OSSu
         
         //realm migration
         let config = Realm.Configuration(
-            schemaVersion: 4,
+            schemaVersion: 7,
             migrationBlock: { migration, oldSchemaVersion in
                 if (oldSchemaVersion < 1) {
                    

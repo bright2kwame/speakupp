@@ -98,11 +98,7 @@ class NewsCell: BaseCell {
         addSubview(likeButton)
         addSubview(commentButton)
        
-        self.imageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8).isActive = true
-        self.imageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8).isActive = true
-        self.imageView.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
-        self.imageView.heightAnchor.constraint(equalToConstant: 150).isActive = true
-        
+       
         self.contentLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16).isActive = true
         self.contentLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16).isActive = true
         self.contentLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 16).isActive = true
@@ -124,6 +120,12 @@ class NewsCell: BaseCell {
         self.dividerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16).isActive = true
         self.dividerView.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         self.dividerView.bottomAnchor.constraint(equalTo: container.topAnchor, constant: -8).isActive = true
+        
+        self.imageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8).isActive = true
+        self.imageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8).isActive = true
+        self.imageView.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
+        self.imageView.bottomAnchor.constraint(equalTo: contentLabel.topAnchor, constant: -8).isActive = true
+               
         
     }
     

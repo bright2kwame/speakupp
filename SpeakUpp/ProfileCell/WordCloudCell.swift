@@ -14,7 +14,7 @@ class  WordCloudCell: BaseCell {
         didSet {
             guard let unwrapedItem = feed else {return}
             self.nameLabel.text = unwrapedItem.name
-            let fontSize = CGFloat(unwrapedItem.cloudValue + 8.0)
+            let fontSize = CGFloat(unwrapedItem.cloudValue + 6.0)
             self.nameLabel.font =  UIFont.systemFont(ofSize: fontSize)
         }
     }

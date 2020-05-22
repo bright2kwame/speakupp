@@ -18,7 +18,7 @@ class HomeController: UIViewController, SKStoreProductViewControllerDelegate {
     let trendingCellId = "trendingCellId"
     let eventCellId = "eventCellId"
     let acountCellId = "acountCellId"
-    let labels = ["Home","Trending","Event","Me"]
+    let labels = ["Home","Event","Me","Quiz"]
     let user = User.getUser()!
     let apiService = ApiService()
     var storeProductViewController = SKStoreProductViewController()
@@ -97,7 +97,7 @@ class HomeController: UIViewController, SKStoreProductViewControllerDelegate {
        
         collectionView.backgroundColor = UIColor.clear
         collectionView.register(HomeCell.self, forCellWithReuseIdentifier: self.homeCellId)
-        collectionView.register(TrendingCell.self, forCellWithReuseIdentifier: self.trendingCellId)
+        collectionView.register(QuizesCell.self, forCellWithReuseIdentifier: self.trendingCellId)
         collectionView.register(EventCell.self, forCellWithReuseIdentifier: self.eventCellId)
         collectionView.register(ProfileCell.self, forCellWithReuseIdentifier: self.acountCellId)
         
@@ -249,18 +249,18 @@ extension HomeController: UICollectionViewDataSource,UICollectionViewDelegateFlo
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: homeCellId, for: indexPath) as! HomeCell
             cell.homeController = self
             return cell
-        } else if indexPath.row == 1 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: trendingCellId, for: indexPath) as! TrendingCell
-            cell.homeController = self
-            return cell
-        } else if indexPath.row == 2 {
+        }  else if indexPath.row == 1 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: eventCellId, for: indexPath) as! EventCell
             cell.homeController = self
             return cell
-        }  else {
+        }  else if indexPath.row == 2  {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: acountCellId, for: indexPath) as! ProfileCell
             cell.homeController = self
             cell.profile = self.user
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: trendingCellId, for: indexPath) as! QuizesCell
+            cell.homeController = self
             return cell
         }
         

@@ -25,7 +25,7 @@ class PollOptionCell: BaseCell {
                     imageTransition: .crossDissolve(0.2)
                 )}
             
-            guard let unwrapedItemPoll = unwrapedItem.poll else {return}
+            guard let _ = unwrapedItem.poll else {return}
             self.pollTypeLabel.text = unwrapedItem.poll?.pollType.formatPollType().uppercased()
             self.nameLabel.text = unwrapedItem.poll?.author?.username
             self.dateTimeLabel.text = "\(unwrapedItem.poll?.elapsedTime ?? "Now" )\n\(unwrapedItem.poll?.expiryDate ?? "Now" )"
