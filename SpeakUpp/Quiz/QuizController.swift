@@ -22,6 +22,7 @@ class QuizController: UIViewController {
     var feed = [AnswerItem]()
     var purchaseFirst = false
     var livesLeft = 0
+    var currentScore = 0
     var exitQuiz = false
  
     
@@ -126,7 +127,7 @@ class QuizController: UIViewController {
         textView.font = UIFont.boldSystemFont(ofSize: 24)
         textView.backgroundColor = UIColor.hex(hex: Key.primaryHomeHexCode)
         textView.layer.masksToBounds = true
-        textView.layer.cornerRadius = 25
+        textView.layer.cornerRadius = 30
         return textView
     }()
     
@@ -188,12 +189,8 @@ class QuizController: UIViewController {
     
     let answerStateImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleAspectFit
         imageView.layer.masksToBounds = true
-        imageView.layer.cornerRadius = 25
-        imageView.layer.borderColor = UIColor.white.cgColor
-        imageView.layer.borderWidth = 2
-        imageView.isHidden = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -362,14 +359,25 @@ class QuizController: UIViewController {
               return textView
        }()
              
-       let gameOverTotalParticipantLabelValue: UILabel = {
-              let textView = ViewControllerHelper.baseLabel()
-              textView.textAlignment = .right
-              textView.textColor = UIColor.white
-              textView.font = UIFont.systemFont(ofSize: 16)
-              textView.text = "0"
-              return textView
-       }()
+    let gameOverTotalParticipantLabelValue: UILabel = {
+        let textView = ViewControllerHelper.baseLabel()
+        textView.textAlignment = .right
+        textView.textColor = UIColor.white
+        textView.font = UIFont.systemFont(ofSize: 16)
+        textView.text = "0"
+        return textView
+    }()
+    
+    let questionImageView: UIImageView = {
+          let imageView = UIImageView()
+          imageView.contentMode = .scaleAspectFill
+          imageView.layer.masksToBounds = true
+          imageView.layer.cornerRadius = 0
+          imageView.layer.borderColor = UIColor.white.cgColor
+          imageView.layer.borderWidth = 2
+          imageView.translatesAutoresizingMaskIntoConstraints = false
+          return imageView
+      }()
     
     
     
@@ -387,6 +395,7 @@ class QuizController: UIViewController {
         if purchaseFirst && self.quiz!.hasPaid {
            self.showNumberToPurchase()
         }
+        
         self.getQuizStatus()
         
         //self.showGameOverMessageWithInfo(score: "12", attempted: "12", highScore: "20", price: "New Car", nextPrice: "Next Game", participants: "234", rank: "Teacher Rank", designation: "Senior")
@@ -397,7 +406,7 @@ class QuizController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         if self.isMovingFromParentViewController && self.timerCount > 0 && !exitQuiz {
             self.exitQuiz = true
-            self.updateThatGameIsOver()
+            //self.updateThatGameIsOver()
             ViewControllerHelper.showAlert(vc: self, message: "Exiting means you will loose one life.", type: MessageType.failed)
         } else {
          super.viewWillDisappear(animated)
@@ -435,7 +444,6 @@ class QuizController: UIViewController {
         apiService.makePostApiCall(url: url, params: param) { (status, data) in
             if let dataIn = data, status == ApiCallStatus.SUCCESS {
                     let responseCode = dataIn["response_code"].stringValue
-                    print("DATA \(dataIn)")
                     if (responseCode == "100"){
                       let message = dataIn["message"].stringValue
                       ViewControllerHelper.presentSharer(targetVC: self, message: message)
@@ -547,15 +555,16 @@ class QuizController: UIViewController {
         self.controller.showActivityIndicator()
         let url = ApiUrl().activeBaseUrl() + "quiz/new_check_eligibility/"
         let param = ["quiz_id": self.quiz!.id]
-        apiService.makePostApiCall(url: url, params: param) { (status, data) in
-            self.controller.hideActivityIndicator()
+        self.apiService.makePostApiCall(url: url, params: param) { (status, data) in
+        self.controller.hideActivityIndicator()
             if let dataIn = data, status == ApiCallStatus.SUCCESS {
                 let responseCode = dataIn["response_code"].stringValue
-                print("\(dataIn)")
                 //MARK: new user here
                 if responseCode == "100" {
+                    print("QUESTION \(dataIn)")
                     let score = dataIn["current_total_score"].stringValue
                     self.livesLeft = dataIn["lives_left"].intValue
+                    self.currentScore = dataIn["current_total_score"].intValue
                     dataIn["results"]["answers"].forEach { (item) in
                             let quiz = self.parseAnswer(item: item.1)
                             self.feed.append(quiz)
@@ -700,9 +709,21 @@ class QuizController: UIViewController {
     
     //MARK:show answer status, either correct or wrong
     func showAnswerstatus(isCorrect: Bool) {
-         self.answerStateImageView.isHidden = false
-         self.answerStateImageView.backgroundColor = isCorrect ? UIColor.red : UIColor.green
-         self.answerStateImageView.image =  isCorrect ? UIImage(named: "Correct") : UIImage(named: "Deny")
+        self.scrollView.addSubview(answerStateImageView)
+
+        self.answerStateImageView.leadingAnchor
+            .constraint(equalTo: optionsCollectionView.leadingAnchor, constant: 32).isActive = true
+        
+        self.answerStateImageView.trailingAnchor
+        .constraint(equalTo: optionsCollectionView.trailingAnchor, constant: -32).isActive = true
+        
+        self.answerStateImageView.topAnchor.constraint(equalTo: optionsCollectionView.topAnchor, constant: 32).isActive = true
+        
+        self.answerStateImageView.bottomAnchor.constraint(equalTo: optionsCollectionView.bottomAnchor, constant: -32).isActive = true
+        
+        self.answerStateImageView.backgroundColor = UIColor.clear
+        self.answerStateImageView.image =  isCorrect ? UIImage(named: "Tick") : UIImage(named: "Wrong")
+        self.optionsCollectionView.isUserInteractionEnabled = false
     }
 
     //MARK:- parse answers
@@ -737,23 +758,6 @@ class QuizController: UIViewController {
         return question
     }
     
-    //MARK: answer question
-     func answerQuestion(answer: AnswerItem) {
-            let yesAction = UIAlertAction(title: "Ok", style: .default, handler: {(Alert:UIAlertAction!) -> Void in
-                         self.timer.invalidate()
-                         self.feed.removeAll()
-                         self.optionsCollectionView.reloadData()
-                         self.controller.showActivityIndicator()
-                         self.sendAnswer(answer: answer)
-                       })
-              let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {(Alert:UIAlertAction!) -> Void in
-                
-            })
-        let alertView = UIAlertController(title: "SpeakUpp", message: "Confirm your answer:\n \(answer.answer)", preferredStyle: .alert)
-            alertView.addAction(yesAction)
-            alertView.addAction(cancelAction)
-            present(alertView, animated: true, completion: nil)
-    }
     
     //MARK: send game over status
     func gameOver() {
@@ -762,9 +766,8 @@ class QuizController: UIViewController {
         let params = ["answer_id": "0","question_id": self.currentQuestionId, "points": timerCount,"quiz_id": self.quiz!.id] as [String : Any]
         ApiService().makePostApiCall(url: url, params: params) { (status, data) in
             self.controller.hideActivityIndicator()
-            if let dataIn = data, status == ApiCallStatus.SUCCESS {
-                print("ANSWER RESULT \(dataIn)")
-                self.getQuizStatus()
+            if status == ApiCallStatus.SUCCESS {
+               self.getQuizStatus()
             }
         }
     }
@@ -779,21 +782,22 @@ class QuizController: UIViewController {
                 let responseCode = dataIn["response_code"].stringValue
                 if responseCode == "100" || responseCode == "101" {
                     self.showAnswerstatus(isCorrect: responseCode == "100")
-                    dataIn["results"]["answers"].forEach { (item) in
-                            let quiz = self.parseAnswer(item: item.1)
-                            self.feed.append(quiz)
-                    }
                     let questionItem = self.parseQuestion(item: dataIn["results"])
+                    self.livesLeft = dataIn["lives_left"].intValue
+                    self.currentScore = dataIn["current_total_score"].intValue
                     self.curretnQuestionItem = questionItem
                     
                     //MARK: delay this for 5 seconds
                     DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
                         self.removeQuestionView()
+                        dataIn["results"]["answers"].forEach { (item) in
+                                                   let quiz = self.parseAnswer(item: item.1)
+                                                   self.feed.append(quiz)
+                                           }
                         self.showQuestion()
-                    }
+                   }
                 } else if (responseCode == "106"){
                     self.removeQuestionView()
-                    print("DATA \(dataIn)")
                     let currentPrize = dataIn["current_prize"].stringValue
                     let nextPrize = dataIn["next_prize"].stringValue
                     let score = dataIn["current_total_score"].stringValue
@@ -807,7 +811,6 @@ class QuizController: UIViewController {
                                                      nextPrice: nextPrize, participants: totalParticipants, rank: position, designation: designation)
                     
                 } else {
-                   print("DATA \(dataIn)")
                    let message = dataIn["detail"].stringValue
                     ViewControllerHelper.showPrompt(vc: self, message: message, completion: { (isDone) in
                         self.removeQuestionView()
@@ -822,9 +825,12 @@ class QuizController: UIViewController {
         for view in livesStackView.subviews {
             view.removeFromSuperview()
         }
+        self.feed.removeAll()
+        self.optionsCollectionView.reloadData()
         self.scoreTextLabel.removeFromSuperview()
         self.livesStackView.removeFromSuperview()
         self.questionTextLabel.removeFromSuperview()
+        self.questionImageView.removeFromSuperview()
         self.optionsCollectionView.removeFromSuperview()
         self.countDownTimeTextLabel.removeFromSuperview()
         self.answerStateImageView.removeFromSuperview()
@@ -836,8 +842,7 @@ class QuizController: UIViewController {
         guard let questionItem  = self.curretnQuestionItem else {
             return
         }
-        self.removeQuestionView()
-        
+       
         self.timerCount = 99
         self.countDownTimeTextLabel.text = "99"
         self.currentQuestionId = questionItem.id
@@ -850,9 +855,10 @@ class QuizController: UIViewController {
         self.scrollView.addSubview(scoreTextLabel)
         self.scrollView.addSubview(livesStackView)
         self.scrollView.addSubview(questionTextLabel)
+        self.scrollView.addSubview(questionImageView)
         self.scrollView.addSubview(optionsCollectionView)
-        self.scrollView.addSubview(answerStateImageView)
         self.view.addSubview(countDownTimeTextLabel)
+        self.optionsCollectionView.isUserInteractionEnabled = true
         
         self.livesStackView.widthAnchor.constraint(equalToConstant: 100).isActive = true
         self.livesStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16).isActive = true
@@ -862,9 +868,14 @@ class QuizController: UIViewController {
         for n in 1...self.livesLeft {
             let imageView = UIImageView()
             imageView.contentMode = .scaleAspectFit
-            imageView.image = UIImage(named: "LikeActive")
+            imageView.image = UIImage(named: "love")
             self.livesStackView.addArrangedSubview(imageView)
             print("LIVES \(n)")
+        }
+        
+        var heightOfImage = CGFloat(150.0)
+        if questionItem.questionImage.isEmpty {
+           heightOfImage = CGFloat(0.0)
         }
         
         self.scoreTextLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 32).isActive = true
@@ -872,11 +883,17 @@ class QuizController: UIViewController {
         self.scoreTextLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 32).isActive = true
         self.scoreTextLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
                
-        
         self.questionTextLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 32).isActive = true
         self.questionTextLabel.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -32).isActive = true
         self.questionTextLabel.topAnchor.constraint(equalTo: livesStackView.bottomAnchor, constant: 32).isActive = true
         self.questionTextLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        
+        self.questionImageView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 32).isActive = true
+        self.questionImageView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -32).isActive = true
+        self.questionImageView.topAnchor.constraint(equalTo: questionTextLabel.bottomAnchor, constant: 8).isActive = true
+        self.questionImageView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        self.questionImageView.heightAnchor.constraint(equalToConstant: heightOfImage).isActive = true
+              
         
         self.optionsCollectionView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 32).isActive = true
         self.optionsCollectionView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -32).isActive = true
@@ -887,18 +904,16 @@ class QuizController: UIViewController {
             flowLayout.scrollDirection = .vertical
             flowLayout.minimumLineSpacing = 5
         }
-        self.answerStateImageView.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        self.answerStateImageView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor, constant: 0).isActive = true
-        self.answerStateImageView.topAnchor.constraint(equalTo: optionsCollectionView.bottomAnchor, constant: 16).isActive = true
-        self.answerStateImageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
      
         self.optionsCollectionView.reloadData()
         self.questionTextLabel.text = questionItem.question
+        self.scoreTextLabel.text = "Score: \(self.currentScore)"
         
-        self.countDownTimeTextLabel.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        self.countDownTimeTextLabel.widthAnchor.constraint(equalToConstant: 60).isActive = true
         self.countDownTimeTextLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 8).isActive = true
         self.countDownTimeTextLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        self.countDownTimeTextLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        self.countDownTimeTextLabel.heightAnchor.constraint(equalToConstant: 60).isActive = true
       
         timer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(update), userInfo: nil, repeats: true)
     }
@@ -1029,7 +1044,9 @@ extension QuizController: UICollectionViewDataSource,UICollectionViewDelegateFlo
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.answerQuestion(answer: self.feed[indexPath.row])
+        self.timer.invalidate()
+        self.controller.showActivityIndicator()
+        self.sendAnswer(answer: self.feed[indexPath.row])
     }
 }
 

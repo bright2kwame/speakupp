@@ -83,9 +83,10 @@ class QuizesController: UIViewController {
         self.getData(url: url)
     }
     
+    //MARK: get data from sever
     func getData(url:String)  {
          self.apiService.makeGetApiCall(url: url) { (status, data) in
-                  self.refresher.endRefreshing()
+         self.refresher.endRefreshing()
                   if let dataIn = data, status == ApiCallStatus.SUCCESS {
                      let results = dataIn["results"].arrayValue
                      results.forEach { (item) in
@@ -108,7 +109,6 @@ class QuizesController: UIViewController {
                   }
         }
     }
-    
     
     //MARK - call for refresh from other places
     func callRefresh()  {

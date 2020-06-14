@@ -191,6 +191,7 @@ class HomeCell: BaseCell {
         self.homeController?.stopProgress()
         if let pollsIn = polls {
             for poll in pollsIn {
+                print("POLLS \(poll)")
                 self.feed.append(poll)
             }
             self.feedCollectionView.reloadData()
